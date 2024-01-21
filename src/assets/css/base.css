@@ -1,0 +1,17 @@
+:root[data-theme="sage"] {
+    --bg-image: url('/bg/sage.jpg');
+    --background: #202020;
+    --widget: #808080;
+    --widget-hover: #A0A0A0;
+    --important: red;
+
+    --text: black;
+    --text-important: white;
+}
+
+:root {
+    --root-padding: 16px;
+    --blur: blur(20px);
+    --widget-radius: 16px;
+    --button-radius: 16px;
+}
