@@ -5,24 +5,8 @@ import Today from "@/components/Today.vue";
 import {useRoute, useRouter} from "vue-router";
 import calendars from "@/assets/json/calendars.json";
 import {ref} from "vue";
-
-async function fetchCal() {
-  const route = useRoute();
-  const router = useRouter()
-  console.log(route)
-  let link = calendars[route.params["cal"]]
-  if (link === undefined) {
-    await router.push("/");
-    return null;
-  }
-  console.log(encodeURIComponent(link.link));
-  const response = await fetch("https://horizon.imalonelynerd.fr/api/?url=" + encodeURIComponent(link.link));
-  let jsoned = await response.json();
-  if (jsoned === undefined || jsoned.hasOwnProperty("error")) {
-    return null;
-  }
-  return jsoned;
-}
+import Now from "@/components/Now.vue";
+import {fetchCal} from "@/assets/js/calendarFetch.js";
 
 const calendar = ref(await fetchCal());
 
@@ -30,7 +14,10 @@ const calendar = ref(await fetchCal());
 
 <template>
   <div id="calendars">
-    <Today :day-timetable="calendar"/>
+    <div class="shortcut">
+      <Now :day-timetable="calendar"/>
+      <Today :day-timetable="calendar"/>
+    </div>
     <Timetable/>
   </div>
 </template>
@@ -46,6 +33,17 @@ const calendar = ref(await fetchCal());
     flex-direction: row;
     justify-content: stretch;
     align-items: stretch;
+  }
+
+  .shortcut {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+
+    overflow-y: scroll;
+    width: 400px;
+    border-radius: var(--widget-radius);
   }
 }
 </style>
