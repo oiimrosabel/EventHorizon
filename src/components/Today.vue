@@ -17,14 +17,11 @@ defineProps(["dayTimetable"])
     justify-content: start;
     align-items: stretch;
 
-    width: 256px;
     gap: 8px;
     border-radius: var(--widget-radius);
     padding: 16px;
 
     background: grey;
-
-    overflow-y: scroll;
   }
 
   .today > div {

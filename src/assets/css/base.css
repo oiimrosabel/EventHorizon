@@ -1,11 +1,11 @@
 :root[data-theme="sage"] {
     --bg-image: url('/bg/sage.jpg');
-    --background: #202020;
-    --widget: #808080;
-    --widget-hover: #A0A0A0;
-    --important: red;
+    --background: #ffffff;
+    --widget: #fff2f5;
+    --widget-hover: #ffd5df;
+    --important: #cfff7d;
 
-    --text: black;
+    --text: 202020;
     --text-important: white;
 }
 
