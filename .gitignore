@@ -131,3 +131,7 @@ dist
 
 # JetBrains data
 .idea
+
+
+# Legacy project
+EventHorizon/
