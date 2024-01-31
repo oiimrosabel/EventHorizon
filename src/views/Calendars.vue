@@ -1,14 +1,32 @@
 <script setup>
 
+const props = defineProps([
+  "customLink"
+])
+
 import Timetable from "@/components/Timetable.vue";
 import Today from "@/components/Today.vue";
 import {useRoute, useRouter} from "vue-router";
-import calendars from "@/assets/json/calendars.json";
 import {ref} from "vue";
 import Now from "@/components/Now.vue";
-import {fetchCal} from "@/assets/js/calendarFetch.js";
+import {Calendar} from "@/assets/js/calendarFetch.js";
 
-const calendar = ref(await fetchCal());
+const cal = useRoute().params.cal;
+if (cal === undefined) {
+  useRouter().push("/");
+}
+let calendar;
+if (cal === "custom") {
+  calendar = new Calendar(props.customLink, true);
+} else {
+  calendar = new Calendar(cal, false);
+}
+
+try {
+  calendar.fetch();
+} catch (e) {
+
+}
 
 </script>
 

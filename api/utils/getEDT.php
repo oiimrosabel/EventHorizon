@@ -21,26 +21,43 @@ function edt($url): bool|array
     $basecal = $cal->parse($url);
     if (gettype($basecal) == ENT_COMPAT) return false;
     if (count($basecal) == 0) return false;
-    $EDT = array();
-    foreach ($basecal as $key => $val) {
-        $basecal[$key]["DTSTART"] = array($basecal[$key]["DTSTART"]->format("Y_m_d"), $basecal[$key]["DTSTART"]->format("H_i"), $basecal[$key]["DTSTART"]->format("D"));
-        $basecal[$key]["DTEND"] = array($basecal[$key]["DTEND"]->format("Y_m_d"), $basecal[$key]["DTEND"]->format("H_i"));
-        unset($basecal[$key]["DTSTAMP"]);
-        unset($basecal[$key]["CREATED"]);
-        unset($basecal[$key]["SEQUENCE"]);
-        unset($basecal[$key]["UID"]);
-        unset($basecal[$key]["VALARM"]);
-        unset($basecal[$key]["LAST-MODIFIED"]);
-        preg_match("/^([^\s\d]* [^\s\d]*)$/m", $basecal[$key]["DESCRIPTION"], $desc);
-        $basecal[$key]["DESCRIPTION"] = $desc[0];
-        $EDT[$basecal[$key]["DTSTART"][0] . "_" . $basecal[$key]["DTSTART"][2]][$basecal[$key]["DTSTART"][1]] = $basecal[$key];
+    $res = array();
+    $day = array();
+    foreach ($basecal as $item) {
+        //remove all the unused data
+        unset($item["DTSTAMP"]);
+        unset($item["CREATED"]);
+        unset($item["SEQUENCE"]);
+        unset($item["UID"]);
+        unset($item["VALARM"]);
+        unset($item["LAST-MODIFIED"]);
+
+        $item["DTSTART"] = array(
+            "date" => $item["DTSTART"]->format("Y_m_d"),
+            "hour" => $item["DTSTART"]->format("H_i"),
+            "day" => $item["DTSTART"]->format("D"));
+        $item["DTEND"] = array(
+            "date" => $item["DTEND"]->format("Y_m_d"),
+            "hour" => $item["DTEND"]->format("H_i"),
+            "day" => $item["DTEND"]->format("D"));
+
+        //reformat the description
+        preg_match("/^([^\s\d]* [^\s\d]*)$/m", $item["DESCRIPTION"], $desc);
+        $item["TEACHER"] = $desc[0];
+        unset($item["DESCRIPTION"]);
     }
-    ksort($EDT);
-    foreach ($EDT as $key => $val) {
-        ksort($EDT[$key]);
+    ksort($res);
+    //parse each event in one day
+        if(count($day) == 0 || $day[0]["DTSTART"]["date"] == $item["DTSTART"]["date"]) {
+            $day[] = $item;
+        }
+
+        if($day[0]["DTSTART"]["date"] == $item["DTSTART"]["date"]) {
+            $res[] = $day;
+            $day = array();
+        }
     }
-    return $EDT;
+    return $res;
 }
 
-;
 ?>

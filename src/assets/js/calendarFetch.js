@@ -1,7 +1,7 @@
 import {useRoute, useRouter} from "vue-router";
 import calendars from "@/assets/json/calendars.json";
 
-class Calendar {
+export class Calendar {
     identifier = "";
     url = "";
     title = "";
@@ -14,30 +14,28 @@ class Calendar {
             this.identifier = "custom";
         } else {
             let link = calendars[identifier];
-            if(link === undefined){
-                throw {name : "UnknownIdentifierError", message : `Unknown \"${identifier}\" identifier.`};
+            if (link === undefined) {
+                throw {name: "UnknownIdentifierError", message: `Unknown \"${identifier}\" identifier.`};
             }
             this.title = link.title;
             this.url = link.url;
             this.identifier = identifier;
-            // TODO
         }
     }
-}
 
-export async function fetchCal(identifier) {
-    let link = calendars[route.params["cal"]]
-    if (link === undefined) {
-        return {
-
-            null
-        };
+    async fetch() {
+        const flink = "https://horizon.imalonelynerd.fr/api/?url=" + encodeURIComponent(this.url);
+        const response = await fetch(flink);
+        if (response === undefined || !response.ok || response.status !== 200) {
+            throw {name: "BadFetchError", message: `Fetching \"${flink}\" failed.`};
+        }
+        let jsonobj = await response.json();
+        if (jsonobj === undefined) {
+            throw {name: "BadJsonError", message: `Converting \"${flink}\" as a JSON failed.`};
+        }
+        if (jsonobj.response !== 0) {
+            throw {name: "ResponseError", message: `Error ${jsonobj.response}: ${jsonobj.comment}`};
+        }
+        return jsonobj.value;
     }
-    console.log(encodeURIComponent(link.link));
-    const response = await fetch("https://horizon.imalonelynerd.fr/api/?url=" + encodeURIComponent(link.link));
-    let jsoned = await response.json();
-    if (jsoned === undefined || jsoned.hasOwnProperty("error")) {
-        return null;
-    }
-    return jsoned;
 }
