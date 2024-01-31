@@ -10,11 +10,11 @@ defineProps([
   <div class="now">
     <h2>En cours</h2>
     <Course
-        title="Titre"
-        start-date="Start"
-        end-date="End"
-        teacher="Tatcher"
-        location="Location"
+        :title="dayTimetable['SUMMARY']"
+        :start-date="dayTimetable['DTSTART']"
+        :end-date="dayTimetable['DTEND']"
+        :teacher="dayTimetable['TEACHER']"
+        :location="dayTimetable['LOCATION']"
     />
     <!--div >{{ dayTimetable["2024_01_30_Tue"]["10_15"] }}</--div-->
   </div>

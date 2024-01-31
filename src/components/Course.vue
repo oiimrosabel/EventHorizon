@@ -7,6 +7,10 @@ defineProps([
   "teacher",
   "important"
 ])
+
+function replaceHour(hour) {
+  return hour
+}
 </script>
 
 <template>
@@ -14,7 +18,7 @@ defineProps([
     <h3>{{ title }}</h3>
     <div>
       <img src="/icons/date.png"/>
-      <p>{{ startDate }} - {{ endDate }}</p>
+      <p>{{ startDate['hour'].replace("_",":") }} → {{ endDate['hour'].replace("_",":") }}</p>
     </div>
     <div>
       <img src="/icons/location.png"/>

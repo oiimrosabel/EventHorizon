@@ -1,18 +1,18 @@
 {
   "td1tp1": {
     "name": "L3 TD1 TP1",
-    "link": "http://adecampus.univ-rouen.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=48263&projectId=0&calType=ical&nbWeeks=8&displayConfigId=8"
+    "url": "http://adecampus.univ-rouen.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=48263&projectId=0&calType=ical&nbWeeks=8&displayConfigId=8"
   },
   "td1tp2": {
     "name": "L3 TD1 TP2",
-    "link": "http://adecampus.univ-rouen.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=48262&projectId=0&calType=ical&nbWeeks=8&displayConfigId=8"
+    "url": "http://adecampus.univ-rouen.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=48262&projectId=0&calType=ical&nbWeeks=8&displayConfigId=8"
   },
   "td2tp3": {
     "name": "L3 TD2 TP3",
-    "link": "http://adecampus.univ-rouen.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=43246&projectId=0&calType=ical&nbWeeks=8&displayConfigId=8"
+    "url": "http://adecampus.univ-rouen.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=43246&projectId=0&calType=ical&nbWeeks=8&displayConfigId=8"
   },
   "td2tp4": {
     "name": "L3 TD2 TP4",
-    "link": "http://adecampus.univ-rouen.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=43247&projectId=0&calType=ical&nbWeeks=8&displayConfigId=8"
+    "url": "http://adecampus.univ-rouen.fr/jsp/custom/modules/plannings/anonymous_cal.jsp?resources=43247&projectId=0&calType=ical&nbWeeks=8&displayConfigId=8"
   }
 }

@@ -1,6 +1,6 @@
 <?php
 
-include "utils/getEDT.php";
+include "utils/getTimetable.php";
 header("Content-Type:application/json");
 header("Access-Control-Allow-Origin: *", false);
 

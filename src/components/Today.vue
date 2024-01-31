@@ -1,11 +1,19 @@
 <script setup>
+import Course from "@/components/Course.vue";
+
 defineProps(["dayTimetable"])
 </script>
 
 <template>
   <div class="today">
     <h2>Aujourd'hui</h2>
-    <div v-for="elem in dayTimetable">{{ elem }}</div>
+    <Course v-for="elem in dayTimetable"
+            :start-date="elem['DTSTART']"
+            :end-date="elem['DTEND']"
+            :location="elem['LOCATION']"
+            :teacher="elem['TEACHER']"
+            :title="elem['SUMMARY']"
+    />
   </div>
 </template>
 
