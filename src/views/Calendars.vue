@@ -1,15 +1,17 @@
 <script setup>
 
+import {ref} from "vue";
+import Timetable from "@/components/Timetable.vue";
+import Day from "@/components/Day.vue";
+import {useRoute, useRouter} from "vue-router";
+import NextCourse from "@/components/NextCourse.vue";
+import {Calendar, CalError} from "@/assets/js/calendarFetch.js";
+
 const props = defineProps([
   "customLink"
 ])
 
-import Timetable from "@/components/Timetable.vue";
-import Today from "@/components/Today.vue";
-import {useRoute, useRouter} from "vue-router";
-import {ref} from "vue";
-import Now from "@/components/Now.vue";
-import {Calendar, CalError} from "@/assets/js/calendarFetch.js";
+const isHidden = ref(false);
 
 const cal = useRoute().params.cal;
 if (cal === undefined) {
@@ -20,32 +22,51 @@ if (cal === "custom") {
   calendar = new Calendar(props.customLink, true);
 } else {
   calendar = new Calendar(cal, false);
-  if(calendar instanceof CalError){
+  if (calendar instanceof CalError) {
     console.log(calendar.message);
+    //TODO
   }
 }
 
-const everef = ref(null);
-const dayref = ref(null);
-
+let curevent;
+let dayevents;
+let nextevent;
+let timetable;
 let res = await calendar.fetch();
 if (res instanceof CalError) {
   console.log(res.message);
   //TODO error
 } else {
-   everef.value = calendar.getCurrentEvent();
-   dayref.value = calendar.getDay();
-  console.log(res);
+  curevent = calendar.getCurrentEvent();
+  nextevent = calendar.getNextEvent();
+  dayevents = calendar.getDay();
+  timetable = calendar.getAll();
+  timetable.shift();
 }
 </script>
 
 <template>
   <div id="calendars">
-    <div class="shortcut">
-      <Now :day-timetable="everef"/>
-      <Today :day-timetable="dayref"/>
+    <div class="shortcut" :class="{ 'hidden' : isHidden }">
+      <NextCourse
+          :event-info="curevent"
+          title="En cours"
+          v-if="curevent !== null"
+      />
+      <NextCourse
+          :event-info="nextevent"
+          title="Prochain cours"
+          v-if="nextevent !== null"
+      />
+      <Day
+          :day-timetable="dayevents"
+          v-if="dayevents !== null"/>
+      <div class="hide-button" @click="isHidden = !isHidden">
+        <img src="/icons/revert.png"/>
+        <h3 v-if="!isHidden">Cacher les cours récents...</h3>
+      </div>
     </div>
-    <Timetable/>
+    <Timetable :timetable="timetable"/>
   </div>
 </template>
 
@@ -55,6 +76,7 @@ if (res instanceof CalError) {
     flex: 1 1;
 
     min-height: 1px;
+    gap: var(--root-padding);
 
     display: flex;
     flex-direction: row;
@@ -69,8 +91,48 @@ if (res instanceof CalError) {
     align-items: stretch;
 
     overflow-y: scroll;
-    width: 400px;
+    gap: 16px;
     border-radius: var(--widget-radius);
+  }
+
+  .shortcut > *:not(:last-child) {
+    width: var(--event-width);
+  }
+
+  .hidden {
+    display: flex;
+    flex-direction: column-reverse;
+    overflow: hidden;
+  }
+
+  .hidden > *:not(:last-of-type) {
+    display: none;
+  }
+
+  .hide-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    background: var(--widget);
+    border-radius: var(--button-radius);
+    padding: 16px;
+    cursor: pointer;
+    gap: 12px;
+    transition: var(--transition);
+  }
+
+  .hide-button:hover {
+    background: var(--widget-hover);
+  }
+
+  .hide-button > h3 {
+    margin: 0;
+  }
+
+  .hide-button > img {
+    height: 1.5em;
+    filter: var(--img-filter);
   }
 }
 </style>

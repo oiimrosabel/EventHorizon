@@ -17,13 +17,11 @@
 body {
     font-family: "Montserrat", system-ui, sans-serif;
     color: var(--text);
-}
-
-* {
-    transition: ease-out 0.25s;
+    background: var(--background);
 }
 
 *::-webkit-scrollbar {
+    height: 6px;
     width: 6px;
 }
 
@@ -35,4 +33,9 @@ body {
     border-radius: 999px;
     background: var(--important);
     border: 2px solid transparent;
+}
+
+.small {
+    font-size: 0.9em;
+    opacity: 75%;
 }

@@ -1,8 +1,8 @@
 <script setup>
 import TopWidget from "@/components/TopWidget.vue";
+import {setTheme} from "@/assets/js/themeUtils.js";
 
-document.querySelector('html').dataset.theme = `sage`;
-
+setTheme();
 
 </script>
 

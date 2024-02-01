@@ -27,7 +27,6 @@ export class Calendar {
 
     async fetch() {
         const flink = "https://horizon.imalonelynerd.fr/api/v2/?url=" + encodeURIComponent(this.url);
-        console.log(flink);
         const response = await fetch(flink);
         if (response === undefined || !response.ok || response.status !== 200) {
             return new CalError(
@@ -52,7 +51,6 @@ export class Calendar {
             )
         }
         this.result = jsonobj.value;
-        console.log(this.result);
         return true;
     }
 
@@ -64,23 +62,48 @@ export class Calendar {
         if (this.result === null || this.result.length === 0) {
             return null;
         }
-        return this.result[0];
+        let res = this.result[0];
+        let date = new Date();
+        let day = `${date.getFullYear()}_${date.getMonth() < 9 ? "0" + (date.getMonth() - (-1)) : date.getMonth() - (-1)}_${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`;
+        console.log(day);
+        if (res[0]["DTSTART"]["date"] !== day) {
+            return null;
+        }
+        return res;
     }
 
     getCurrentEvent() {
         let day = this.getDay();
-        if(day === null){
+        if (day === null) {
             return null;
         }
         let date = new Date();
         let hour = `${date.getHours() < 10 ? "0" + date.getHours() : date.getHours()}_${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()}`;
-        for(let k in day){
-            if(day[k]["DTSTART"]["hour"] >= hour && day[k]["DTEND"]["hour"] <= hour){
+        for (let k in day) {
+            if (day[k]["DTSTART"]["hour"] <= hour && day[k]["DTEND"]["hour"] >= hour) { // ?
                 return day[k];
             }
         }
-        if(this.result.length <= 1){
+        return null;
+    }
+
+    getNextEvent() {
+        if (this.getCurrentEvent() != null) {
             return null;
+        }
+        if (this.result.length <= 1) {
+            return null;
+        }
+        let day = this.getDay();
+        if (day === null) {
+            return null;
+        }
+        let date = new Date();
+        let hour = `${date.getHours() < 10 ? "0" + date.getHours() : date.getHours()}_${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()}`;
+        for (let k in day) {
+            if (day[k]["DTSTART"]["hour"] >= hour) { // ?
+                return day[k];
+            }
         }
         return this.result[1][0];
     }

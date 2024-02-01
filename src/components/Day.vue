@@ -1,5 +1,6 @@
 <script setup>
 import Course from "@/components/Course.vue";
+import {isNow} from "@/assets/js/dateUtils.js";
 
 defineProps(["dayTimetable"])
 </script>
@@ -13,6 +14,7 @@ defineProps(["dayTimetable"])
             :location="elem['LOCATION']"
             :teacher="elem['TEACHER']"
             :title="elem['SUMMARY']"
+            :important="isNow(elem['DTSTART'],elem['DTEND'])"
     />
   </div>
 </template>
@@ -25,16 +27,16 @@ defineProps(["dayTimetable"])
     justify-content: start;
     align-items: stretch;
 
-    gap: 8px;
+    gap: 16px;
     border-radius: var(--widget-radius);
-    padding: 16px;
+    padding: 24px 16px 16px 16px;
 
-    background: grey;
+    background: var(--widget);
   }
 
-  .today > div {
-    padding: 32px;
-    background: deeppink;
+  .today > h2 {
+    text-align: center;
+    margin: 0;
   }
 }
 </style>

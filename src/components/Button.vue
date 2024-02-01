@@ -38,7 +38,8 @@ defineProps([
     justify-content: center;
     align-items: center;
 
-    gap: 12px;
+    cursor: pointer;
+    transition: var(--transition);
   }
 
   .button:hover {
@@ -51,11 +52,13 @@ defineProps([
 
   .button > img {
     height: 1.5em;
+    filter: var(--img-filter);
   }
 
   .button > p {
     text-align: center;
     font-weight: bold;
+    margin: 0 0 0 12px;
   }
 
   .important {
@@ -63,18 +66,28 @@ defineProps([
     color: var(--text-important);
   }
 
+  .important > img {
+    filter: var(--imp-filter);
+  }
+
   .retractable {
     min-width: 1px;
   }
 
   .retractable > p {
-    display: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
     max-width: 1px;
+    margin: 0;
+    opacity: 0;
+    transition: var(--transition);
   }
 
   .retractable:hover > p {
-    display: inherit;
     max-width: 128px;
+    margin: 0 0 0 12px;
+    opacity: 1;
   }
 }
 </style>
