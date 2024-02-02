@@ -80,6 +80,7 @@ function edt($url): bool|array
         if (strcasecmp($day[0]["DTSTART"]["date"], $item["DTSTART"]["date"]) != 0) {
             $res2[] = $day;
             $day = array();
+            $day[] = $item;
         }
     }
     return $res2;

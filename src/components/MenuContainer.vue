@@ -1,15 +1,13 @@
 <script setup>
-import Button from "@/components/Button.vue";
 
 defineEmits(["goBack"])
 </script>
 
 <template>
-  <div class="bg" @click="$emit('goBack')">
-    <div class="menu">
-      <slot>
-      </slot>
-    </div>
+  <div class="bg" @click="$emit('goBack')"/>
+  <div class="menu">
+    <slot>
+    </slot>
   </div>
 </template>
 
@@ -22,19 +20,24 @@ defineEmits(["goBack"])
     left: 0;
     right: 0;
     background: color-mix(in srgb, var(--background), transparent 50%);
+    z-index: 9;
+    animation: Background ease-out 0.5s;
+  }
 
+  .menu {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 10;
-
     display: flex;
     flex-direction: column;
     justify-content: end;
     align-items: center;
-  }
-
-  .menu {
     background: var(--background);
     width: 800px;
     border-radius: var(--widget-radius) var(--widget-radius) 0 0;
+    animation: Menu ease-out 0.5s;
   }
 }
 </style>

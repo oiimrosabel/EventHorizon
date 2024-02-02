@@ -34,6 +34,7 @@ defineProps(["timetable"])
     padding: 24px 24px 0;
     gap: 16px;
     border-radius: var(--widget-radius);
+    animation: BottomPanel ease-out 0.5s;
   }
 
   .timetable > div {

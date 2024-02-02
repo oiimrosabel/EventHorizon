@@ -4,19 +4,23 @@ import {ref} from "vue";
 import Button from "@/components/Button.vue";
 import {dayAssociation, monthAssociation} from "@/assets/js/dateUtils.js";
 import calendars from "@/assets/json/calendars.json"
-import MenuContainer from "@/components/Menu/MenuContainer.vue";
-import {changeLoc} from "@/assets/js/otherUtils.js";
-import {getTheme, switchTheme} from "@/assets/js/themeUtils.js";
+import MenuContainer from "@/components/MenuContainer.vue";
+import {changeLoc, copyText, getCurrentURL, reload, shareText} from "@/assets/js/otherUtils.js";
+import {switchTheme} from "@/assets/js/themeUtils.js";
+import {getCookie, setCookie} from "@/assets/js/cookieUtils.js";
 
 const date = ref(new Date());
-
-function reload() {
-  location.reload();
-}
 
 const calMenuShown = ref(false);
 const themeMenuShown = ref(false);
 const shareMenuShown = ref(false);
+
+const customURL = ref("");
+
+function setCustomLink(value) {
+  setCookie('customURL', value);
+  changeLoc('/custom', false);
+}
 
 </script>
 
@@ -27,18 +31,37 @@ const shareMenuShown = ref(false);
         <h1>{{ dayAssociation[date.getDay()] }} {{ date.getDate() }}</h1>
         <p>{{ monthAssociation[date.getMonth()] }} {{ date.getFullYear() }} </p>
       </div>
-      <div v-if="$route.name !== 'Welcome'">
-        <p>Groupe</p>
+      <div v-if="$route.name === 'Calendar' && calendars[$route.params.cal] !== undefined">
+        <p>Préréglage</p>
         <h1>
-          {{ calendars[$route.params.cal] === undefined ? "Personnalisé" : calendars[$route.params.cal]["name"] }}</h1>
+          {{ calendars[$route.params.cal]["name"] }}</h1>
       </div>
     </div>
     <div class="top-right">
-      <Button text="Partager" image-link="/icons/share.png" :retractable="true"/>
-      <Button text="Rafraîchir" image-link="/icons/refresh.png" :retractable="true" @buttonClicked="reload()"/>
-      <Button text="Changer" image-link="/icons/switch.png" @buttonClicked="calMenuShown = true"/>
-      <Button text="Thème" :image-link="`/icons/${getTheme()}.png`" :important="true"
-              @buttonClicked="themeMenuShown = true"/>
+      <Button
+          text="Partager"
+          image-link="/icons/share.png"
+          :retractable="true"
+          @buttonClicked="shareMenuShown = true"
+          v-if="$route.name === 'Calendar'"
+      />
+      <Button
+          text="Rafraîchir"
+          image-link="/icons/refresh.png"
+          :retractable="true" @buttonClicked="reload()"
+      />
+      <Button
+          text="Changer"
+          image-link="/icons/switch.png"
+          @buttonClicked="calMenuShown = true"
+          :class="{'blinking' : $route.name === 'Welcome'}"
+      />
+      <Button
+          text="Thème"
+          :image-link="`/icons/theme.png`"
+          :important="true"
+          @buttonClicked="themeMenuShown = true"
+      />
     </div>
   </div>
   <MenuContainer
@@ -47,8 +70,13 @@ const shareMenuShown = ref(false);
     <div class="menuc">
       <img src="/icons/switch.png"/>
       <h1>Changer de calendrier</h1>
-      <h2>Présets</h2>
+      <h2>Préréglages</h2>
       <div>
+        <Button
+            text="Accueil"
+            image-link="/icons/home.png"
+            @buttonClicked="changeLoc('/', false);"
+        />
         <Button
             v-for="(elem, index) in calendars"
             :text="elem['name']"
@@ -58,10 +86,11 @@ const shareMenuShown = ref(false);
       </div>
       <h2>Lien personnalisé</h2>
       <div>
-        <input type="text">
+        <input type="text" v-model="customURL"
+               @keyup.enter="setCustomLink(customURL)"/>
         <Button
             image-link="/icons/search.png"
-        />
+            @buttonClicked="setCustomLink(customURL)"/>
       </div>
       <Button
           image-link="/icons/back.png"
@@ -74,7 +103,7 @@ const shareMenuShown = ref(false);
       v-if="themeMenuShown"
       @goBack="themeMenuShown = false">
     <div class="menuc">
-      <img :src="`/icons/${getTheme()}.png`"/>
+      <img :src="`/icons/theme.png`"/>
       <h1>Changer de thème</h1>
       <h2>Thèmes statiques</h2>
       <div>
@@ -116,6 +145,62 @@ const shareMenuShown = ref(false);
           image-link="/icons/back.png"
           text="Retour"
           @buttonClicked="themeMenuShown = false"
+      />
+    </div>
+  </MenuContainer>
+  <MenuContainer
+      v-if="shareMenuShown"
+      @goBack="shareMenuShown = false">
+    <div class="menuc">
+      <img :src="`/icons/share.png`"/>
+      <h1>Partager</h1>
+      <h2>Lien EventHorizon</h2>
+      <h3 v-if="calendars[$route.params.cal] === undefined">Il est impossible de partager un lien EventHorizon
+        personnalisé.</h3>
+      <div>
+        <Button
+            text="Copier le lien EventHorizon"
+            image-link="/icons/copy.png"
+            :disabled="calendars[$route.params.cal] === undefined"
+            @buttonClicked="copyText(getCurrentURL())"
+        />
+        <Button
+            text="Partager le lien EventHorizon"
+            image-link="/icons/share.png"
+            :disabled="calendars[$route.params.cal] === undefined"
+            @buttonClicked="shareText(getCurrentURL())"
+        />
+      </div>
+      <h2 v-if="calendars[$route.params.cal] !== undefined">Lien ADECampus</h2>
+      <div v-if="calendars[$route.params.cal] !== undefined">
+        <Button
+            text="Copier le lien ADECampus"
+            image-link="/icons/copy.png"
+            @buttonClicked="copyText(calendars[$route.params.cal]['url'])"
+        />
+        <Button
+            text="Partager le lien ADECampus"
+            image-link="/icons/share.png"
+            @buttonClicked="shareText(calendars[$route.params.cal]['url'])"
+        />
+        <h2 v-if="$route.name === 'custom'">Lien personnalisé</h2>
+        <div v-if="$route.name === 'custom'">
+          <Button
+              text="Copier le lien personnalisé"
+              image-link="/icons/copy.png"
+              @buttonClicked="copyText(getCookie('customURL'))"
+          />
+          <Button
+              text="Partager le lien personnalisé"
+              image-link="/icons/share.png"
+              @buttonClicked="shareText(getCookie('customURL'))"
+          />
+        </div>
+      </div>
+      <Button
+          image-link="/icons/back.png"
+          text="Retour"
+          @buttonClicked="shareMenuShown = false"
       />
     </div>
   </MenuContainer>
@@ -198,11 +283,18 @@ const shareMenuShown = ref(false);
     opacity: 0.9;
   }
 
+  .menuc > h3 {
+    padding: 16px 24px;
+    border-radius: var(--button-radius);
+    color: var(--text-important);
+    background: var(--important);
+  }
+
   .menuc > div {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: start;
+    justify-content: center;
     align-items: stretch;
     gap: 12px;
   }
@@ -218,6 +310,10 @@ const shareMenuShown = ref(false);
 
   .menuc > div > input:hover {
     background: var(--widget-hover);
+  }
+
+  .blinking {
+    animation: Attention 2s ease-out infinite;
   }
 }
 </style>

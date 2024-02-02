@@ -23,6 +23,7 @@ export class Calendar {
             this.url = link.url;
             this.identifier = identifier;
         }
+        return this;
     }
 
     async fetch() {
@@ -120,15 +121,7 @@ export class CalError {
         this.message = message;
     }
 
-    getCode() {
-        return this.code;
-    }
-
-    getName() {
-        return this.name;
-    }
-
-    getMessage() {
-        return this.message;
+    fetch() {
+        return this;
     }
 }

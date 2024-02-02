@@ -52,6 +52,7 @@ export function removeParenthesis(text) {
 export function isNow(dtstart, dtend) {
     let date = new Date();
     let hour = `${date.getHours() < 10 ? "0" + date.getHours() : date.getHours()}_${date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()}`
+    console.log(dtstart, hour, dtend)
     return dtstart <= hour && hour <= dtend;
 }
 

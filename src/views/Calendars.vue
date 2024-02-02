@@ -6,47 +6,61 @@ import Day from "@/components/Day.vue";
 import {useRoute, useRouter} from "vue-router";
 import NextCourse from "@/components/NextCourse.vue";
 import {Calendar, CalError} from "@/assets/js/calendarFetch.js";
-
-const props = defineProps([
-  "customLink"
-])
+import {deleteCookie, getCookie} from "@/assets/js/cookieUtils.js";
+import Error from "@/components/Error.vue";
 
 const isHidden = ref(false);
+const isFetched = ref(true);
 
-const cal = useRoute().params.cal;
-if (cal === undefined) {
-  await useRouter().push("/");
-}
-let calendar;
-if (cal === "custom") {
-  calendar = new Calendar(props.customLink, true);
-} else {
-  calendar = new Calendar(cal, false);
-  if (calendar instanceof CalError) {
-    console.log(calendar.message);
-    //TODO
-  }
-}
+const error = ref(new CalError(0, "", ""));
 
 let curevent;
 let dayevents;
 let nextevent;
 let timetable;
-let res = await calendar.fetch();
-if (res instanceof CalError) {
-  console.log(res.message);
-  //TODO error
+const cal = useRoute().params.cal;
+if (cal === undefined) {
+  useRouter().push("/");
+}
+let calendar;
+if (cal === "custom") {
+  if (getCookie("customURL") === "") {
+    isFetched.value = false;
+    error.value = new CalError("+1", "NoCustomURL", "An error occured while getting the custom URL");
+  } else {
+    calendar = new Calendar(getCookie("customURL"), true);
+    deleteCookie("customURL");
+  }
 } else {
-  curevent = calendar.getCurrentEvent();
-  nextevent = calendar.getNextEvent();
-  dayevents = calendar.getDay();
-  timetable = calendar.getAll();
-  timetable.shift();
+  calendar = new Calendar(cal, false);
+  if (calendar instanceof CalError) {
+    isFetched.value = false;
+    error.value = calendar;
+  }
+}
+
+if (isFetched.value) {
+  let res = await calendar.fetch();
+  if (res instanceof CalError) {
+    isFetched.value = false;
+    error.value = res;
+  } else {
+    curevent = calendar.getCurrentEvent();
+    nextevent = calendar.getNextEvent();
+    dayevents = calendar.getDay();
+    timetable = calendar.getAll();
+    timetable.shift();
+  }
 }
 </script>
 
 <template>
-  <div id="calendars">
+  <Error v-if="!isFetched"
+         :name="error.name"
+         :code="error.code"
+         :message="error.message"
+  />
+  <div v-if="isFetched" id="calendars">
     <div class="shortcut" :class="{ 'hidden' : isHidden }">
       <NextCourse
           :event-info="curevent"
@@ -61,8 +75,12 @@ if (res instanceof CalError) {
       <Day
           :day-timetable="dayevents"
           v-if="dayevents !== null"/>
-      <div class="hide-button" @click="isHidden = !isHidden">
-        <img src="/icons/revert.png"/>
+      <div class="hide-button"
+           @click="isHidden = !isHidden"
+           :class="{'hidden-button' : isHidden}"
+      >
+        <img v-if="!isHidden" src="/icons/hide.png"/>
+        <img v-if="isHidden" src="/icons/revert.png"/>
         <h3 v-if="!isHidden">Cacher les cours récents...</h3>
       </div>
     </div>
@@ -93,6 +111,8 @@ if (res instanceof CalError) {
     overflow-y: scroll;
     gap: 16px;
     border-radius: var(--widget-radius);
+
+    animation: LeftPanel ease-out 0.5s;
   }
 
   .shortcut > *:not(:last-child) {
@@ -100,6 +120,9 @@ if (res instanceof CalError) {
   }
 
   .hidden {
+    position: fixed;
+    bottom: var(--root-padding);
+    left: var(--root-padding);
     display: flex;
     flex-direction: column-reverse;
     overflow: hidden;
@@ -133,6 +156,10 @@ if (res instanceof CalError) {
   .hide-button > img {
     height: 1.5em;
     filter: var(--img-filter);
+  }
+
+  .hidden-button {
+    background: none;
   }
 }
 </style>

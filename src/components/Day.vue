@@ -14,7 +14,7 @@ defineProps(["dayTimetable"])
             :location="elem['LOCATION']"
             :teacher="elem['TEACHER']"
             :title="elem['SUMMARY']"
-            :important="isNow(elem['DTSTART'],elem['DTEND'])"
+            :important="isNow(elem['DTSTART']['hour'],elem['DTEND']['hour'])"
     />
   </div>
 </template>

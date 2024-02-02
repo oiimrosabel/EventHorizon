@@ -1,16 +1,19 @@
 <script setup>
 
+defineProps([
+    "code",
+    "name",
+    "message"
+])
+
 </script>
 
 <template>
   <div class="loading">
-    <img src="/images/template.png">
-    <div>
-      <p>Bienvenue sur</p>
-      <h1>EventHorizon</h1>
-    </div>
-    <code>ver 2.0 EX</code>
-    <p>Veuillez choisir un <b>groupe de TD/TP</ b> à l'aide des bouton ci-dessus.</p>
+    <img src="/images/error.png">
+    <h1>Une erreur est survenue <img src="/images/err2.png"></h1>
+    <code>Error {{ code }} - {{name}}</code>
+    <p>{{ message}}</p>
   </div>
 </template>
 
@@ -32,15 +35,16 @@
     margin: 0;
   }
 
-  .loading > div {
+  .loading > h1 {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 0.25em;
     justify-content: center;
     align-items: center;
   }
 
-  .loading > div > p {
-    font-weight: bold;
+  .loading > h1 > img {
+    height: 1em;
   }
 
   .loading > code {
@@ -58,7 +62,6 @@
 
   .loading > img {
     height: 160px;
-    filter: var(--img-filter);
   }
 }
 </style>

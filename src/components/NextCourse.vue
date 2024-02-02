@@ -16,6 +16,7 @@ defineProps([
         :end-date="eventInfo['DTEND']"
         :teacher="eventInfo['TEACHER']"
         :location="eventInfo['LOCATION']"
+        :day="true"
     />
   </div>
 </template>

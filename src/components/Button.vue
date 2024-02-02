@@ -17,7 +17,11 @@ defineProps([
 
 <template>
   <a
-      :class="{'important' : important !== undefined && important === true, 'retractable': retractable !== undefined && retractable === true}"
+      :class="{
+      'important' : important !== undefined && important === true,
+      'retractable': retractable !== undefined && retractable === true,
+      'disabled': disabled !== undefined && disabled === true
+  }"
       class="button"
       @click="$emit(disabled ? 'deactivatedButtonClicked' : 'buttonClicked')">
     <img v-if="imageLink !== undefined && imageLink !== ''" :src="imageLink" :alt="text"/>
@@ -88,6 +92,15 @@ defineProps([
     max-width: 128px;
     margin: 0 0 0 12px;
     opacity: 1;
+  }
+
+  .disabled {
+    opacity: 0.5;
+    cursor: auto;
+  }
+
+  .disabled:hover {
+    background: var(--widget) !important;
   }
 }
 </style>

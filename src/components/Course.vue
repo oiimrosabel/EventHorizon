@@ -1,5 +1,5 @@
 <script setup>
-import {diffTime, removeParenthesis, spanner} from "../assets/js/dateUtils.js";
+import {diffTime, displayDate, removeParenthesis, spanner} from "../assets/js/dateUtils.js";
 
 defineProps([
   "title",
@@ -7,7 +7,8 @@ defineProps([
   "endDate",
   "location",
   "teacher",
-  "important"
+  "important",
+  "day"
 ])
 </script>
 
@@ -15,6 +16,10 @@ defineProps([
   <div class="day" :class="{ 'important' : important !== undefined && important }">
     <h3 v-html="spanner(title)" :title="title"></h3>
     <div>
+      <div v-if="day !== undefined && day === true">
+        <img src="/icons/calmin.png"/>
+        <p>{{ displayDate(startDate["day"], startDate["date"]) }}</p>
+      </div>
       <div>
         <img src="/icons/time.png"/>
         <p>{{ startDate['hour'].replace("_", ":") }} → {{ endDate['hour'].replace("_", ":") }}

@@ -3,7 +3,7 @@
     --background: #ffffff;
     --widget: #fff2f5;
     --event: #ffdfe6;
-    --widget-hover: #ffccd8;
+    --widget-hover: #ffbac9;
     --img-filter: brightness(0) saturate(100%) invert(66%) sepia(64%) saturate(6018%) hue-rotate(313deg) brightness(103%) contrast(101%);
     --imp-filter: brightness(0) saturate(100%) invert(31%) sepia(41%) saturate(500%) hue-rotate(41deg) brightness(93%) contrast(90%);
     --important: #cfff7d;
@@ -16,7 +16,7 @@
     --background: #1b102f;
     --widget: #361a50;
     --event: #4d2572;
-    --widget-hover: #5f2e8c;
+    --widget-hover: #69329b;
     --img-filter: brightness(0) saturate(100%) invert(60%) sepia(99%) saturate(2157%) hue-rotate(223deg) brightness(100%) contrast(102%);
     --imp-filter: brightness(0) saturate(100%) invert(78%) sepia(7%) saturate(1082%) hue-rotate(295deg) brightness(107%) contrast(101%);
     --important: #ff185d;
