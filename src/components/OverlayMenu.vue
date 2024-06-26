@@ -1,25 +1,41 @@
 <script lang="ts" setup>
-import RoundButton from '@/components/buttons/RoundButton.vue'
+import TextButton from '@/components/buttons/TextButton.vue'
+import { ref } from 'vue'
+import { animationService } from '@/assets/code/animations/animations.service'
 
-defineEmits(['hide'])
+const ANIM_DURATION = '0.5s'
+const ANIM_CLASS = 'away'
+
+const emit = defineEmits(['hide'])
+
+const backgroundRef = ref(null)
+const menuRef = ref(null)
+
+const animate = () =>
+  animationService.animateAway(
+    [backgroundRef.value, menuRef.value],
+    ANIM_DURATION,
+    ANIM_CLASS,
+    () => emit('hide')
+  )
 </script>
 
 <template>
-  <div class="OverlayMenu">
-    <div>
+  <div class="OverlayBackground" ref="backgroundRef">
+    <div ref="menuRef">
       <div class="OverlayTitle">
         <slot name="title"></slot>
       </div>
       <slot></slot>
-      <RoundButton @click="$emit('hide')">
+      <TextButton @click="animate()">
         <img alt="Back" src="/icons/back.png" />
-      </RoundButton>
+      </TextButton>
     </div>
   </div>
 </template>
 
 <style lang="sass">
-.OverlayMenu
+.OverlayBackground
   z-index: 99
   position: fixed
   top: 0
@@ -28,9 +44,23 @@ defineEmits(['hide'])
   right: 0
   display: flex
   flex-direction: column
-  align-items: center
   background: color-mix(in srgb, var(--background), transparent 10%)
-  animation: Background ease-out 0.25s
+  animation: Background ease-in-out v-bind(ANIM_DURATION)
+
+  @media (min-width: 1201px)
+    justify-content: center
+    align-items: center
+
+    > div
+      width: 500px
+
+  @media (max-width: 1200px)
+    padding: 16px
+    justify-content: end
+    align-items: stretch
+
+  &.away
+    animation: BackgroundAway ease-in-out v-bind(ANIM_DURATION)
 
   > div
     padding: 32px
@@ -40,40 +70,31 @@ defineEmits(['hide'])
     gap: 32px
     align-items: stretch
     justify-content: start
-    animation: Overlay ease-out 0.33s
+    animation: Overlay ease-in-out v-bind(ANIM_DURATION)
+    border-radius: var(--radius-med)
+    transform-origin: center
+
+    &.away
+      animation: OverlayAway ease-in-out v-bind(ANIM_DURATION)
 
     > h4
       text-align: center
       opacity: 0.66
       margin-bottom: -20px
 
-    > .OverlayTitle
-      display: flex
-      flex-direction: column
-      align-items: center
-      justify-content: center
-      gap: 12px
-
-      > *
-        text-align: center
-
-      > img
-        height: 56px
-
-    > .RoundButton
+    > .TextButton
       align-self: center
 
-  @media (min-width: 1201px)
-    justify-content: center
+.OverlayTitle
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  gap: 12px
 
-    > div
-      border-radius: var(--radius-med)
-      width: 500px
+  > *
+    text-align: center
 
-  @media (max-width: 1200px)
-    justify-content: end
-
-    > div
-      width: 90vw
-      border-radius: var(--radius-med) var(--radius-med) 0 0
+  > img
+    height: 56px
 </style>

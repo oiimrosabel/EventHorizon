@@ -8,20 +8,20 @@ defineProps({
 </script>
 
 <template>
-  <div class="TextEvent">
+  <div class="TextEventWidget">
     <img v-if="!noImage" alt="Calendar" src="/icons/calendar.png" />
     <slot></slot>
   </div>
 </template>
 
 <style lang="sass">
-.TextEvent
+.TextEventWidget
   display: flex
   flex-direction: column
   align-items: center
   justify-content: start
   background: var(--surface)
-  padding: 16px
+  padding: 20px
   gap: 4px
   border-radius: var(--radius-small)
 

@@ -10,8 +10,8 @@
   flex-direction: row
   align-items: center
   justify-content: center
-  padding: 12px 20px
-  gap: 8px
+  padding: 14px
+  gap: 12px
   border-radius: var(--radius-inf)
   background: var(--widget)
   cursor: pointer

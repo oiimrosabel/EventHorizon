@@ -1,5 +1,3 @@
-<script lang="ts" setup></script>
-
 <template>
   <div class="TimeTable">
     <slot></slot>
@@ -16,6 +14,7 @@
   border-radius: var(--radius-med)
   overflow-x: auto
   overflow-y: visible
+  animation: FromBelow ease-in-out 0.5s
 
   @media (min-width: 1201px)
     height: 100%

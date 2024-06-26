@@ -14,6 +14,7 @@
   border-radius: var(--radius-small)
   background: var(--surface)
   transition: var(--trans)
+  cursor: default
 
   &:hover
     background: var(--widget)

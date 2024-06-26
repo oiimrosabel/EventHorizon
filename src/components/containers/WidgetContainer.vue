@@ -8,21 +8,25 @@ defineProps({
 </script>
 
 <template>
-  <div class="DayWidget">
+  <div class="WidgetContainer">
     <h4>{{ title }}</h4>
     <slot></slot>
   </div>
 </template>
 
 <style lang="sass">
-.DayWidget
+.WidgetContainer
   display: flex
   flex-direction: column
   align-items: stretch
   justify-content: start
-  gap: 16px
-  border-radius: var(--radius-med)
+  gap: 12px
+  padding:  0 0
 
   > h4
+    align-self: center
+    padding: 6px 12px
+    background: var(--widget)
+    border-radius: var(--radius-med)
     text-align: center
 </style>

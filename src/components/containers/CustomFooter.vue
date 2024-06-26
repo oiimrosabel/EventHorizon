@@ -1,10 +1,6 @@
-<script lang="ts" setup></script>
-
 <template>
   <footer class="CustomFooter">
-    <p>Fait par <a href="https://github.com/imalonelynerd">Nerd</a></p>
-    <p>&bull;</p>
-    <a href="https://github.com/imalonelynerd/EventHorizon">Dépôt du projet</a>
+    <slot></slot>
   </footer>
 </template>
 

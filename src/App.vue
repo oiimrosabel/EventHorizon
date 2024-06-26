@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { themeService } from '@/assets/code/theme/theme.service'
-import LoadingView from '@/views/LoadingView.vue'
+import LoadingMessage from '@/bundles/LoadingBundle.vue'
 
 themeService.switchTheme(themeService.getThemeFromCookie())
 </script>
@@ -8,8 +8,10 @@ themeService.switchTheme(themeService.getThemeFromCookie())
 <template>
   <Suspense>
     <template #fallback>
-      <LoadingView />
+      <LoadingMessage />
     </template>
-    <RouterView />
+    <RouterView v-slot="{ Component }">
+      <Component :is="Component" />
+    </RouterView>
   </Suspense>
 </template>

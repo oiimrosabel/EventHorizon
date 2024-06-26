@@ -8,21 +8,19 @@ defineProps({
 </script>
 
 <template>
-  <div class="WidgetContainer">
+  <div class="DayContainer">
     <h4>{{ title }}</h4>
     <slot></slot>
   </div>
 </template>
 
 <style lang="sass">
-.WidgetContainer
+.DayContainer
   display: flex
   flex-direction: column
   align-items: stretch
   justify-content: start
-  gap: 8px
-  padding: 8px 0 0
-  background: var(--widget)
+  gap: 16px
   border-radius: var(--radius-med)
 
   > h4

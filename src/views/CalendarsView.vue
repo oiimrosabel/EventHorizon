@@ -3,89 +3,102 @@ import { calendarService } from '@/assets/code/calendar/calendar.service'
 import { ref } from 'vue'
 import QuickPanel from '@/components/QuickPanel.vue'
 import TimeTable from '@/components/TimeTable.vue'
-import DayWidget from '@/components/widgets/DayWidget.vue'
+import DayContainer from '@/components/containers/DayContainer.vue'
 import EventWidget from '@/components/widgets/EventWidget.vue'
-import TextEvent from '@/components/widgets/TextEvent.vue'
+import TextEventWidget from '@/components/widgets/TextEventWidget.vue'
 import TextWidget from '@/components/widgets/TextWidget.vue'
-import RoundButton from '@/components/buttons/RoundButton.vue'
-import { useRoute, useRouter } from 'vue-router'
+import TextButton from '@/components/buttons/TextButton.vue'
+import { useRoute } from 'vue-router'
 import ThemeBundle from '@/bundles/ThemeBundle.vue'
 import LookupBundle from '@/bundles/LookupBundle.vue'
 import StatsWidget from '@/components/widgets/StatsWidget.vue'
 import StatButton from '@/components/buttons/StatButton.vue'
-import WidgetContainer from '@/components/widgets/WidgetContainer.vue'
+import WidgetContainer from '@/components/containers/WidgetContainer.vue'
+import ErrorMessage from '@/bundles/ErrorBundle.vue'
+import LoadingMessage from '@/App.vue'
+import { linksService } from '@/assets/code/links/links.service'
+import ShareBundle from '@/bundles/ShareBundle.vue'
 
 const isThemeShown = ref(false)
 const isLookupShown = ref(false)
+const isShareShown = ref(false)
+
+const isError = ref(false)
+const isLoading = ref(true)
 
 const route = useRoute()
-const router = useRouter()
-
-const reloadPage = () => location.reload()
-
-const copyPage = () =>
-  navigator.clipboard.writeText(useRoute().fullPath).then(() => alert('Copié avec succès'))
 
 const calendarData = await calendarService.getCalendar(route.params['cal'] as string)
-if (!calendarData) router.push('/error')
+isLoading.value = false
+if (!calendarData || calendarData.calendar.length === 0) isError.value = true
 </script>
 
 <template>
+  <!-- Messages -->
+  <ErrorMessage v-if="isError" />
+  <LoadingMessage v-if="isLoading" />
+
+  <!-- Bundles -->
   <ThemeBundle v-if="isThemeShown" @hide="isThemeShown = false" />
   <LookupBundle v-if="isLookupShown" @hide="isLookupShown = false" />
-  <div class="CalendarsView">
+  <ShareBundle v-if="isShareShown" @hide="isShareShown = false" />
+
+  <!-- Vue du calendrier -->
+  <div class="CalendarsView" v-if="!(isLoading || isError)">
     <QuickPanel>
       <template #buttons>
-        <RoundButton title="Changer d'emploi du temps" @click="isLookupShown = true">
+        <TextButton title="Changer d'emploi du temps" @click="isLookupShown = true">
           <img alt="Switch" src="/icons/switch.png" />
-        </RoundButton>
-        <RoundButton title="Rafraîchir" @click="reloadPage()">
+        </TextButton>
+        <TextButton title="Rafraîchir" @click="linksService.reloadPage()">
           <img alt="Refresh" src="/icons/refresh.png" />
-        </RoundButton>
-        <RoundButton title="Partager" @click="copyPage()">
+        </TextButton>
+        <TextButton title="Partager" @click="isShareShown = true">
           <img alt="Share" src="/icons/share.png" />
-        </RoundButton>
-        <RoundButton title="Changer de thème" @click="isThemeShown = true">
+        </TextButton>
+        <TextButton title="Changer de thème" @click="isThemeShown = true">
           <img alt="Theme" src="/icons/theme.png" />
-        </RoundButton>
+        </TextButton>
       </template>
       <template #reduced>
         <TextWidget v-if="calendarData?.current" class="displayOnDesktop">
-          <h3>{{ calendarData?.current.start }}</h3>
-          <p>{{ calendarData?.current.end }}</p>
+          <h3>{{ calendarData?.current.start.join(':') }}</h3>
+          <p>{{ calendarData?.current.end.join(':') }}</p>
         </TextWidget>
       </template>
       <template #hideable>
         <WidgetContainer title="Cours actuel">
           <EventWidget v-if="calendarData?.current" :event="calendarData?.current" />
-          <TextEvent v-else>
+          <TextEventWidget v-else>
             <p>Pas de cours actuellement</p>
-          </TextEvent>
+          </TextEventWidget>
         </WidgetContainer>
         <WidgetContainer title="Prochain cours">
           <EventWidget v-if="calendarData?.next" :event="calendarData?.next" />
-          <TextEvent v-else>
+          <TextEventWidget v-else>
             <p>Pas de cours à venir</p>
-          </TextEvent>
+          </TextEventWidget>
         </WidgetContainer>
-        <StatsWidget>
-          <StatButton>
-            <h3>{{ calendarData?.lenght }}</h3>
-            <p>cours</p>
-          </StatButton>
-          <StatButton>
-            <h3>{{ calendarData?.duration.join('h') }}</h3>
-            <p>ajd°</p>
-          </StatButton>
-          <StatButton v-for="(e, i) in calendarData?.types" :key="i">
-            <h3>{{ e }}</h3>
-            <p>{{ i }}s</p>
-          </StatButton>
-        </StatsWidget>
+        <WidgetContainer title="Statistiques">
+          <StatsWidget>
+            <StatButton>
+              <h3>{{ calendarData?.lenght }}</h3>
+              <p>cours</p>
+            </StatButton>
+            <StatButton>
+              <h3>{{ calendarData?.duration.join('h') }}</h3>
+              <p>ajd°</p>
+            </StatButton>
+            <StatButton v-for="(e, i) in calendarData?.types" :key="i">
+              <h3>{{ e }}</h3>
+              <p>{{ i }}s</p>
+            </StatButton>
+          </StatsWidget>
+        </WidgetContainer>
       </template>
     </QuickPanel>
     <TimeTable>
-      <DayWidget
+      <DayContainer
         v-for="(d, id) in calendarData?.calendar"
         :key="id"
         :title="d[0].date.join(' ')"
@@ -97,7 +110,7 @@ if (!calendarData) router.push('/error')
           :event="e"
           :is-happening="calendarService.isHappening(e)"
         />
-      </DayWidget>
+      </DayContainer>
     </TimeTable>
   </div>
 </template>
@@ -119,13 +132,13 @@ if (!calendarData) router.push('/error')
 
 <!-- archive
 
-<DayWidget title="Aujourd'hui" v-if="todayRef" class="displayOnDesktop">
+<DayContainer title="Aujourd'hui" v-if="todayRef" class="displayOnDesktop">
   <EventWidget
     v-for="(e, i) in todayRef"
     :key="i"
     :event="e"
     :is-happening="calendarService.isHappening(e)"
   />
-</DayWidget>
+</DayContainer>
 
 -->

@@ -1,30 +1,40 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import ThemeBundle from '@/bundles/ThemeBundle.vue'
 import LookupBundle from '@/bundles/LookupBundle.vue'
 import TextButton from '@/components/buttons/TextButton.vue'
 import MessageTemplate from '@/components/MessageTemplate.vue'
-import FooterBundle from '@/bundles/FooterBundle.vue'
 
-const isThemeShown = ref(false)
+defineProps({
+  title: {
+    type: String,
+    default: 'Erreur'
+  },
+  description: {
+    type: String,
+    default: ''
+  }
+})
+
 const isLookupShown = ref(false)
+
+const sillySecret = (mod: number = 5) =>
+  Math.round(Math.random() * mod) === mod ? '/images/oi.png' : '/images/error.png'
 </script>
 
 <template>
-  <ThemeBundle v-if="isThemeShown" @hide="isThemeShown = false" />
   <LookupBundle v-if="isLookupShown" @hide="isLookupShown = false" />
   <MessageTemplate
-    subtitle="Bienvenue sur"
-    title="EventHorizon"
-    description="Parce que AdeCampus est horrible"
-    image="/images/logo.png">
+    title="Une erreur est survenue"
+    description="Veuillez réessayer."
+    :image="sillySecret()"
+  >
     <TextButton @click="isLookupShown = true">
       <img alt="Search" src="/icons/search.png" />
-      <p>Voir un emploi du temps</p>
+      <p>Réssayer</p>
     </TextButton>
-    <TextButton @click="isThemeShown = true">
-      <img alt="Theme" src="/icons/theme.png" />
+    <TextButton @click="$router.push('/')">
+      <img alt="Home" src="/icons/home.png" />
+      <p>Accueil</p>
     </TextButton>
   </MessageTemplate>
-  <FooterBundle />
 </template>

@@ -17,7 +17,7 @@ const COOKIE_NAME = 'ade-theme'
 export class ThemeService {
   getThemeFromSystem() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? themeNames.EVENING
+      ? themeNames.OLED
       : themeNames.DAY
   }
 

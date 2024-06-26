@@ -1,16 +1,21 @@
 import axios, { type AxiosResponse } from 'axios'
-import type { Calendar, Event } from '@/assets/code/calendar/calendar-interfaces'
+import type { Calendar, Day, Event } from '@/assets/code/calendar/calendar-interfaces'
+import links from '@/assets/data/links.json'
 import dateFormat from 'dateformat'
 
-const BFF_URL = 'https://horizon.blahaj.land/api/'
+const BFF_URL = links.bff
 
 class CalendarService {
+  private readonly date: Date
+
+  constructor() {
+    this.date = new Date()
+  }
+
   async getCalendar(calendar: string) {
     const res = await this.fetchCalendar(Number(calendar))
-    if (!res) {
-      return undefined
-    }
-    const today = this.getDayEvents(res)
+    if (!res) return undefined
+    const today = this.getTodayEvents(res)
     return {
       calendar: res,
       current: this.getCurrentCourse(today),
@@ -27,64 +32,63 @@ class CalendarService {
   }
 
   isHappening(event: Event) {
-    const today = this.getCurrentDay('dd')
-    if (event.date[1] !== today) return false
-    const now = this.getCurrentTime()
-    return event.start <= now && now <= event.end
+    const currentDay = this.getCurrentDay('dd')
+    if (event.date[1] !== currentDay) return false
+    const currentTime = this.getCurrentTime()
+    return event.start.join('') <= currentTime && currentTime <= event.end.join('')
   }
 
-  getDayEvents(calendar: Calendar) {
-    const currentDay = this.getCurrentDay()
-    return calendar[currentDay]
+  getTodayEvents(calendar: Calendar) {
+    if (!calendar || !calendar[0]) return undefined
+    const presumedDay = calendar[0]
+    if (!presumedDay[0]) return undefined
+    return presumedDay[0].date[1] === this.getCurrentDay('dd') ? presumedDay : undefined
   }
 
-  getCurrentCourse(day: Array<Event>) {
+  getCurrentCourse(day?: Day) {
+    if (!day) return undefined
     for (const event of day) if (this.isHappening(event)) return event
     return undefined
   }
 
-  getNextCourse(calendar: Calendar) {
-    const today = this.getDayEvents(calendar)
-    if (!today) return undefined
-    const currentHour = this.getCurrentTime()
-    for (const event of today) if (currentHour < event.start) return event
-    const nextDay = calendar[this.getTomorrow()]
-    return !nextDay ? undefined : nextDay[0]
+  getNextCourse(calendar?: Calendar) {
+    if (!calendar) return undefined
+    const todayEvents = this.getTodayEvents(calendar)
+    const currentTime = this.getCurrentTime()
+    if (!todayEvents) return !calendar[0] ? undefined : calendar[0][0]
+    for (const event of todayEvents) if (currentTime < event.start.join('')) return event
+    return undefined
   }
 
-  getNumberOfCoursesToday(day: Array<Event>) {
+  getNumberOfCoursesToday(day?: Day) {
+    if (!day) return 0
     return day.length
   }
 
-  getDayLenght(day: Array<Event>) {
+  getDayLenght(day?: Day) {
+    if (!day) return [0, 0]
     let hours = 0
     let minutes = 0
     day.forEach((e) => {
-      const duration = e.duration.split('h')
-      if (!duration[1]) duration[1] = '0'
-      hours += Number(duration[0])
-      minutes += Number(duration[1])
+      hours += Number(e.duration[0])
+      minutes += Number(e.duration[1])
     })
     hours += Math.round(minutes / 60)
     minutes %= 60
     return [hours, minutes]
   }
 
-  getCoursesTypes(day: Array<Event>) {
+  getCoursesTypes(day?: Day) {
     const stats: { [e: string]: number } = {
       CM: 0,
       TD: 0,
       TP: 0,
       CC: 0
     }
+    if (!day) return stats
     const types = Object.keys(stats)
-    day.forEach((e) => {
-      types.forEach((t) => {
-        if (e.title.startsWith(t)) {
-          stats[t] += 1
-        }
-      })
-    })
+    for (const event of day)
+      for (const type of types) if (event.title.startsWith(type)) stats[type] += 1
     return stats
   }
 
@@ -101,20 +105,12 @@ class CalendarService {
     return result.data as Calendar
   }
 
-  private getCurrentDay(format = 'dd-mm') {
-    const now = new Date()
-    return dateFormat(now, format)
+  private getCurrentDay(format = 'ddmm') {
+    return dateFormat(this.date, format)
   }
 
-  private getTomorrow(format = 'dd-mm') {
-    const tomorrow = new Date()
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    return dateFormat(tomorrow, format)
-  }
-
-  private getCurrentTime(format = 'HH:mm') {
-    const now = new Date()
-    return dateFormat(now, format)
+  private getCurrentTime(format = 'HHmm') {
+    return dateFormat(this.date, format)
   }
 }
 

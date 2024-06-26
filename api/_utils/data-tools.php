@@ -19,8 +19,14 @@ function parse_event($data): array
         format_date($dtstart, "dd"),
         format_date($dtstart, "MMM")
     );
-    $res['start'] = format_date($dtstart, "HH:mm");
-    $res['end'] = format_date($dtend, "HH:mm");
+    $res['start'] = array(
+        format_date($dtstart, "HH"),
+        format_date($dtstart, "mm")
+    );
+    $res['end'] = array(
+         format_date($dtend, "HH"),
+         format_date($dtend, "mm")
+    );
     $res['duration'] = get_duration($dtstart, $dtend);
     $res['title'] = clean(get_element($data, SUMMARY));
     $res['locations'] = get_location(get_element($data, LOCATION));
@@ -47,11 +53,11 @@ function get_teacher($data): array
     return $content;
 }
 
-function get_duration($dtstart, $dtend): string
+function get_duration($dtstart, $dtend): array
 {
     $diff = $dtstart->diff($dtend);
     $hourdiff = strval($diff->h);
     $mindiff = $diff->i === 0 ? '' : strval($diff->i);
-    return $hourdiff . "h" . $mindiff;
+    return array($hourdiff, $mindiff);
 }
 

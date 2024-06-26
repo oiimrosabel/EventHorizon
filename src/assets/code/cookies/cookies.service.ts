@@ -3,14 +3,20 @@ import { CookieError, type sameSiteType } from '@/assets/code/cookies/cookies-in
 class CookiesService {
   sameSite: sameSiteType
   defaultExpiration: number
+  baseUrl: string
+
   private errorCodes = {
-    emptyKey: 'Unable to fetch a cookie with an empty key.',
-    doesntExist: `The cookie doesn't exist.`
+    emptyKey: 'Unable to fetch a cookie with an empty key.', doesntExist: `The cookie doesn't exist.`
   }
 
   constructor(sameSite: sameSiteType = 'Lax', defaultExpiration: number = 2) {
     this.defaultExpiration = defaultExpiration
     this.sameSite = sameSite
+    let strippedUrl: Array<any> | null = new RegExp('^https?:\\/\\/(.*):\\d+(.*)$', 'gmi').exec(window.location.origin)
+    if (!strippedUrl) strippedUrl = []
+    else strippedUrl.shift()
+    this.baseUrl = strippedUrl.join('')
+    console.log(this.baseUrl)
   }
 
   hasCookie(key: string): boolean {
@@ -26,7 +32,7 @@ class CookiesService {
     if (key === '') throw new CookieError(this.errorCodes.emptyKey, key)
     const date = new Date()
     date.setTime(date.getTime() + days * 86400 * 1000)
-    document.cookie = `${key}=${value}; expires=${date.toUTCString()}; SameSite=${this.sameSite}`
+    document.cookie = `${key}=${value}; expires=${date.toUTCString()}; SameSite=${this.sameSite}; domain=${this.baseUrl}; Path=/`
   }
 
   getCookie(key: string): string {

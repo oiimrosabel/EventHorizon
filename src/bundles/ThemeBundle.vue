@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { themeNames, themeService } from '@/assets/code/theme/theme.service'
-import ButtonsList from '@/components/widgets/ButtonsList.vue'
+import ButtonsList from '@/components/containers/ButtonsList.vue'
 import TextButton from '@/components/buttons/TextButton.vue'
 import OverlayMenu from '@/components/OverlayMenu.vue'
 

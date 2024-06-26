@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import RoundButton from '@/components/buttons/RoundButton.vue'
+import TextButton from '@/components/buttons/TextButton.vue'
+import { linksService } from '@/assets/code/links/links.service'
 
 const calId = ref('')
 
 const goToCal = () => {
-  const a = document.createElement('a')
-  a.href = `${window.location.origin}/${calId.value}`
-  a.click()
+  linksService.changeLocation(`${window.location.origin}/${calId.value}`)
 }
 </script>
 
@@ -19,9 +18,9 @@ const goToCal = () => {
       type="text"
       @keydown.enter="goToCal()"
     />
-    <RoundButton @click="goToCal()">
-      <img alt="Go" src="/icons/forward.png" />
-    </RoundButton>
+    <TextButton @click="goToCal()">
+      <img alt="Search" src="/icons/search.png" />
+    </TextButton>
   </div>
 </template>
 

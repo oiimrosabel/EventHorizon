@@ -28,7 +28,9 @@ const teachersText =
     <h4 :title="event.title" v-html="calendarService.getEventTypeAsSpanner(event.title)"></h4>
     <div>
       <img alt="Time" src="/icons/time.png" />
-      <p>{{ event.start }} - {{ event.end }} ({{ event.duration }})</p>
+      <p>
+        {{ event.start.join(':') }} - {{ event.end.join(':') }} ({{ event.duration.join('h') }})
+      </p>
     </div>
     <div>
       <img alt="Location" src="/icons/location.png" />
@@ -48,12 +50,12 @@ const teachersText =
   align-items: stretch
   justify-content: start
   background: var(--surface)
-  padding: 16px 24px
-  gap: 12px
+  padding: 24px 32px
+  gap: 16px
   border-radius: var(--radius-small)
 
   &.happening
-    background: color-mix(in srgb, var(--widget) 80%, var(--hover) 20%)
+    background: var(--widget)
 
   > h4
     text-align: center
@@ -64,8 +66,8 @@ const teachersText =
     border-radius: var(--radius-small)
 
     &:hover
-      padding: 4px
-      background: color-mix(in srgb, var(--widget), transparent 33%)
+      padding: 6px
+      background: color-mix(in srgb, var(--hover), transparent 33%)
       white-space: wrap
 
     > span
@@ -89,14 +91,14 @@ const teachersText =
       padding: 0
 
     &:hover
-      padding: 4px 0 4px 10px
-      background: color-mix(in srgb, var(--widget), transparent 33%)
+      padding: 6px 12px
+      background: color-mix(in srgb, var(--hover), transparent 33%)
 
       > p
         white-space: wrap
 
 
     > img
-      height: 1em
+      height: 20px
       filter: var(--filter)
 </style>
