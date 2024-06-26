@@ -1,39 +1,21 @@
 <?php
 
-include "utils/getTimetable.php";
-header("Content-Type:application/json");
-header("Access-Control-Allow-Origin: *", false);
+include "_utils/calendar-tools.php";
 
-if (!isset($_GET["url"])) {
-    echo json_encode([
-        "response" => 1,
-        "comment" => "No URL provided.",
-        "value" => null]);
-    die();
-}
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-$obj = null;
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
 
-try {
-    $obj = edt(urldecode($_GET["url"]));
-} catch (TypeError) {
-    echo json_encode([
-        "response" => 2,
-        "comment" => "An error occured while fetching the calendar.",
-        "value" => $_GET["url"]], JSON_PRETTY_PRINT);
-    die();
-}
+if (!isset($_POST['cal']) || !isset($_POST['weeks'])) error_code(400, 'Paramètres manquants.');
 
-if (!$obj) {
-    echo json_encode([
-        "response" => 3,
-        "comment" => "An error occured while encoding the calendar.",
-        "value" => $obj], JSON_PRETTY_PRINT);
-    die();
-}
-echo json_encode([
-    "response" => 0,
-    "comment" => "Success !",
-    "value" => $obj], JSON_PRETTY_PRINT);
+$file = fetch_file($_POST['cal'], $_POST['weeks']);
+if ($file === null) error_code(500, 'Impossible de récupérer le calendrier.');
 
-?>
+$events = parse_vcalendar($file);
+if ($events === null) error_code(500, 'Impossible de traiter le calendrier.');
+
+echo json_encode(beautify_events($events), JSON_PRETTY_PRINT);
+http_response_code(200);

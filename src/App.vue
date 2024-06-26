@@ -1,37 +1,15 @@
-<script setup>
-import TopWidget from "@/components/TopWidget.vue";
-import {setTheme} from "@/assets/js/themeUtils.js";
+<script lang="ts" setup>
+import { themeService } from '@/assets/code/theme/theme.service'
+import LoadingView from '@/views/LoadingView.vue'
 
-setTheme();
-
+themeService.switchTheme(themeService.getThemeFromCookie())
 </script>
 
 <template>
-  <div id="root">
-    <TopWidget/>
-    <Suspense>
-      <RouterView/>
-    </Suspense>
-  </div>
+  <Suspense>
+    <template #fallback>
+      <LoadingView />
+    </template>
+    <RouterView />
+  </Suspense>
 </template>
-
-<style scoped>
-@media screen and (min-width: 1025px) {
-  #root {
-    position: absolute;
-    top: var(--root-padding);
-    bottom: var(--root-padding);
-    left: var(--root-padding);
-    right: var(--root-padding);
-
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: stretch;
-
-    gap: var(--root-padding);
-  }
-}
-
-/*min width 1024px ? hmmmmm...*/
-</style>
