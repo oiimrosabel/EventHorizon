@@ -30,7 +30,7 @@ function is_upper($data): bool
 
 function format_date($date, $format): false|string
 {
-    $formatter = new IntlDateFormatter(TIME_LOCALE);
+    $formatter = new IntlDateFormatter(TIME_LOCALE, 0, 0);
     $formatter->setPattern($format);
     return $formatter->format($date);
 }

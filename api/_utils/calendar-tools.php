@@ -3,7 +3,7 @@
 use JetBrains\PhpStorm\NoReturn;
 
 include "data-tools.php";
-include "_env.php";
+include "../_env.php";
 
 const CALENDAR_TOKEN = "%%cal%%";
 const WEEKS_TOKEN = "%%weeks%%";
@@ -35,12 +35,12 @@ function parse_vcalendar($data): ?array
 
 function compare_events($ev1, $ev2): int
 {
-    $ev1start = $ev1['start'][0].$ev1['start'][1];
-    $ev2start = $ev2['start'][0].$ev2['start'][1];
+    $ev1start = $ev1['start'][0] . $ev1['start'][1];
+    $ev2start = $ev2['start'][0] . $ev2['start'][1];
     $res = strcmp($ev1start, $ev2start);
     if ($res === 0) {
-        $ev1end = $ev1['end'][0].$ev1['end'][1];
-        $ev2end = $ev2['end'][0].$ev2['end'][1];
+        $ev1end = $ev1['end'][0] . $ev1['end'][1];
+        $ev2end = $ev2['end'][0] . $ev2['end'][1];
         $res = strcmp($ev1end, $ev2end);
     }
     return $res > 0 ? 1 : -1;
@@ -58,4 +58,12 @@ function beautify_events($data): array
     foreach (array_keys($res) as $elem) usort($res[$elem], 'compare_events');
     ksort($res, SORT_STRING);
     return array_values($res);
+}
+
+function check_items($cal, $weeks): bool
+{
+    return (
+        preg_match('/^\d+$/', $cal) !== false
+        && preg_match('/^\d{1,3}$/', $weeks) !== false
+    );
 }

@@ -24,8 +24,8 @@ function parse_event($data): array
         format_date($dtstart, "mm")
     );
     $res['end'] = array(
-         format_date($dtend, "HH"),
-         format_date($dtend, "mm")
+        format_date($dtend, "HH"),
+        format_date($dtend, "mm")
     );
     $res['duration'] = get_duration($dtstart, $dtend);
     $res['title'] = clean(get_element($data, SUMMARY));
