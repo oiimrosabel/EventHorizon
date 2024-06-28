@@ -3,7 +3,6 @@
 use JetBrains\PhpStorm\NoReturn;
 
 include "data-tools.php";
-include "../_env.php";
 
 const CALENDAR_TOKEN = "%%cal%%";
 const WEEKS_TOKEN = "%%weeks%%";
@@ -16,9 +15,9 @@ const VEVENT = "/BEGIN:VEVENT(.*?)END:VEVENT/si";
     die();
 }
 
-function fetch_file($calendar, $weeks): ?string
+function fetch_file($url, $calendar, $weeks): ?string
 {
-    $url = str_replace(CALENDAR_TOKEN, strval($calendar), URL_TEMPLATE);
+    $url = str_replace(CALENDAR_TOKEN, strval($calendar), $url);
     $url = str_replace(WEEKS_TOKEN, strval($weeks), $url);
     $data = file_get_contents($url);
     return ($data === false) ? null : $data;
@@ -57,7 +56,7 @@ function beautify_events($data): array
     }
     foreach (array_keys($res) as $elem) usort($res[$elem], 'compare_events');
     ksort($res, SORT_STRING);
-    return array_values($res);
+    return $res;
 }
 
 function check_items($cal, $weeks): bool

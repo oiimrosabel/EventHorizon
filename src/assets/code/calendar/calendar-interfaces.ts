@@ -10,4 +10,4 @@ export interface Event {
 
 export type Day = Array<Event>
 
-export type Calendar = Array<Day>
+export type Calendar = { [p: string]: Day }

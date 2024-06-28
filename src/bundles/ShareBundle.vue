@@ -15,11 +15,11 @@ defineEmits(['hide'])
     </template>
     <ButtonsList>
       <TextButton @click="linksService.shareData(linksService.getFullUrl())">
-        <img alt="Share" src="/icons/share.png" />
+        <img alt="Share" src="/icons/share.svg" />
         <p>Partager</p>
       </TextButton>
       <TextButton @click="linksService.copyDataToClipboard(linksService.getFullUrl())">
-        <img alt="Copy" src="/icons/copy.png" />
+        <img alt="Copy" src="/icons/copy.svg" />
         <p>Copier</p>
       </TextButton>
     </ButtonsList>

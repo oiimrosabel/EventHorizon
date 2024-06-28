@@ -6,7 +6,7 @@ import { linksService } from '@/assets/code/links/links.service'
 const calId = ref('')
 
 const goToCal = () => {
-  linksService.changeLocation(`${window.location.origin}/${calId.value}`)
+  if (calId.value !== '') linksService.changeLocation(`${window.location.origin}/${calId.value}`)
 }
 </script>
 
@@ -19,7 +19,7 @@ const goToCal = () => {
       @keydown.enter="goToCal()"
     />
     <TextButton @click="goToCal()">
-      <img alt="Search" src="/icons/search.png" />
+      <img alt="Search" src="/icons/search.svg" />
     </TextButton>
   </div>
 </template>
@@ -37,7 +37,6 @@ const goToCal = () => {
     background: var(--widget)
     border: none
     border-radius: var(--radius-inf)
-    padding: 16px 24px
     outline: none
     text-align: center
     color: var(--text)

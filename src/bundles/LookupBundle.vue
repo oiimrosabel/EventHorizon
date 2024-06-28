@@ -12,5 +12,6 @@ defineEmits(['hide'])
       <h2>Changer d'emploi du temps</h2>
     </template>
     <LookupWidget />
+    <p>Cet ID s'obtient en exportant un emploi du temps depuis AdeCampus.</p>
   </OverlayMenu>
 </template>

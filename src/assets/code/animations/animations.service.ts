@@ -1,7 +1,12 @@
 import type { SecDuration } from '@/assets/code/animations/animations-interfaces'
 
 class AnimationsService {
-  animateAway(elements: Array<Element | null>, duration: SecDuration, classTag: string, handler: () => void) {
+  animateAway(
+    elements: Array<Element | null>,
+    duration: SecDuration,
+    classTag: string,
+    handler: () => void
+  ) {
     const toggleClasses = () => {
       for (const e of elements) if (e) e.classList.toggle(classTag)
     }

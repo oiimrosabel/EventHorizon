@@ -6,6 +6,7 @@
 
 <style lang="sass">
 .StatButton
+  min-width: 0
   display: flex
   flex-direction: column
   align-items: center
@@ -15,6 +16,14 @@
   background: var(--surface)
   transition: var(--trans)
   cursor: default
+
+  > p
+    font-size: 0.9em
+    width: 80%
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+    text-align: center
 
   &:hover
     background: var(--widget)

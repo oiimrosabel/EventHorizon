@@ -21,7 +21,7 @@ const switchPanel = () => {
     <slot v-if="isPanelReduced" name="reduced"></slot>
     <ButtonsWidget :is-reduced="isPanelReduced">
       <TextButton title="Afficher/cacher le panneau" @click="switchPanel()">
-        <img :src="`/icons/${isPanelReduced ? 'panel' : 'small'}.png`" alt="Hide" />
+        <img :src="`/icons/${isPanelReduced ? 'panel' : 'small'}.svg`" alt="Hide" />
       </TextButton>
       <slot name="buttons"></slot>
     </ButtonsWidget>
@@ -39,7 +39,7 @@ const switchPanel = () => {
   overflow-y: auto
   overflow-x: hidden
   padding: 24px 24px 32px
-  background: var(--side)
+  background: var(--background)
   transition: var(--trans)
 
   @media (min-width: 1201px)
@@ -52,4 +52,7 @@ const switchPanel = () => {
   @media (max-width: 1200px)
     width: 100%
     border-radius: 0 0 var(--radius-med) var(--radius-med)
+
+    > *:not(.DateWidget, .ButtonsWidget)
+      animation: FromLeft ease-in-out 0.5s
 </style>

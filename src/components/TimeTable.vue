@@ -11,9 +11,10 @@
   align-items: stretch
   gap: 20px
   padding: 24px
-  border-radius: var(--radius-med)
+  border-radius: var(--radius-med) 0 0 var(--radius-med)
   overflow-x: auto
   overflow-y: visible
+  background: var(--timetable)
   animation: FromBelow ease-in-out 0.5s
 
   @media (min-width: 1201px)
@@ -27,6 +28,7 @@
       overflow-y: auto
 
   @media (max-width: 1200px)
-    flex: 0 0
+    flex-grow: 1
     flex-direction: column
+    border-radius: var(--radius-med) var(--radius-med) 0 0
 </style>

@@ -21,6 +21,8 @@ defineProps({
   justify-content: space-between
 
   @media (min-width: 1201px)
+    gap: 8px
+
     &.reduced
       flex-direction: column
       justify-content: end

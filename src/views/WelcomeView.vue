@@ -16,14 +16,15 @@ const isLookupShown = ref(false)
   <MessageTemplate
     subtitle="Bienvenue sur"
     title="EventHorizon"
-    description="Parce que AdeCampus est horrible"
-    image="/images/logo.png">
+    description="Parce que AdeCampus est horrible."
+    image="/images/logo.png"
+  >
     <TextButton @click="isLookupShown = true">
-      <img alt="Search" src="/icons/search.png" />
-      <p>Voir un emploi du temps</p>
+      <img alt="Search" src="/icons/search.svg" />
+      <p>Rechercher</p>
     </TextButton>
     <TextButton @click="isThemeShown = true">
-      <img alt="Theme" src="/icons/theme.png" />
+      <img alt="Theme" src="/icons/theme.svg" />
     </TextButton>
   </MessageTemplate>
   <FooterBundle />

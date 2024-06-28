@@ -14,7 +14,7 @@ class CalendarService {
 
   async getCalendar(calendar: string) {
     const res = await this.fetchCalendar(Number(calendar))
-    if (!res) return undefined
+    if (!res || Object.keys(res).length === 0) return undefined
     const today = this.getTodayEvents(res)
     return {
       calendar: res,
@@ -39,10 +39,9 @@ class CalendarService {
   }
 
   getTodayEvents(calendar: Calendar) {
-    if (!calendar || !calendar[0]) return undefined
-    const presumedDay = calendar[0]
-    if (!presumedDay[0]) return undefined
-    return presumedDay[0].date[1] === this.getCurrentDay('dd') ? presumedDay : undefined
+    if (!calendar) return undefined
+    const presumedDay = calendar[this.getCurrentDay()]
+    return !presumedDay ? undefined : presumedDay
   }
 
   getCurrentCourse(day?: Day) {
@@ -54,9 +53,11 @@ class CalendarService {
   getNextCourse(calendar?: Calendar) {
     if (!calendar) return undefined
     const todayEvents = this.getTodayEvents(calendar)
+    const currentDay = this.getCurrentDay()
     const currentTime = this.getCurrentTime()
-    if (!todayEvents) return !calendar[0] ? undefined : calendar[0][0]
-    for (const event of todayEvents) if (currentTime < event.start.join('')) return event
+    if (todayEvents)
+      for (const event of todayEvents) if (currentTime < event.start.join('')) return event
+    for (const e in calendar) if (e !== currentDay && e.length !== 0) return calendar[e][0]
     return undefined
   }
 
@@ -75,7 +76,7 @@ class CalendarService {
     })
     hours += Math.round(minutes / 60)
     minutes %= 60
-    return [hours, minutes]
+    return `${hours}h${minutes === 0 ? '' : minutes}`
   }
 
   getCoursesTypes(day?: Day) {

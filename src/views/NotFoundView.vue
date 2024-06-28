@@ -15,13 +15,12 @@ const isLookupShown = ref(false)
     image="/images/error.png"
   >
     <TextButton @click="isLookupShown = true">
-      <img alt="Search" src="/icons/search.png" />
-      <p>Réssayer</p>
+      <img alt="Search" src="/icons/search.svg" />
+      <p>Chercher</p>
     </TextButton>
     <TextButton @click="$router.push('/')">
-      <img alt="Home" src="/icons/home.png" />
+      <img alt="Home" src="/icons/home.svg" />
       <p>Accueil</p>
     </TextButton>
-
   </MessageTemplate>
 </template>

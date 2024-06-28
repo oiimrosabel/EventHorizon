@@ -6,17 +6,19 @@ class CookiesService {
   baseUrl: string
 
   private errorCodes = {
-    emptyKey: 'Unable to fetch a cookie with an empty key.', doesntExist: `The cookie doesn't exist.`
+    emptyKey: 'Unable to fetch a cookie with an empty key.',
+    doesntExist: `The cookie doesn't exist.`
   }
 
   constructor(sameSite: sameSiteType = 'Lax', defaultExpiration: number = 2) {
     this.defaultExpiration = defaultExpiration
     this.sameSite = sameSite
-    let strippedUrl: Array<any> | null = new RegExp('^https?:\\/\\/(.*):\\d+(.*)$', 'gmi').exec(window.location.origin)
+    let strippedUrl: Array<any> | null = new RegExp('^https?:\\/\\/(.*):\\d+(.*)$', 'gmi').exec(
+      window.location.origin
+    )
     if (!strippedUrl) strippedUrl = []
     else strippedUrl.shift()
     this.baseUrl = strippedUrl.join('')
-    console.log(this.baseUrl)
   }
 
   hasCookie(key: string): boolean {

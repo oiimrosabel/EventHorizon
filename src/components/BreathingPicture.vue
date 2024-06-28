@@ -30,6 +30,10 @@ defineProps({
 
     &:first-of-type
       z-index: 5
+      transition: var(--trans)
+
+      &:hover
+        scale: 1.1
 
     &:last-of-type
       margin-top: calc(v-bind(size) * -1)

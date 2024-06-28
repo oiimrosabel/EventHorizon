@@ -9,7 +9,7 @@ defineProps({
 
 <template>
   <div class="TextEventWidget">
-    <img v-if="!noImage" alt="Calendar" src="/icons/calendar.png" />
+    <img v-if="!noImage" alt="Calendar" src="/icons/calendar.svg" />
     <slot></slot>
   </div>
 </template>
@@ -21,7 +21,7 @@ defineProps({
   align-items: center
   justify-content: start
   background: var(--surface)
-  padding: 20px
+  padding: 24px 16px
   gap: 4px
   border-radius: var(--radius-small)
 

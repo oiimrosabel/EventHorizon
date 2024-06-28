@@ -27,17 +27,17 @@ const teachersText =
   <div :class="{ happening: isHappening }" class="EventWidget">
     <h4 :title="event.title" v-html="calendarService.getEventTypeAsSpanner(event.title)"></h4>
     <div>
-      <img alt="Time" src="/icons/time.png" />
+      <img alt="Time" src="/icons/time.svg" />
       <p>
         {{ event.start.join(':') }} - {{ event.end.join(':') }} ({{ event.duration.join('h') }})
       </p>
     </div>
     <div>
-      <img alt="Location" src="/icons/location.png" />
+      <img alt="Location" src="/icons/location.svg" />
       <p>{{ locationsText }}</p>
     </div>
     <div>
-      <img alt="Teacher" src="/icons/teacher.png" />
+      <img alt="Teacher" src="/icons/teacher.svg" />
       <p>{{ teachersText }}</p>
     </div>
   </div>

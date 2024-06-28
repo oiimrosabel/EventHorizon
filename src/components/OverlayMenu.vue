@@ -3,7 +3,7 @@ import TextButton from '@/components/buttons/TextButton.vue'
 import { ref } from 'vue'
 import { animationService } from '@/assets/code/animations/animations.service'
 
-const ANIM_DURATION = '0.5s'
+const ANIM_DURATION = '0.75s'
 const ANIM_CLASS = 'away'
 
 const emit = defineEmits(['hide'])
@@ -21,14 +21,14 @@ const animate = () =>
 </script>
 
 <template>
-  <div class="OverlayBackground" ref="backgroundRef">
+  <div class="OverlayBackground" ref="backgroundRef" @keydown.esc="animate()">
     <div ref="menuRef">
       <div class="OverlayTitle">
         <slot name="title"></slot>
       </div>
       <slot></slot>
       <TextButton @click="animate()">
-        <img alt="Back" src="/icons/back.png" />
+        <img alt="Back" src="/icons/back.svg" />
       </TextButton>
     </div>
   </div>
@@ -44,8 +44,43 @@ const animate = () =>
   right: 0
   display: flex
   flex-direction: column
-  background: color-mix(in srgb, var(--background), transparent 10%)
+  background: color-mix(in srgb, var(--timetable), transparent 10%)
   animation: Background ease-in-out v-bind(ANIM_DURATION)
+
+  &.away
+    animation: BackgroundAway ease-in-out v-bind(ANIM_DURATION)
+
+  > div
+    padding: 32px
+    background: var(--surface)
+    display: flex
+    flex-direction: column
+    gap: 32px
+    align-items: stretch
+    justify-content: start
+    transform-origin: center
+    animation: Overlay ease-in-out v-bind(ANIM_DURATION)
+    border-radius: var(--radius-med)
+
+    &.away
+      animation: OverlayAway ease-in-out v-bind(ANIM_DURATION)
+
+    > h4
+      text-align: center
+      opacity: 0.66
+      margin-bottom: -20px
+
+    > p
+      font-size: 0.9em
+      text-align: center
+      opacity: 0.66
+      padding: 0 8%
+
+      &:before
+        content: "💡 "
+
+    > .TextButton
+      align-self: center
 
   @media (min-width: 1201px)
     justify-content: center
@@ -59,38 +94,12 @@ const animate = () =>
     justify-content: end
     align-items: stretch
 
-  &.away
-    animation: BackgroundAway ease-in-out v-bind(ANIM_DURATION)
-
-  > div
-    padding: 32px
-    background: var(--surface)
-    display: flex
-    flex-direction: column
-    gap: 32px
-    align-items: stretch
-    justify-content: start
-    animation: Overlay ease-in-out v-bind(ANIM_DURATION)
-    border-radius: var(--radius-med)
-    transform-origin: center
-
-    &.away
-      animation: OverlayAway ease-in-out v-bind(ANIM_DURATION)
-
-    > h4
-      text-align: center
-      opacity: 0.66
-      margin-bottom: -20px
-
-    > .TextButton
-      align-self: center
-
 .OverlayTitle
   display: flex
   flex-direction: column
   align-items: center
   justify-content: center
-  gap: 12px
+  gap: 16px
 
   > *
     text-align: center

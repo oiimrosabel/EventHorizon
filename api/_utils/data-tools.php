@@ -13,7 +13,7 @@ function parse_event($data): array
     $res = array();
     $dtstart = get_accurate_time(get_element($data, DTSTART));
     $dtend = get_accurate_time(get_element($data, DTEND));
-    $res['date-raw'] = format_date($dtstart, "dd-MM");
+    $res['date-raw'] = format_date($dtstart, "ddMM");
     $res['date'] = array(
         format_date($dtstart, "eeee"),
         format_date($dtstart, "dd"),

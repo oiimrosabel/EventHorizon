@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import LookupBundle from '@/bundles/LookupBundle.vue'
 import TextButton from '@/components/buttons/TextButton.vue'
 import MessageTemplate from '@/components/MessageTemplate.vue'
+import { linksService } from '@/assets/code/links/links.service'
 
 defineProps({
   title: {
@@ -16,9 +17,6 @@ defineProps({
 })
 
 const isLookupShown = ref(false)
-
-const sillySecret = (mod: number = 5) =>
-  Math.round(Math.random() * mod) === mod ? '/images/oi.png' : '/images/error.png'
 </script>
 
 <template>
@@ -26,14 +24,18 @@ const sillySecret = (mod: number = 5) =>
   <MessageTemplate
     title="Une erreur est survenue"
     description="Veuillez réessayer."
-    :image="sillySecret()"
+    image="/images/error.png"
   >
-    <TextButton @click="isLookupShown = true">
-      <img alt="Search" src="/icons/search.png" />
+    <TextButton @click="linksService.reloadPage()">
+      <img alt="Search" src="/icons/refresh.svg" />
       <p>Réssayer</p>
     </TextButton>
+    <TextButton @click="isLookupShown = true">
+      <img alt="Search" src="/icons/search.svg" />
+      <p>Rechercher</p>
+    </TextButton>
     <TextButton @click="$router.push('/')">
-      <img alt="Home" src="/icons/home.png" />
+      <img alt="Home" src="/icons/home.svg" />
       <p>Accueil</p>
     </TextButton>
   </MessageTemplate>
