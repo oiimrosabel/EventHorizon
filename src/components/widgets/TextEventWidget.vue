@@ -9,7 +9,7 @@ defineProps({
 
 <template>
   <div class="TextEventWidget">
-    <img v-if="!noImage" alt="Calendar" src="/icons/calendar.svg" />
+    <img v-if="!noImage" alt="Calendar" src="/images/done.svg" />
     <slot></slot>
   </div>
 </template>
@@ -27,7 +27,6 @@ defineProps({
 
   > img
     height: 32px
-    filter: var(--filter)
     margin-bottom: 8px
 
   > *

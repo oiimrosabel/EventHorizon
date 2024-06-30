@@ -77,7 +77,7 @@ if (!calendarData) isError.value = true
         <WidgetContainer title="Statistiques">
           <StatsWidget>
             <StatButton>
-              <h3>{{ calendarData?.lenght }}</h3>
+              <h3>{{ calendarData?.length }}</h3>
               <p>cours</p>
             </StatButton>
             <StatButton>
@@ -94,10 +94,10 @@ if (!calendarData) isError.value = true
     </QuickPanel>
     <TimeTable>
       <DayContainer
-        v-for="(d, id) in calendarData?.calendar"
+        v-for="(d, id, o) in calendarData?.calendar"
         :key="id"
         :title="d[0].date.join(' ')"
-        is-foldable
+        :order="o + 1"
       >
         <EventWidget
           v-for="(e, ie) in d"

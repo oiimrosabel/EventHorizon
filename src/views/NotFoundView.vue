@@ -12,7 +12,7 @@ const isLookupShown = ref(false)
   <MessageTemplate
     title="Erreur 404"
     description="Mauvais chemin, veuillez revenir à l'accueil."
-    image="/images/error.png"
+    image="/images/error.svg"
   >
     <TextButton @click="isLookupShown = true">
       <img alt="Search" src="/icons/search.svg" />

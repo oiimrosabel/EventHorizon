@@ -1,5 +1,14 @@
+<script setup lang="ts">
+defineProps({
+  noFilter: {
+    type: Boolean,
+    default: false
+  }
+})
+</script>
+
 <template>
-  <a class="TextButton">
+  <a class="TextButton" :class="{ nofilter: noFilter }">
     <slot></slot>
   </a>
 </template>
@@ -17,13 +26,15 @@
   cursor: pointer
   transition: var(--trans)
 
+  &:not(.nofilter) > img
+    filter: var(--filter)
+
   > p
     font-weight: bold
 
   > img
     height: 20px
     width: 20px
-    filter: var(--filter)
 
   &:hover, &:focus
     background: var(--hover)

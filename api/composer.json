@@ -1,0 +1,6 @@
+{
+  "require": {
+    "ext-intl": "*",
+    "doctrine/lexer": "^3.0"
+  }
+}

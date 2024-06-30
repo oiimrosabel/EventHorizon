@@ -21,4 +21,5 @@ coverage
 *.tsbuildinfo
 
 _env.php
-*.test.*
+/api/vendor/
+test-assets

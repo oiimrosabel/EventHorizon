@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { calendarService } from '@/assets/code/calendar/calendar.service'
-import type { PropType } from 'vue'
+import { type PropType, ref } from 'vue'
 import type { Event } from '@/assets/code/calendar/calendar-interfaces'
+import OverlayMenu from '@/components/OverlayMenu.vue'
+import BigEventWidget from '@/components/widgets/BigEventWidget.vue'
 
 const props = defineProps({
   event: {
@@ -17,6 +19,9 @@ const props = defineProps({
 const SEPARATOR = ', '
 const PLACEHOLDER = '-'
 
+const isShown = ref(false)
+
+const titleText = calendarService.formatTitle(props.event?.title)
 const locationsText =
   props.event?.locations.length === 0 ? PLACEHOLDER : props.event?.locations.join(SEPARATOR)
 const teachersText =
@@ -24,8 +29,17 @@ const teachersText =
 </script>
 
 <template>
-  <div :class="{ happening: isHappening }" class="EventWidget">
-    <h4 :title="event.title" v-html="calendarService.getEventTypeAsSpanner(event.title)"></h4>
+  <OverlayMenu v-if="isShown" @hide="isShown = false">
+    <template #title>
+      <img src="/images/calendar.svg" alt="Calendar" />
+      <h2 v-html="titleText" />
+      <p v-if="event.title[1] !== ''">{{ event.title[1] }}</p>
+      <b v-if="isHappening">en cours</b>
+    </template>
+    <BigEventWidget :event="event" />
+  </OverlayMenu>
+  <div :class="{ happening: isHappening }" class="EventWidget" @click="isShown = true">
+    <h4 :title="event.title.join(' ')" v-html="calendarService.formatTitle(event.title)"></h4>
     <div>
       <img alt="Time" src="/icons/time.svg" />
       <p>
@@ -52,7 +66,14 @@ const teachersText =
   background: var(--surface)
   padding: 24px 32px
   gap: 16px
+  transition: var(--trans)
   border-radius: var(--radius-small)
+
+  &:hover
+    background: var(--hover)
+
+  &:active
+    background: var(--active)
 
   &.happening
     background: var(--widget)
@@ -62,13 +83,7 @@ const teachersText =
     overflow: hidden
     white-space: nowrap
     text-overflow: ellipsis
-    transition: all 0.1s
     border-radius: var(--radius-small)
-
-    &:hover
-      padding: 6px
-      background: color-mix(in srgb, var(--hover), transparent 33%)
-      white-space: wrap
 
     > span
       opacity: 0.66
@@ -81,22 +96,12 @@ const teachersText =
     align-items: center
     gap: 12px
     border-radius: var(--radius-inf)
-    transition: all 0.1s
 
     > p
       font-size: 0.9em
       overflow: hidden
       white-space: nowrap
       text-overflow: ellipsis
-      padding: 0
-
-    &:hover
-      padding: 6px 12px
-      background: color-mix(in srgb, var(--hover), transparent 33%)
-
-      > p
-        white-space: wrap
-
 
     > img
       height: 20px

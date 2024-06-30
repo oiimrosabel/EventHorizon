@@ -10,7 +10,7 @@ defineEmits(['hide'])
 <template>
   <OverlayMenu @hide="$emit('hide')">
     <template #title>
-      <img alt="Share" src="/images/share.png" />
+      <img alt="Share" src="/images/share.svg" />
       <h2>Partager</h2>
     </template>
     <ButtonsList>

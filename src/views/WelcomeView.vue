@@ -17,7 +17,7 @@ const isLookupShown = ref(false)
     subtitle="Bienvenue sur"
     title="EventHorizon"
     description="Parce que AdeCampus est horrible."
-    image="/images/logo.png"
+    image="/images/logo.svg"
   >
     <TextButton @click="isLookupShown = true">
       <img alt="Search" src="/icons/search.svg" />

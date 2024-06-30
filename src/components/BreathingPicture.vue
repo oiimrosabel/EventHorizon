@@ -26,7 +26,7 @@ defineProps({
 
   > img
     height: v-bind(size)
-    animation: Breath 2s infinite alternate
+    animation: BreathingPictureFg 2s infinite alternate
 
     &:first-of-type
       z-index: 5
@@ -37,5 +37,5 @@ defineProps({
 
     &:last-of-type
       margin-top: calc(v-bind(size) * -1)
-      animation: BreathBlur 2s infinite ease-in-out alternate
+      animation: BreathingPictureBg 2s infinite ease-in-out alternate
 </style>

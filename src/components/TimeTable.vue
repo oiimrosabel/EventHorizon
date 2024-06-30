@@ -15,7 +15,6 @@
   overflow-x: auto
   overflow-y: visible
   background: var(--timetable)
-  animation: FromBelow ease-in-out 0.5s
 
   @media (min-width: 1201px)
     height: 100%

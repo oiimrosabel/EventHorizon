@@ -19,7 +19,7 @@ const timeData = {
 <template>
   <div :class="{ reduced: isReduced }" class="DateWidget">
     <RouterLink class="DateBackground" title="Retour à la page d'accueil" to="/">
-      <img alt="Logo" src="/images/small-icon.png" />
+      <img alt="Logo" src="/images/calendar.svg" />
     </RouterLink>
     <div v-if="!isReduced" class="DateText displayOnDesktop">
       <p>{{ timeData.day }}</p>
@@ -60,13 +60,14 @@ const timeData = {
 
     > img
       height: 4em
-      transition: var(--trans)
 
       &:hover
         scale: 1.1
+        transition: var(--trans)
 
       &:active
         scale: 0.9
+        transition: var(--trans)
 
   > .DateText
     padding: 12px 0
@@ -81,7 +82,7 @@ const timeData = {
       border-radius: var(--radius-small)
 
       > .DateBackground
-        height: 4em
+        height: 5em
         border-radius: var(--radius-small)
 
         > img

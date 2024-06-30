@@ -8,7 +8,7 @@ defineEmits(['hide'])
 <template>
   <OverlayMenu @hide="$emit('hide')">
     <template #title>
-      <img alt="Calendar" src="/images/switch.png" />
+      <img alt="Calendar" src="/images/switch.svg" />
       <h2>Changer d'emploi du temps</h2>
     </template>
     <LookupWidget />

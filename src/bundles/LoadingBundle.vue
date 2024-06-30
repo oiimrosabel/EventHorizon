@@ -10,5 +10,5 @@ defineProps({
 </script>
 
 <template>
-  <MessageTemplate subtitle="Chargement..." image="/images/loading.png" />
+  <MessageTemplate subtitle="Chargement..." image="/images/loading.svg" />
 </template>

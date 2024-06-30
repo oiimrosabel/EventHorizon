@@ -1,7 +1,14 @@
 import axios, { type AxiosResponse } from 'axios'
-import type { Calendar, Day, Event } from '@/assets/code/calendar/calendar-interfaces'
+import type {
+  Calendar,
+  CourseStats,
+  Day,
+  Event,
+  FormatedCalendar
+} from '@/assets/code/calendar/calendar-interfaces'
 import links from '@/assets/data/links.json'
 import dateFormat from 'dateformat'
+//import dummy from '../../../../test-assets/data.test.json'
 
 const BFF_URL = links.bff
 
@@ -13,22 +20,12 @@ class CalendarService {
   }
 
   async getCalendar(calendar: string) {
-    const res = await this.fetchCalendar(Number(calendar))
-    if (!res || Object.keys(res).length === 0) return undefined
-    const today = this.getTodayEvents(res)
-    return {
-      calendar: res,
-      current: this.getCurrentCourse(today),
-      next: this.getNextCourse(res),
-      lenght: this.getNumberOfCoursesToday(today),
-      duration: this.getDayLenght(today),
-      types: this.getCoursesTypes(today)
-    }
+    return this.formatCalendar(await this.fetchCalendar(calendar))
+    //return this.formatCalendar(dummy)
   }
 
-  getEventTypeAsSpanner(text: string) {
-    const res = text.match('^((?:CM|TD|TP|CC)[0-9]{0,1})(.*)$')
-    return res ? `<span class="small">${res[1]}</span>${res[2]}` : text
+  formatTitle(title: Array<string>) {
+    return title.length === 1 ? title[0] : `<span>${title[1]}</span> ${title[0]}`
   }
 
   isHappening(event: Event) {
@@ -57,7 +54,7 @@ class CalendarService {
     const currentTime = this.getCurrentTime()
     if (todayEvents)
       for (const event of todayEvents) if (currentTime < event.start.join('')) return event
-    for (const e in calendar) if (e !== currentDay && e.length !== 0) return calendar[e][0]
+    for (const e in calendar) if (e > currentDay && e.length !== 0) return calendar[e][0]
     return undefined
   }
 
@@ -67,7 +64,7 @@ class CalendarService {
   }
 
   getDayLenght(day?: Day) {
-    if (!day) return [0, 0]
+    if (!day) return '0h'
     let hours = 0
     let minutes = 0
     day.forEach((e) => {
@@ -80,7 +77,7 @@ class CalendarService {
   }
 
   getCoursesTypes(day?: Day) {
-    const stats: { [e: string]: number } = {
+    const stats: CourseStats = {
       CM: 0,
       TD: 0,
       TP: 0,
@@ -89,13 +86,13 @@ class CalendarService {
     if (!day) return stats
     const types = Object.keys(stats)
     for (const event of day)
-      for (const type of types) if (event.title.startsWith(type)) stats[type] += 1
+      if (types.includes(event.title[1])) stats[event.title[1] as keyof CourseStats] += 1
     return stats
   }
 
-  private async fetchCalendar(calendar: number) {
+  private async fetchCalendar(calendar: string) {
     const request = new FormData()
-    request.append('cal', `${calendar}`)
+    request.append('cal', calendar)
     request.append('weeks', '8')
     let result: AxiosResponse<any, any>
     try {
@@ -112,6 +109,19 @@ class CalendarService {
 
   private getCurrentTime(format = 'HHmm') {
     return dateFormat(this.date, format)
+  }
+
+  private formatCalendar(calendar?: Calendar): FormatedCalendar | undefined {
+    if (!calendar || Object.keys(calendar).length === 0) return undefined
+    const today = this.getTodayEvents(calendar)
+    return {
+      calendar: calendar,
+      current: this.getCurrentCourse(today),
+      next: this.getNextCourse(calendar),
+      length: this.getNumberOfCoursesToday(today),
+      duration: this.getDayLenght(today),
+      types: this.getCoursesTypes(today)
+    }
   }
 }
 

@@ -3,7 +3,7 @@ import TextButton from '@/components/buttons/TextButton.vue'
 import { ref } from 'vue'
 import { animationService } from '@/assets/code/animations/animations.service'
 
-const ANIM_DURATION = '0.75s'
+const ANIM_DURATION = '0.25s'
 const ANIM_CLASS = 'away'
 
 const emit = defineEmits(['hide'])
@@ -12,12 +12,13 @@ const backgroundRef = ref(null)
 const menuRef = ref(null)
 
 const animate = () =>
-  animationService.animateAway(
-    [backgroundRef.value, menuRef.value],
-    ANIM_DURATION,
-    ANIM_CLASS,
-    () => emit('hide')
-  )
+  animationService
+    .animateStep([backgroundRef.value, menuRef.value], {
+      duration: ANIM_DURATION,
+      classTag: ANIM_CLASS,
+      callback: () => emit('hide')
+    })
+    .then()
 </script>
 
 <template>
@@ -45,10 +46,10 @@ const animate = () =>
   display: flex
   flex-direction: column
   background: color-mix(in srgb, var(--timetable), transparent 10%)
-  animation: Background ease-in-out v-bind(ANIM_DURATION)
+  animation: OverlayBackgroundIn ease-in-out v-bind(ANIM_DURATION)
 
   &.away
-    animation: BackgroundAway ease-in-out v-bind(ANIM_DURATION)
+    animation: OverlayBackgroundOut ease-in-out v-bind(ANIM_DURATION)
 
   > div
     padding: 32px
@@ -59,11 +60,11 @@ const animate = () =>
     align-items: stretch
     justify-content: start
     transform-origin: center
-    animation: Overlay ease-in-out v-bind(ANIM_DURATION)
+    animation: OverlayMenuIn ease-in-out v-bind(ANIM_DURATION)
     border-radius: var(--radius-med)
 
     &.away
-      animation: OverlayAway ease-in-out v-bind(ANIM_DURATION)
+      animation: OverlayMenuOut ease-in-out v-bind(ANIM_DURATION)
 
     > h4
       text-align: center
@@ -99,11 +100,18 @@ const animate = () =>
   flex-direction: column
   align-items: center
   justify-content: center
-  gap: 16px
+  gap: 2px
 
   > *
     text-align: center
 
+  > p
+    opacity: 0.66
+
+  > b
+    color: var(--active)
+
   > img
     height: 56px
+    margin-bottom: 10px
 </style>

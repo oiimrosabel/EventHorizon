@@ -24,7 +24,7 @@ const isLookupShown = ref(false)
   <MessageTemplate
     title="Une erreur est survenue"
     description="Veuillez réessayer."
-    image="/images/error.png"
+    image="/images/error.svg"
   >
     <TextButton @click="linksService.reloadPage()">
       <img alt="Search" src="/icons/refresh.svg" />
