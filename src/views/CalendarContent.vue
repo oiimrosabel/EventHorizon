@@ -27,7 +27,7 @@ const isShareShown = ref(false)
 const isError = ref(false)
 const isBookmarked = ref(bookmarkService.isBooked(calId))
 
-const bookmarker = () => {
+const bookmarkWrapper = () => {
   bookmarkService.toggleBookmark(calId)
   isBookmarked.value = !isBookmarked.value
 }
@@ -56,7 +56,7 @@ if (!calendarData) isError.value = true
         <TextButton title="Changer d'emploi du temps" @click="isLookupShown = true">
           <img alt="Switch" src="/icons/switch.svg" />
         </TextButton>
-        <TextButton title="Sauvegarder" @click="bookmarker()">
+        <TextButton title="Sauvegarder" @click="bookmarkWrapper()">
           <img alt="Bookmark" :src="`/icons/${isBookmarked ? 'unmark' : 'bookmark'}.svg`" />
         </TextButton>
         <TextButton title="Partager" @click="isShareShown = true">

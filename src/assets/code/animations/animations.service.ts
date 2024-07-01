@@ -3,7 +3,21 @@ import type {
   DurationInSeconds
 } from '@/assets/code/animations/animations-interfaces'
 
+const DEFAULT_DELAY_DURATION: DurationInSeconds = '2s'
+
 class AnimationsService {
+  async executeAfterDelay(
+    elements: Array<Element | null>,
+    callback: () => void,
+    duration: DurationInSeconds = DEFAULT_DELAY_DURATION
+  ) {
+    await this.animateStep(elements, {
+      callback: callback,
+      classTag: '',
+      duration: duration
+    })
+  }
+
   async animateSteps(elements: Array<Element | null>, steps: Array<AnimationStep>) {
     for (const step of steps) await this.animateStep(elements, step)
   }

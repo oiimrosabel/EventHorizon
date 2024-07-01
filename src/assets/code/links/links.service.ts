@@ -13,24 +13,29 @@ class LinksService {
     return window.location.href
   }
 
-  shareData(url: string, title?: string, failure?: string) {
+  async shareData(url: string, title?: string) {
     title = title ??= 'EventHorizon'
-    failure = failure ??= 'Votre navigateur ne supporte pas le partage.'
 
     const data: ShareData = {
       title: title,
       url: url
     }
+
     try {
-      navigator.share(data).then()
+      await navigator.share(data)
     } catch (err: any) {
-      alert(failure)
+      return false
     }
+    return true
   }
 
-  copyDataToClipboard(data: string, success?: string) {
-    success = success ??= 'Copié avec succès.'
-    navigator.clipboard.writeText(data).then(() => alert(success))
+  async copyDataToClipboard(data: string) {
+    try {
+      await navigator.clipboard.writeText(data)
+    } catch (err: any) {
+      return false
+    }
+    return true
   }
 
   reloadPage() {
