@@ -6,7 +6,7 @@ include_once '_utils/format-tools.php';
 include_once '_parser/parser.php';
 include_once '_parser/lexer.php';
 
-include "_env.php";
+include_once "_env.php";
 
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");

@@ -1,6 +1,20 @@
+<script setup lang="ts">
+defineProps({
+  value: {
+    type: String,
+    required: true
+  },
+  desc: {
+    type: String,
+    required: true
+  }
+})
+</script>
+
 <template>
   <a class="StatButton">
-    <slot></slot>
+    <h3>{{ value }}</h3>
+    <p>{{ desc }}</p>
   </a>
 </template>
 

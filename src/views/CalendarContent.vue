@@ -15,27 +15,38 @@ import StatsWidget from '@/components/widgets/StatsWidget.vue'
 import StatButton from '@/components/buttons/StatButton.vue'
 import WidgetContainer from '@/components/containers/WidgetContainer.vue'
 import ErrorMessage from '@/bundles/ErrorBundle.vue'
-import { linksService } from '@/assets/code/links/links.service'
 import ShareBundle from '@/bundles/ShareBundle.vue'
+import { bookmarkService } from '@/assets/code/bookmark/bookmark.service'
+
+const route = useRoute()
+const calId = route.params['cal'] as string
 
 const isThemeShown = ref(false)
 const isLookupShown = ref(false)
 const isShareShown = ref(false)
 const isError = ref(false)
+const isBookmarked = ref(bookmarkService.isBooked(calId))
 
-const route = useRoute()
+const bookmarker = () => {
+  bookmarkService.toggleBookmark(calId)
+  isBookmarked.value = !isBookmarked.value
+}
 
-const calendarData = await calendarService.getCalendar(route.params['cal'] as string)
+const calendarData = await calendarService.getCalendar(calId)
 if (!calendarData) isError.value = true
 </script>
 
 <template>
-  <!-- Messages -->
+  <!-- Message -->
   <ErrorMessage v-if="isError" />
 
   <!-- Bundles -->
   <ThemeBundle v-if="isThemeShown" @hide="isThemeShown = false" />
-  <LookupBundle v-if="isLookupShown" @hide="isLookupShown = false" />
+  <LookupBundle
+    v-if="isLookupShown"
+    @hide="isLookupShown = false"
+    @cleaned="isBookmarked = false"
+  />
   <ShareBundle v-if="isShareShown" @hide="isShareShown = false" />
 
   <!-- Vue du calendrier -->
@@ -45,8 +56,8 @@ if (!calendarData) isError.value = true
         <TextButton title="Changer d'emploi du temps" @click="isLookupShown = true">
           <img alt="Switch" src="/icons/switch.svg" />
         </TextButton>
-        <TextButton title="Rafraîchir" @click="linksService.reloadPage()">
-          <img alt="Refresh" src="/icons/refresh.svg" />
+        <TextButton title="Sauvegarder" @click="bookmarker()">
+          <img alt="Bookmark" :src="`/icons/${isBookmarked ? 'unmark' : 'bookmark'}.svg`" />
         </TextButton>
         <TextButton title="Partager" @click="isShareShown = true">
           <img alt="Share" src="/icons/share.svg" />
@@ -76,18 +87,14 @@ if (!calendarData) isError.value = true
         </WidgetContainer>
         <WidgetContainer title="Statistiques">
           <StatsWidget>
-            <StatButton>
-              <h3>{{ calendarData?.length }}</h3>
-              <p>cours</p>
-            </StatButton>
-            <StatButton>
-              <h3>{{ calendarData?.duration }}</h3>
-              <p>aujourd'hui</p>
-            </StatButton>
-            <StatButton v-for="(e, i) in calendarData?.types" :key="i">
-              <h3>{{ e }}</h3>
-              <p>{{ i }}s</p>
-            </StatButton>
+            <StatButton :value="`${calendarData?.length}`" desc="cours" />
+            <StatButton :value="calendarData?.duration!" desc="aujourd'hui" />
+            <StatButton
+              v-for="(e, i) in calendarData?.types"
+              :key="i"
+              :value="`${e}`"
+              :desc="i + 's'"
+            />
           </StatsWidget>
         </WidgetContainer>
       </template>

@@ -36,6 +36,27 @@ class LinksService {
   reloadPage() {
     location.reload()
   }
+
+  getDataFromUrl(url: string, key: string) {
+    const reg = /[?&]([^=]+)=([^&]+)/gm
+    let res
+    do {
+      res = reg.exec(url)
+      if (res && res[1] === key) return res[2]
+    } while (res)
+    return undefined
+  }
+
+  getOrigin(trimmed = false) {
+    let res = window.location.origin
+    if (trimmed) {
+      let strippedUrl: Array<any> | null = /^https?:\/\/(.*):\d+(.*)$/gim.exec(res)
+      if (!strippedUrl) strippedUrl = []
+      else strippedUrl.shift()
+      res = strippedUrl.join('')
+    }
+    return res
+  }
 }
 
 export const linksService = new LinksService()

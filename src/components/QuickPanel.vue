@@ -58,28 +58,32 @@ const switchPanel = () => {
 
 <style lang="sass">
 .QuickPanel
+  --quick-gap: 24px
+  --quick-padding-bottom: 32px
   display: flex
   flex-direction: column
   justify-content: start
   align-items: stretch
-  gap: 24px
+  gap: var(--quick-gap)
   overflow-y: auto
   overflow-x: hidden
-  padding: 24px 24px 32px
-  background: var(--background)
+  padding: var(--quick-gap)
+  padding-bottom: var(--quick-padding-bottom)
+  background-size: 100% auto
 
   @media (min-width: 1201px)
     width: 360px
 
     &.step1
-      animation: HidePanel ease-in-out v-bind(ANIM_DURATION)
+      animation: HidePanel v-bind(ANIM_DURATION)
 
     &.step2
-      animation: ShowPanel ease-in-out v-bind(ANIM_DURATION)
+      animation: ShowPanel v-bind(ANIM_DURATION)
 
     &.reduced
+      --quick-gap: 12px
+      --quick-padding-bottom: 20px
       width: 96px
-      padding: 12px 12px 24px
 
   @media (max-width: 1200px)
     width: 100%

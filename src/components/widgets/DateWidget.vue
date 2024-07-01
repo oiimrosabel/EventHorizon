@@ -12,85 +12,49 @@ const timeData = {
   day: timeRef.toLocaleString(TIME_LOCALE, { weekday: 'long' }),
   date: timeRef.getDate(),
   month: timeRef.toLocaleString(TIME_LOCALE, { month: 'short' }),
-  montReduced: '/' + timeRef.toLocaleString(TIME_LOCALE, { month: '2-digit' })
+  dayReduced: timeRef.toLocaleString(TIME_LOCALE, { weekday: 'short' })
 }
 </script>
 
 <template>
-  <div :class="{ reduced: isReduced }" class="DateWidget">
-    <RouterLink class="DateBackground" title="Retour à la page d'accueil" to="/">
-      <img alt="Logo" src="/images/calendar.svg" />
-    </RouterLink>
-    <div v-if="!isReduced" class="DateText displayOnDesktop">
+  <div
+    :class="{ reduced: isReduced }"
+    class="DateWidget displayOnDesktop"
+    @click="$router.push('/')"
+  >
+    <template v-if="!isReduced">
       <p>{{ timeData.day }}</p>
       <h2>{{ timeData.date }}</h2>
       <p>{{ timeData.month }}</p>
-    </div>
-    <div v-else class="DateText displayOnDesktop">
+    </template>
+    <template v-else>
+      <p>{{ timeData.dayReduced }}</p>
       <h2>{{ timeData.date }}</h2>
-      <p>{{ timeData.montReduced }}</p>
-    </div>
-    <div class="DateText displayOnMobile">
-      <p>{{ timeData.day }}</p>
-      <h2>{{ timeData.date }}</h2>
-      <p>{{ timeData.month }}</p>
-    </div>
+    </template>
+  </div>
+  <div class="DateWidget displayOnMobile">
+    <p>{{ timeData.day }}</p>
+    <h2>{{ timeData.date }}</h2>
+    <p>{{ timeData.month }}</p>
   </div>
 </template>
 
 <style lang="sass">
 .DateWidget
   display: flex
-  flex-direction: column
-  justify-content: start
-  align-items: stretch
-  background: var(--surface)
-  border-radius: var(--radius-med)
-
-  > .DateBackground
-    width: 100%
-    height: 7em
-    border-radius: var(--radius-med) var(--radius-med) var(--radius-small) var(--radius-small)
-    background: var(--bgimg) no-repeat center center
-    background-size: cover
-    display: flex
-    flex-direction: row
-    justify-content: center
-    align-items: center
-
-    > img
-      height: 4em
-
-      &:hover
-        scale: 1.1
-        transition: var(--trans)
-
-      &:active
-        scale: 0.9
-        transition: var(--trans)
-
-  > .DateText
-    padding: 12px 0
-    display: flex
-    flex-direction: row
-    justify-content: center
-    align-items: baseline
-    gap: 6px
+  flex-direction: row
+  justify-content: center
+  align-items: baseline
+  margin: calc(var(--quick-gap) * -1)
+  background: linear-gradient(transparent, var(--background)), var(--bgimg) no-repeat top center
+  background-size: cover
+  gap: 6px
+  padding: var(--quick-gap)
+  cursor: pointer
 
   @media (min-width: 1201px)
     &.reduced
-      border-radius: var(--radius-small)
-
-      > .DateBackground
-        height: 5em
-        border-radius: var(--radius-small)
-
-        > img
-          height: 2em
-
-      > .DateText
-        flex-direction: column
-        gap: 0
-        padding: 6px 0 12px
-        align-items: center
+      padding: calc(var(--quick-gap) * 2) 0
+      flex-direction: row
+      align-items: baseline
 </style>

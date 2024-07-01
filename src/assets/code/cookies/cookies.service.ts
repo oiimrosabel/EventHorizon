@@ -1,4 +1,5 @@
 import { CookieError, type sameSiteType } from '@/assets/code/cookies/cookies-interfaces'
+import { linksService } from '@/assets/code/links/links.service'
 
 class CookiesService {
   sameSite: sameSiteType
@@ -13,12 +14,7 @@ class CookiesService {
   constructor(sameSite: sameSiteType = 'Lax', defaultExpiration: number = 2) {
     this.defaultExpiration = defaultExpiration
     this.sameSite = sameSite
-    let strippedUrl: Array<any> | null = new RegExp('^https?:\\/\\/(.*):\\d+(.*)$', 'gmi').exec(
-      window.location.origin
-    )
-    if (!strippedUrl) strippedUrl = []
-    else strippedUrl.shift()
-    this.baseUrl = strippedUrl.join('')
+    this.baseUrl = linksService.getOrigin(true)
   }
 
   hasCookie(key: string): boolean {
@@ -39,7 +35,7 @@ class CookiesService {
 
   getCookie(key: string): string {
     if (key === '') throw new CookieError(this.errorCodes.emptyKey, key)
-    const cookies = decodeURIComponent(document.cookie).split(new RegExp('; ?'))
+    const cookies = decodeURIComponent(document.cookie).split(/; ?/)
     for (const cookie of cookies) {
       const pair = cookie.split('=')
       if (pair[0].trim() === key.trim()) return pair[1]
@@ -57,7 +53,7 @@ class CookiesService {
 
   getAllCookies(): Map<string, any> {
     const map = new Map<string, any>()
-    const cookies = decodeURIComponent(document.cookie).split(new RegExp('; ?'))
+    const cookies = decodeURIComponent(document.cookie).split(/; ?/)
     for (const cookie of cookies) {
       const pair = cookie.split('=')
       map.set(pair[0], pair[1])
@@ -71,8 +67,8 @@ class CookiesService {
   }
 
   deleteAllCookies() {
-    const cookies = this.getAllCookies()
-    for (const [e, _] of cookies) {
+    const cookies = this.getAllCookies().keys()
+    for (const e of cookies) {
       this.deleteCookie(e)
     }
   }

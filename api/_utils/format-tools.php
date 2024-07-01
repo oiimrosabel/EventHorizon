@@ -84,5 +84,5 @@ function generate_hour(DateTime $time): array
 
 function generate_raw_date(DateTime $date): string
 {
-    return format_date($date, 'ddMM');
+    return format_date($date, 'MMdd');
 }

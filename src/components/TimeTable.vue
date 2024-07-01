@@ -11,7 +11,7 @@
   align-items: stretch
   gap: 20px
   padding: 24px
-  border-radius: var(--radius-med) 0 0 var(--radius-med)
+  border-radius: 0 0 0 var(--radius-med)
   overflow-x: auto
   overflow-y: visible
   background: var(--timetable)

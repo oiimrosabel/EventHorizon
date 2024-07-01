@@ -33,6 +33,7 @@ defineProps({
       transition: var(--trans)
 
       &:hover
+        rotate: 2deg
         scale: 1.1
 
     &:last-of-type

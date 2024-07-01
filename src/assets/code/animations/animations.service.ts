@@ -20,7 +20,7 @@ class AnimationsService {
   }
 
   private getMsFromDuration(duration: DurationInSeconds) {
-    return Number(duration.replace('s', '')) * 1000 - 100
+    return Number(duration.replace('s', '')) * 1000 - 50
   }
 
   private async wait(duration: number) {

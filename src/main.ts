@@ -23,7 +23,7 @@ const router = createRouter({
       component: WelcomeView
     },
     {
-      path: '/:cal',
+      path: '/:cal(\\d+)',
       name: 'calendar',
       component: CalendarsView
     }

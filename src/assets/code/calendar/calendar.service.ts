@@ -19,6 +19,10 @@ class CalendarService {
     this.date = new Date()
   }
 
+  isValidId(id: string) {
+    return /^\d+$/.test(id)
+  }
+
   async getCalendar(calendar: string) {
     return this.formatCalendar(await this.fetchCalendar(calendar))
     //return this.formatCalendar(dummy)
@@ -103,7 +107,7 @@ class CalendarService {
     return result.data as Calendar
   }
 
-  private getCurrentDay(format = 'ddmm') {
+  private getCurrentDay(format = 'mmdd') {
     return dateFormat(this.date, format)
   }
 
