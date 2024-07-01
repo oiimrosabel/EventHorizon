@@ -20,7 +20,7 @@ defineProps({
   align-items: center
   justify-content: space-between
 
-  @media (min-width: 1201px)
+  @media (min-width: 801px)
     gap: 8px
 
     &.reduced
@@ -29,7 +29,7 @@ defineProps({
       flex: 1 1
       gap: 12px
 
-  @media (max-width: 1200px)
+  @media (max-width: 800px)
     flex-wrap: wrap
     gap: 12px
 </style>

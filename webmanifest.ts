@@ -1,9 +1,10 @@
 import { ManifestOptions } from 'vite-plugin-pwa'
+import displayData from './src/assets/data/display.json'
 
 const webmanifest: Partial<ManifestOptions> = {
-  name: 'EventHorizon',
-  short_name: 'EventHorizon',
-  description: 'Parce que AdeCampus est horrible.',
+  name: displayData.home.title,
+  short_name: displayData.home.title,
+  description: displayData.home.catchprase,
   theme_color: '#7356FF',
   icons: [
     {
@@ -42,6 +43,5 @@ const webmanifest: Partial<ManifestOptions> = {
     }
   ]
 }
-
 
 export default webmanifest

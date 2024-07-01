@@ -1,14 +1,8 @@
 <script lang="ts" setup>
 import MessageTemplate from '@/components/MessageTemplate.vue'
-
-defineProps({
-  title: {
-    type: String,
-    default: 'Chargement...'
-  }
-})
+import displayData from '@/assets/data/display.json'
 </script>
 
 <template>
-  <MessageTemplate subtitle="Chargement..." image="/images/loading.svg" />
+  <MessageTemplate :subtitle="displayData.loading.title" image="/images/loading.svg" />
 </template>

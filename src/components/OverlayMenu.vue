@@ -83,14 +83,14 @@ const animate = () =>
     > .TextButton
       align-self: center
 
-  @media (min-width: 1201px)
+  @media (min-width: 801px)
     justify-content: center
     align-items: center
 
     > div
       width: 500px
 
-  @media (max-width: 1200px)
+  @media (max-width: 800px)
     padding: 16px
     justify-content: end
     align-items: stretch

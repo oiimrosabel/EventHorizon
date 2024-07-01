@@ -16,7 +16,7 @@
   overflow-y: visible
   background: var(--timetable)
 
-  @media (min-width: 1201px)
+  @media (min-width: 801px)
     height: 100%
     flex: 1 1
     flex-direction: row
@@ -26,7 +26,7 @@
       overflow-x: visible
       overflow-y: auto
 
-  @media (max-width: 1200px)
+  @media (max-width: 800px)
     flex-grow: 1
     flex-direction: column
     border-radius: var(--radius-med) var(--radius-med) 0 0

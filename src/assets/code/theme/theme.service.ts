@@ -12,7 +12,7 @@ export const themeNames = {
   OLED: 'oled'
 }
 
-const COOKIE_NAME = 'ade-theme'
+const THEME_COOKIE_NAME = 'ade-theme'
 
 export class ThemeService {
   getThemeFromSystem() {
@@ -22,7 +22,7 @@ export class ThemeService {
   }
 
   getThemeFromCookie() {
-    return cookiesService.getCookieOrFallback(COOKIE_NAME, themeNames.SYSTEM)
+    return cookiesService.getCookieOrFallback(THEME_COOKIE_NAME, themeNames.SYSTEM)
   }
 
   getThemeBasedOnTime() {
@@ -47,7 +47,7 @@ export class ThemeService {
     const head = document.querySelector('html')
     if (!head) return
     head.dataset.theme = finalTheme
-    cookiesService.setCookie(COOKIE_NAME, theme)
+    cookiesService.setCookie(THEME_COOKIE_NAME, theme, 32)
   }
 }
 

@@ -23,11 +23,11 @@ class BookmarkService {
     const index = bookmarksList.indexOf(id)
     if (index > -1) bookmarksList.splice(index, 1)
     else bookmarksList.push(id)
-    cookiesService.setCookie(MARK_COOKIE_NAME, this.cleanBookmarks(bookmarksList).join('+'))
+    cookiesService.setCookie(MARK_COOKIE_NAME, this.cleanBookmarks(bookmarksList).join('+'), 32)
   }
 
   deleteAllBookmarks() {
-    cookiesService.setCookie(MARK_COOKIE_NAME, '')
+    cookiesService.deleteCookie(MARK_COOKIE_NAME)
   }
 
   private cleanBookmarks(bookmarksList: Array<string>) {

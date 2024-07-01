@@ -5,6 +5,7 @@ import OverlayMenu from '@/components/OverlayMenu.vue'
 import { linksService } from '@/assets/code/links/links.service'
 import { ref } from 'vue'
 import { animationService } from '@/assets/code/animations/animations.service'
+import displayData from '@/assets/data/display.json'
 
 defineEmits(['hide'])
 
@@ -12,8 +13,8 @@ const elemRef = ref(null)
 const messageRef = ref('')
 
 const shareWrapper = () => {
-  linksService.shareData(linksService.getFullUrl()).then((r) => {
-    messageRef.value = r ? 'Partagé avec succès' : 'Votre navigateur ne supporte pas le partage.'
+  linksService.shareData(linksService.getFullUrl(), displayData.bundles.share.title).then((r) => {
+    messageRef.value = r ? displayData.bundles.share.success : displayData.bundles.share.failure
   })
   animationService.executeAfterDelay([elemRef.value], () => {
     messageRef.value = ''
@@ -22,7 +23,7 @@ const shareWrapper = () => {
 
 const copyWrapper = () => {
   linksService.copyDataToClipboard(linksService.getFullUrl()).then((r) => {
-    messageRef.value = r ? 'Copié avec succès' : 'Votre navigateur ne supporte pas la copie.'
+    messageRef.value = r ? displayData.bundles.copy.success : displayData.bundles.copy.failure
   })
   animationService.executeAfterDelay([elemRef.value], () => {
     messageRef.value = ''

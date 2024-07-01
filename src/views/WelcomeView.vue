@@ -5,6 +5,7 @@ import LookupBundle from '@/bundles/LookupBundle.vue'
 import TextButton from '@/components/buttons/TextButton.vue'
 import MessageTemplate from '@/components/MessageTemplate.vue'
 import FooterBundle from '@/bundles/FooterBundle.vue'
+import displayData from '@/assets/data/display.json'
 
 const isThemeShown = ref(false)
 const isLookupShown = ref(false)
@@ -14,9 +15,9 @@ const isLookupShown = ref(false)
   <ThemeBundle v-if="isThemeShown" @hide="isThemeShown = false" />
   <LookupBundle v-if="isLookupShown" @hide="isLookupShown = false" />
   <MessageTemplate
-    subtitle="Bienvenue sur"
-    title="EventHorizon"
-    description="Parce que AdeCampus est horrible."
+    :subtitle="displayData.home.subtitle"
+    :title="displayData.home.title"
+    :description="displayData.home.catchprase"
     image="/images/logo.svg"
   >
     <TextButton @click="isLookupShown = true">

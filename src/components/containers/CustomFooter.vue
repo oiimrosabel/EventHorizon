@@ -22,7 +22,7 @@
     text-decoration: none
     flex-direction: row
 
-  @media (max-width: 1200px)
+  @media (max-width: 800px)
     flex-direction: column
     gap: 8px
 

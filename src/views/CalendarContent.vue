@@ -123,12 +123,12 @@ if (!calendarData) isError.value = true
   align-items: stretch
   justify-content: stretch
 
-  @media (min-width: 1201px)
+  @media (min-width: 801px)
     height: 100%
     width: 100%
     flex-direction: row
 
-  @media (max-width: 1200px)
+  @media (max-width: 800px)
     flex-direction: column
     flex-grow: 1
 </style>

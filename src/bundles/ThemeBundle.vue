@@ -5,6 +5,7 @@ import TextButton from '@/components/buttons/TextButton.vue'
 import OverlayMenu from '@/components/OverlayMenu.vue'
 import { ref } from 'vue'
 import { animationService } from '@/assets/code/animations/animations.service'
+import displayData from '@/assets/data/display.json'
 
 defineEmits(['hide'])
 
@@ -13,7 +14,7 @@ const messageRef = ref('')
 
 const themeWrapper = (theme: string) => {
   themeService.switchTheme(theme)
-  messageRef.value = 'Thème changé avec succès.'
+  messageRef.value = displayData.bundles.themeChange
   animationService.executeAfterDelay([elemRef.value], () => {
     messageRef.value = ''
   })

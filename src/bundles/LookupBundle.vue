@@ -7,6 +7,7 @@ import { bookmarkService } from '@/assets/code/bookmark/bookmark.service'
 import { linksService } from '@/assets/code/links/links.service'
 import { ref } from 'vue'
 import { animationService } from '@/assets/code/animations/animations.service'
+import displayData from '@/assets/data/display.json'
 
 const emits = defineEmits(['hide', 'cleaned'])
 
@@ -21,7 +22,7 @@ const bookmarksWrapper = () => {
   bookmarkService.deleteAllBookmarks()
   isBookmarksDisplayed.value = false
   emits('cleaned')
-  messageRef.value = 'Sauvegardes effacées avec succès.'
+  messageRef.value = displayData.bundles.bookmarksDeletion
   animationService
     .executeAfterDelay([elemRef.value], () => {
       messageRef.value = ''

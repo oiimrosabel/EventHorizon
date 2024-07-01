@@ -14,7 +14,7 @@ class LinksService {
   }
 
   async shareData(url: string, title?: string) {
-    title = title ??= 'EventHorizon'
+    title = title ??= url
 
     const data: ShareData = {
       title: title,

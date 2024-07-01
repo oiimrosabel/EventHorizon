@@ -71,7 +71,7 @@ const switchPanel = () => {
   padding-bottom: var(--quick-padding-bottom)
   background-size: 100% auto
 
-  @media (min-width: 1201px)
+  @media (min-width: 801px)
     width: 360px
 
     &.step1
@@ -85,7 +85,7 @@ const switchPanel = () => {
       --quick-padding-bottom: 20px
       width: 96px
 
-  @media (max-width: 1200px)
+  @media (max-width: 800px)
     width: 100%
     border-radius: 0 0 var(--radius-med) var(--radius-med)
 

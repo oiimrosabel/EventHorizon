@@ -52,7 +52,7 @@ const timeData = {
   padding: var(--quick-gap)
   cursor: pointer
 
-  @media (min-width: 1201px)
+  @media (min-width: 801px)
     &.reduced
       padding: calc(var(--quick-gap) * 2) 0
       flex-direction: row

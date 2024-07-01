@@ -4,6 +4,7 @@ import LookupBundle from '@/bundles/LookupBundle.vue'
 import TextButton from '@/components/buttons/TextButton.vue'
 import MessageTemplate from '@/components/MessageTemplate.vue'
 import { linksService } from '@/assets/code/links/links.service'
+import displayData from '@/assets/data/display.json'
 
 defineProps({
   title: {
@@ -22,8 +23,8 @@ const isLookupShown = ref(false)
 <template>
   <LookupBundle v-if="isLookupShown" @hide="isLookupShown = false" />
   <MessageTemplate
-    title="Une erreur est survenue"
-    description="Veuillez réessayer."
+    :title="displayData.error.title"
+    :description="displayData.error.description"
     image="/images/error.svg"
   >
     <TextButton @click="linksService.reloadPage()">
