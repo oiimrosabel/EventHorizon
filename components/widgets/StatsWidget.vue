@@ -1,5 +1,5 @@
-<script setup lang="ts">
-import type { FormatedCalendar } from "assets/code/calendar/calendar-interfaces";
+<script lang="ts" setup>
+import type { FormatedCalendar } from "@/assets/code/calendar/calendar-interfaces";
 import type { PropType } from "vue";
 
 defineProps({
@@ -11,7 +11,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="StatsWidget" v-if="data">
+  <div v-if="data" class="StatsWidget">
     <div>
       <div>
         <h2>{{ data.length }}</h2>

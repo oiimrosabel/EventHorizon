@@ -1,10 +1,17 @@
 <script lang="ts" setup>
-import TextButton from "~/components/TextButton.vue";
+import TextButton from "@/components/TextButton.vue";
 import { ref } from "vue";
-import { animationService } from "assets/code/animations/animations.service";
+import { animationService } from "@/assets/code/animations/animations.service";
 
 const ANIM_DURATION = "0.33s";
 const ANIM_CLASS = "away";
+
+const props = defineProps({
+  enableHide: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const emit = defineEmits(["hide"]);
 
@@ -19,10 +26,23 @@ const animate = () =>
       callback: () => emit("hide"),
     })
     .then();
+
+watch(
+  () => props.enableHide,
+  () => {
+    if (props.enableHide === true) animate();
+  },
+);
 </script>
 
 <template>
-  <div ref="backgroundRef" class="CardBackground" @keydown.esc="animate()">
+  <div
+    ref="backgroundRef"
+    autofocus
+    class="CardBackground"
+    tabindex="0"
+    @keydown.esc="animate()"
+  >
     <div ref="cardRef">
       <div class="CardTitle">
         <slot name="title" />
@@ -38,7 +58,7 @@ const animate = () =>
 
 <style lang="sass">
 .CardBackground
-  z-index: 99
+  z-index: 10
   position: fixed
   top: 0
   bottom: 0
@@ -49,19 +69,19 @@ const animate = () =>
   animation: BackgroundIn ease-in-out v-bind(ANIM_DURATION)
   backdrop-filter: var(--blur)
   padding: 24px
+  gap: 24px
 
   @media (min-width: 801px)
     justify-content: center
     align-items: center
-    gap: 24px
-
-    > div:first-of-type
-      width: 500px
 
   @media (max-width: 800px)
     padding: 16px
     justify-content: end
     align-items: stretch
+
+    > .TextButton
+      align-self: center
 
   &.away
     animation: BackgroundOut ease-in-out v-bind(ANIM_DURATION)
@@ -75,7 +95,10 @@ const animate = () =>
     align-items: stretch
     justify-content: start
     animation: CardIn ease-in-out v-bind(ANIM_DURATION)
-    border-radius: var(--radius-med )
+    border-radius: var(--radius-med)
+
+    @media (min-width: 801px)
+      width: 500px
 
     &.away
       animation: CardOut ease-in-out v-bind(ANIM_DURATION)
@@ -92,9 +115,6 @@ const animate = () =>
 
       &:before
         content: "💡 "
-
-    > .TextButton
-      align-self: center
 
 .CardTitle
   display: flex

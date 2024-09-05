@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 import { calendarService } from "@/assets/code/calendar/calendar.service";
-import { type PropType, ref } from "vue";
+import { type PropType } from "vue";
 import type { Event } from "@/assets/code/calendar/calendar-interfaces";
-import CardMenu from "~/components/containers/CardMenu.vue";
-import EventInfo from "@/components/widgets/EventInfo.vue";
 
 const props = defineProps({
   event: {
@@ -16,13 +14,12 @@ const props = defineProps({
   },
 });
 
-const $cards = useCardDisplay();
-const $event = useEventInfoDisplayer();
+const $cards = useCardsState();
+const $event = useEventCard();
 
 const SEPARATOR = ", ";
 const PLACEHOLDER = "-";
 
-const titleText = calendarService.formatTitle(props.event?.title);
 const locationsText =
   props.event?.locations.length === 0
     ? PLACEHOLDER
@@ -33,10 +30,10 @@ const teachersText =
     : props.event?.teachers.join(SEPARATOR);
 
 const showEventInfo = () => {
-  $event.isHappening.value = props.isHappening;
-  $event.data.value = props.event;
-  $event.type.value = props.event?.title[1] ?? "";
-  $event.title.value = titleText ?? "";
+  $event.isHappening = props.isHappening;
+  $event.data = props.event;
+  $event.type = calendarService.getCourseType(props.event?.title[1]) ?? "";
+  $event.title = props.event?.title[0];
   $cards.event = true;
 };
 </script>
@@ -48,7 +45,7 @@ const showEventInfo = () => {
     @click="showEventInfo"
   >
     <h4
-      :title="event.title.join(' ')"
+      :title="event.title[0]"
       v-html="calendarService.formatTitle(event.title)"
     />
     <div>
@@ -82,14 +79,14 @@ const showEventInfo = () => {
   transition: var(--trans)
   border-radius: var(--radius-small)
 
+  &.happening
+    background: var(--button)
+
   &:hover
     background: var(--hover)
 
   &:active
     background: var(--active)
-
-  &.happening
-    background: var(--button)
 
   > h4
     text-align: center

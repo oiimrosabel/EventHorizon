@@ -21,7 +21,7 @@ defineProps({
   align-items: stretch
   justify-content: start
   gap: 8px
-  padding:  0 0
+  padding: 0 0
 
   > h4
     padding-left: 4px

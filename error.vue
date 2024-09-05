@@ -1,12 +1,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import LookupBundle from "~/cards/LookupCard.vue";
-import MessageTemplate from "~/components/MessageTemplate.vue";
-import TextButton from "~/components/TextButton.vue";
 import type { NuxtError } from "#app";
-import { themeService } from "assets/code/theme/theme.service";
-import ButtonsList from "~/components/containers/ButtonsList.vue";
-import { linksService } from "assets/code/links/links.service";
+import { themeService } from "@/assets/code/theme/theme.service";
 
 defineProps({
   error: {
@@ -15,24 +10,51 @@ defineProps({
   },
 });
 
-const isLookupShown = ref(false);
+const splashRef = ref(false);
 
-useNuxtApp().hook("app:mounted", () =>
-  themeService.switchTheme(themeService.getThemeFromCookie()),
-);
+useNuxtApp().hook("app:mounted", () => {
+  themeService.switchTheme(themeService.getThemeFromCookie());
+  setTimeout(() => (splashRef.value = true), 750);
+});
 </script>
 
 <template>
-  <MessageTemplate
-    :title="`Erreur ${error!.statusCode}`"
-    :description="error?.statusMessage"
-    image="/images/error.svg"
-  >
-    <ButtonsList>
-      <TextButton @click="linksService.changeLocation('/')">
-        <img alt="Home" src="/icons/home.svg" />
-        <p>Accueil</p>
-      </TextButton>
-    </ButtonsList>
-  </MessageTemplate>
+  <div class="Error">
+    <div class="ErrorCard">
+      <BreathingPicture size="156px" @click="$router.push('/')">
+        <img alt="Logo" src="/images/error.svg" />
+      </BreathingPicture>
+      <h1>Erreur {{ error!.statusCode }}</h1>
+      <p>{{ error?.statusMessage }}</p>
+    </div>
+  </div>
 </template>
+
+<style lang="sass">
+.Error
+  flex-grow: 1
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+  background: #000000
+
+  *
+    color: #FFFFFF
+
+  > .ErrorCard
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: stretch
+    gap: 32px
+
+    > .BreathingPicture
+      align-self: center
+
+    > *
+      text-align: center
+
+    > p
+      margin-top: -24px
+</style>

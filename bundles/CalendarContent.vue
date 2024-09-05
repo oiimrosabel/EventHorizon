@@ -1,20 +1,26 @@
 <script lang="ts" setup>
-import { calendarService } from "assets/code/calendar/calendar.service";
+import { calendarService } from "@/assets/code/calendar/calendar.service";
 import { ref } from "vue";
-import WidgetPanel from "~/components/containers/WidgetPanel.vue";
-import DayContainer from "~/components/containers/DayContainer.vue";
-import EventWidget from "~/components/widgets/EventWidget.vue";
-import TextWidget from "~/components/widgets/TextWidget.vue";
+import WidgetPanel from "@/components/containers/WidgetPanel.vue";
+import DayContainer from "@/components/containers/DayContainer.vue";
+import EventWidget from "@/components/widgets/EventWidget.vue";
+import TextWidget from "@/components/widgets/TextWidget.vue";
 import { useRoute } from "vue-router";
-import StatsWidget from "~/components/widgets/StatsWidget.vue";
-import WidgetContainer from "~/components/containers/WidgetContainer.vue";
-import ErrorMessage from "~/bundles/ErrorBundle.vue";
-import DateWidget from "~/components/widgets/DateWidget.vue";
+import StatsWidget from "@/components/widgets/StatsWidget.vue";
+import WidgetContainer from "@/components/containers/WidgetContainer.vue";
+import ErrorMessage from "@/bundles/ErrorBundle.vue";
+import DateWidget from "@/components/widgets/DateWidget.vue";
+import { useBookmarker } from "@/composables/useBookmarker";
+import { bookmarkService } from "@/assets/code/bookmark/bookmark.service";
 
-const route = useRoute();
-const calId = route.params["cal"] as string;
+const $route = useRoute();
+const calId = $route.params["cal"] as string;
 
 const isError = ref(false);
+
+useNuxtApp().hook("app:mounted", () => {
+  useBookmarker().bookmark = bookmarkService.isBookmarked(calId);
+});
 
 const calendarData = await calendarService.getCalendar(calId);
 if (!calendarData) isError.value = true;
@@ -45,13 +51,14 @@ if (!calendarData) isError.value = true;
     </WidgetContainer>
   </WidgetPanel>
   <DayContainer
-    v-for="(d, id, o) in calendarData?.calendar"
+    v-for="(tag, id) in Object.keys(calendarData?.calendar).sort()"
+    v-if="!isError"
     :key="id"
-    :title="d[0]!.date.join(' ')"
-    :order="o + 1"
+    :order="id + 1"
+    :title="calendarData?.calendar[tag][0]!.date.join(' ')"
   >
     <EventWidget
-      v-for="(e, ie) in d"
+      v-for="(e, ie) in calendarData?.calendar[tag]"
       :key="ie"
       :event="e"
       :is-happening="calendarService.isHappening(e)"

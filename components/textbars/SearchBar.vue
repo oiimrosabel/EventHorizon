@@ -1,13 +1,16 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import TextButton from "~/components/TextButton.vue";
-import { linksService } from "assets/code/links/links.service";
-import { calendarService } from "assets/code/calendar/calendar.service";
-import { animationService } from "assets/code/animations/animations.service";
+import TextButton from "@/components/TextButton.vue";
+import { linksService } from "@/assets/code/links/links.service";
+import { calendarService } from "@/assets/code/calendar/calendar.service";
+import { animationService } from "@/assets/code/animations/animations.service";
+
+const emits = defineEmits(["found"]);
 
 const ERROR_CLASS = "error";
 const ERROR_ANIM_DURATION = "0.33s";
 
+const $router = useRouter();
 const calId = ref("");
 const inputRef = ref(null);
 
@@ -22,8 +25,10 @@ const formatInput = (text?: string) => {
 
 const goToCal = () => {
   const res: string | undefined = formatInput(calId.value);
-  if (res) linksService.changeLocation(`/${res}`);
-  else
+  if (res) {
+    $router.push(`/${res}`);
+    emits("found");
+  } else
     animationService.animateStep([inputRef.value], {
       callback: () => {},
       classTag: ERROR_CLASS,
@@ -66,6 +71,8 @@ const goToCal = () => {
     transition: var(--trans)
     min-width: 0
     transform-origin: center
+    font-family: 'Montserrat', sans-serif
+    font-weight: 500
 
     &.error
       animation: InputError v-bind(ERROR_ANIM_DURATION)

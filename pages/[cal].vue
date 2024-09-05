@@ -1,6 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import LoadingMessage from "@/bundles/LoadingBundle.vue";
-import CalendarContent from "~/bundles/CalendarContent.vue";
+import CalendarContent from "@/bundles/CalendarContent.vue";
 
 definePageMeta({
   validate: async (route) =>

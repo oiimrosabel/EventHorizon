@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import ButtonsList from "~/components/containers/ButtonsList.vue";
-import TextButton from "~/components/TextButton.vue";
-import CardMenu from "~/components/containers/CardMenu.vue";
-import { linksService } from "assets/code/links/links.service";
+import ButtonsList from "@/components/containers/ButtonsList.vue";
+import TextButton from "@/components/TextButton.vue";
+import CardMenu from "@/components/containers/CardMenu.vue";
+import { linksService } from "@/assets/code/links/links.service";
 import { ref } from "vue";
-import { animationService } from "assets/code/animations/animations.service";
-import displayData from "assets/data/display.json";
+import { animationService } from "@/assets/code/animations/animations.service";
+import displayData from "@/assets/data/display.json";
 
-const route = useRoute();
+const $route = useRoute();
 const elemRef = ref(null);
 const messageRef = ref("");
 
@@ -16,7 +16,7 @@ const executeAnimation = () =>
     messageRef.value = "";
   });
 
-const shareWrapper = () => {
+const shareLink = () => {
   linksService
     .shareData(linksService.getFullUrl(), displayData.bundles.share.title)
     .then((r) => {
@@ -27,7 +27,7 @@ const shareWrapper = () => {
   executeAnimation();
 };
 
-const copyWrapper = () => {
+const copyLink = () => {
   linksService.copyDataToClipboard(linksService.getFullUrl()).then((r) => {
     messageRef.value = r
       ? displayData.bundles.copy.success
@@ -36,8 +36,8 @@ const copyWrapper = () => {
   executeAnimation();
 };
 
-const copyIdWrapper = () => {
-  linksService.copyDataToClipboard(route.params["id"] as string).then((r) => {
+const copyCalId = () => {
+  linksService.copyDataToClipboard($route.params["cal"] as string).then((r) => {
     messageRef.value = r
       ? displayData.bundles.copy.success
       : displayData.bundles.copy.failure;
@@ -45,7 +45,7 @@ const copyIdWrapper = () => {
   executeAnimation();
 };
 
-const $cards = useCardDisplay();
+const $cards = useCardsState();
 </script>
 
 <template>
@@ -54,16 +54,20 @@ const $cards = useCardDisplay();
       <img alt="Share" src="/images/share.svg" />
       <h2>Partager</h2>
     </template>
+    <h4>Partager</h4>
     <ButtonsList>
-      <TextButton @click="shareWrapper()">
+      <TextButton @click="shareLink()">
         <img alt="Share" src="/icons/share.svg" />
         <p>Partager</p>
       </TextButton>
-      <TextButton @click="copyWrapper()">
+    </ButtonsList>
+    <h4>Copier</h4>
+    <ButtonsList>
+      <TextButton @click="copyLink()">
         <img alt="Copy" src="/icons/copy.svg" />
         <p>Copier</p>
       </TextButton>
-      <TextButton @click="copyIdWrapper()">
+      <TextButton @click="copyCalId()">
         <img alt="Copy" src="/icons/copy.svg" />
         <p>Copier l'ID</p>
       </TextButton>

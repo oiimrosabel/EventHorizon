@@ -7,9 +7,11 @@ import type {
 } from "@/assets/code/calendar/calendar-interfaces";
 import links from "@/assets/data/links.json";
 import dateFormat from "dateformat";
-import dummy from "../../../test-assets/data.test.json";
+import type { Ref } from "vue";
 
 const BFF_URL = links.bff;
+
+const TYPE_REGEX = /^(CC|CM|TP|TD).*$/i;
 
 class CalendarService {
   private readonly date: Date;
@@ -23,19 +25,19 @@ class CalendarService {
   }
 
   async getCalendar(calendar: string) {
-    //return this.formatCalendar(await this.fetchCalendar(calendar))
-    return this.formatCalendar(dummy);
-    //return undefined
+    const fetchedCalendar = await this.fetchCalendar(calendar);
+    if (!fetchedCalendar) return undefined;
+    return this.formatCalendar(fetchedCalendar.value);
   }
 
   formatTitle(title: Array<string>) {
     return title.length === 1
       ? title[0]
-      : `<span>${title[1]}</span> ${title[0]}`;
+      : `<span>${title[1]}</span> ${title[0].slice(title[1].length)}`;
   }
 
   isHappening(event: Event) {
-    const currentDay = this.getCurrentDay("dd");
+    const currentDay = this.getCurrentDay("d");
     if (event.date[1] !== currentDay) return false;
     const currentTime = this.getCurrentTime();
     return (
@@ -58,13 +60,10 @@ class CalendarService {
   getNextCourse(calendar?: Calendar) {
     if (!calendar) return undefined;
     const todayEvents = this.getTodayEvents(calendar);
-    const currentDay = this.getCurrentDay();
     const currentTime = this.getCurrentTime();
     if (todayEvents)
       for (const event of todayEvents)
         if (currentTime < event.start.join("")) return event;
-    for (const e in calendar)
-      if (e > currentDay && calendar[e]!.length !== 0) return calendar[e]![0];
     return undefined;
   }
 
@@ -94,18 +93,24 @@ class CalendarService {
       CC: 0,
     };
     if (!day) return stats;
-    const types = Object.keys(stats);
-    for (const event of day)
-      if (types.includes(event.title[1]!))
-        stats[event.title[1] as keyof CourseStats] += 1;
+    for (const event of day) {
+      const extractedType = this.getCourseType(event.title[1]);
+      if (extractedType) stats[extractedType as keyof CourseStats] += 1;
+    }
     return stats;
+  }
+
+  getCourseType(type: string) {
+    const matches = TYPE_REGEX.exec(type);
+    if (!matches || !matches[1]) return undefined;
+    return matches[1];
   }
 
   private async fetchCalendar(calendar: string) {
     let result: { data: object };
     try {
-      result = await $fetch(BFF_URL, {
-        method: "POST",
+      result = await useFetch(BFF_URL, {
+        method: "post",
         body: {
           cal: calendar,
           weeks: "8",
@@ -114,14 +119,14 @@ class CalendarService {
     } catch (err: any) {
       return undefined;
     }
-    return result.data as Calendar;
+    return result.data as Ref<Calendar>;
   }
 
   private getCurrentDay(format = "mmdd") {
     return dateFormat(this.date, format);
   }
 
-  private getCurrentTime(format = "HHmm") {
+  private getCurrentTime(format = "HHMM") {
     return dateFormat(this.date, format);
   }
 

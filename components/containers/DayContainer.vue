@@ -34,14 +34,14 @@ defineProps({
   @media (min-width: 801px)
     flex: 0 0 320px
     max-width: 320px
-    animation: FromAbove ease-in-out 0.25s
-    animation-duration: calc(0.3s * v-bind(order))
+    animation: FromAbove ease-in-out
+    animation-duration: calc(0.1s * v-bind(order))
     height: 100%
     overflow-y: scroll
 
   @media (max-width: 800px)
-    animation: FromLeft ease-in-out 0.25s
-    animation-duration: calc(0.3s * v-bind(order))
+    animation: FromLeft ease-in-out
+    animation-duration: calc(0.1s * v-bind(order))
 
   > h4
     text-align: center

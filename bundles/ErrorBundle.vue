@@ -1,9 +1,6 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import LookupBundle from "~/cards/LookupCard.vue";
-import TextButton from "~/components/TextButton.vue";
-import MessageTemplate from "@/components/MessageTemplate.vue";
-import { linksService } from "@/assets/code/links/links.service";
+import LookupBundle from "@/cards/LookupCard.vue";
 import displayData from "@/assets/data/display.json";
 
 defineProps({
@@ -23,8 +20,8 @@ const isLookupShown = ref(false);
 <template>
   <LookupBundle v-if="isLookupShown" @hide="isLookupShown = false" />
   <NotificationTemplate
-    :title="displayData.error.title"
     :description="displayData.error.description"
+    :title="displayData.error.title"
     image="/images/error.svg"
   />
 </template>

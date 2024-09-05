@@ -70,14 +70,17 @@ iCalLexer.rule(/SUMMARY:(.*)\s+/, (ctx, match) => {
 iCalLexer.rule(/LOCATION:(.*)\s+/, (ctx, match) => {
   ctx.accept(
     LOCATION,
-    cleanString(match[1]!.replaceAll(/ *\([^)]*\)/g, "")).split(","),
+    cleanString(match[1]!.replaceAll(/ *\([^)]*\)/g, ""))
+      .split(",")
+      .filter((value) => value !== ""),
   );
 });
 
 iCalLexer.rule(/DESCRIPTION:(.*)\s+/, (ctx, match) => {
+  const upperTest = /^([A-Z ]{2,})$/;
   const ret = [];
-  const matches = [...match[1]!.matchAll(/([A-Z ]+)\\n/g)];
-  for (const match of matches) ret.push(match[1]);
+  const parts = match[1].split("\\n");
+  for (const part of parts) if (upperTest.test(part)) ret.push(part);
   ctx.accept(TEACHERS, ret);
 });
 

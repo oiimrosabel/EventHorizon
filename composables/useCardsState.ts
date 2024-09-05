@@ -30,6 +30,14 @@ const commonCardState = {
   set event(value: boolean) {
     this._event.value = value;
   },
+
+  _bookmark: ref(false),
+  get bookmark() {
+    return this._bookmark.value;
+  },
+  set bookmark(value: boolean) {
+    this._bookmark.value = value;
+  },
 };
 
-export const useCardDisplay = () => commonCardState;
+export const useCardsState = () => commonCardState;

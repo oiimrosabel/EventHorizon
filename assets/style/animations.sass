@@ -11,7 +11,6 @@
   100%
     opacity: 0
 
-
 /* For CardMenu */
 @keyframes CardIn
   0%
@@ -38,6 +37,8 @@
     scale: 0.9
     opacity: 0
     transform: translateY(32px)
+  50%
+    transform: translateY(-16px)
   100%
     scale: 1
     opacity: 1
@@ -47,6 +48,8 @@
   0%
     opacity: 0
     transform: translateY(-32px)
+  50%
+    transform: translateY(16px)
   100%
     opacity: 1
     transform: translateY(0)
@@ -55,6 +58,8 @@
   0%
     opacity: 0
     transform: translateX(-32px)
+  50%
+    transform: translateX(16px)
   100%
     opacity: 1
     transform: translateX(0)
@@ -85,3 +90,15 @@
     rotate: 2deg
   95%
     rotate: 0deg
+
+/* For SplashScreen */
+@keyframes Splash
+  0%
+    z-index: 99
+    opacity: 1
+  99%
+    z-index: 99
+    opacity: 0
+  100%
+    z-index: -99
+    opacity: 0

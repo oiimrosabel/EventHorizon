@@ -16,13 +16,12 @@ body
   align-items: stretch
   justify-content: stretch
   width: 100vw
+  height: 100vh
 
   @media (min-width: 801px)
-    height: 100vh
     flex-direction: row
 
   @media (max-width: 800px)
-    min-height: 100vh
     flex-direction: column-reverse
 
 *
@@ -39,11 +38,3 @@ body
   &::-webkit-scrollbar-thumb
     background-color: var(--button)
     border-radius: var(--radius-inf)
-
-.displayOnMobile
-  @media (min-width: 801px)
-    display: none !important
-
-.displayOnDesktop
-  @media (max-width: 800px)
-    display: none !important

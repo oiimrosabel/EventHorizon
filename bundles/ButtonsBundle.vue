@@ -1,46 +1,50 @@
-<script setup lang="ts">
-import { linksService } from "assets/code/links/links.service";
+<script lang="ts" setup>
+import { linksService } from "@/assets/code/links/links.service";
 import { useRoute } from "vue-router";
-import { ref } from "vue";
-import { bookmarkService } from "assets/code/bookmark/bookmark.service";
-import SideBar from "~/components/sidebar/SideBar.vue";
+import SideBar from "@/components/containers/SideBar.vue";
+import { useBookmarker } from "@/composables/useBookmarker";
+import { bookmarkService } from "@/assets/code/bookmark/bookmark.service";
 
-const route = useRoute();
-const calId = route.params["cal"] as string;
+const $route = useRoute();
 
-const $cards = useCardDisplay();
+const $cards = useCardsState();
 
-const isBookmarked = ref(bookmarkService.isBooked(calId));
+const $bookmark = useBookmarker();
 
-const bookmarkWrapper = () => {
-  bookmarkService.toggleBookmark(calId);
-  isBookmarked.value = bookmarkService.isBooked(calId);
+const editBookmark = () => {
+  if ($bookmark.bookmark) {
+    bookmarkService.deleteBookmark($route.params["cal"] as string);
+    $bookmark.bookmark = false;
+  } else $cards.bookmark = true;
 };
 </script>
 
 <template>
   <SideBar>
     <div v-if="$route.path !== '/'">
-      <TextButton @click="$cards.share = true" title="Partager">
-        <img src="/icons/share.svg" alt="Share" />
+      <TextButton title="Partager" @click="$cards.share = true">
+        <img alt="Share" src="/icons/share.svg" />
       </TextButton>
-      <TextButton title="Sauvegarder" @click="bookmarkWrapper()">
+      <TextButton
+        :title="$bookmark.bookmark ? 'Supprimer' : 'Sauvegarder...'"
+        @click="editBookmark()"
+      >
         <img
+          :src="`/icons/${$bookmark.bookmark ? 'marked' : 'bookmark'}.svg`"
           alt="Bookmark"
-          :src="`/icons/${isBookmarked ? 'marked' : 'bookmark'}.svg`"
         />
       </TextButton>
       <TextButton title="Rafraîchir" @click="linksService.reloadPage()">
-        <img src="/icons/refresh.svg" alt="Refresh" />
+        <img alt="Refresh" src="/icons/refresh.svg" />
       </TextButton>
       <hr />
     </div>
     <div>
-      <TextButton @click="$cards.lookup = true" title="Rechercher">
-        <img src="/icons/search.svg" alt="Search" />
+      <TextButton title="Rechercher" @click="$cards.lookup = true">
+        <img alt="Search" src="/icons/search.svg" />
       </TextButton>
-      <TextButton @click="$cards.theme = true" title="Thème">
-        <img src="/icons/theme.svg" alt="Theme" />
+      <TextButton title="Thème" @click="$cards.theme = true">
+        <img alt="Theme" src="/icons/theme.svg" />
       </TextButton>
     </div>
   </SideBar>

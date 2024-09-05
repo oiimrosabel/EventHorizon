@@ -1,2 +1,0 @@
-<?php
-const URL_TEMPLATE = "https://link.to.ade/cal?resources=%%cal%%&weeks=%%weeks%%";

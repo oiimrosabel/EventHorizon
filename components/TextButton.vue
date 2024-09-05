@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 defineProps({
   noFilter: {
     type: Boolean,
@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  <a class="TextButton" :class="{ nofilter: noFilter }">
+  <a :class="{ nofilter: noFilter }" class="TextButton">
     <slot />
   </a>
 </template>

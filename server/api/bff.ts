@@ -1,7 +1,5 @@
 import { iCalParser } from "assets/code/api/parser";
-import * as fs from "node:fs";
 
-const DEFAULT_TTL = 60 * 60 * 2;
 const CALENDAR_TOKEN = "%%cal%%";
 const WEEKS_TOKEN = "%%weeks%%";
 const BASE_URL =
@@ -19,37 +17,32 @@ const fetchFile = async (cal: string, weeks: string) => {
   }
 };
 
-export default defineCachedEventHandler(
-  async (event) => {
-    const query = getQuery(event);
-    const cal = query["cal"];
-    const weeks = query["weeks"];
+export default defineEventHandler(async (event) => {
+  const query = await readBody(event);
+  const cal = query["cal"];
+  const weeks = query["weeks"];
 
-    if (!cal || !weeks)
-      return setResponseStatus(event, 400, "Paramètres manquants.");
-    if (!checkItems(cal as string, weeks as string))
-      return setResponseStatus(event, 400, "Requête incorrecte.");
-    const file = await fetchFile(cal as string, weeks as string);
-    if (!file)
-      return setResponseStatus(
-        event,
-        500,
-        "Impossible de récupérer le calendrier.",
-      );
-    const calData = new iCalParser().parseCal(file);
-    if (!calData)
-      return setResponseStatus(
-        event,
-        500,
-        "Impossible de parser le calendrier.",
-      );
-    setResponseStatus(event, 200);
-    return calData;
-  },
-  {
-    maxAge: DEFAULT_TTL,
-    name: `assets-getter`,
-    getKey: (event) =>
-      event.context.params ? event.context.params["cal"] : "",
-  },
-);
+  if (!cal || !weeks)
+    return createError({
+      statusCode: 400,
+      statusMessage: "Paramètres manquants.",
+    });
+  if (!checkItems(cal as string, weeks as string))
+    return createError({
+      statusCode: 400,
+      statusMessage: "Requête incorrecte.",
+    });
+  const file = await fetchFile(cal as string, weeks as string);
+  if (!file)
+    return createError({
+      statusCode: 500,
+      statusMessage: "Impossible de récupérer le calendrier.",
+    });
+  const calData = new iCalParser().parseCal(file);
+  if (!calData) return;
+  createError({
+    statusCode: 500,
+    statusMessage: "Impossible de parser le calendrier.",
+  });
+  return calData;
+});

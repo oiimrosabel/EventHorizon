@@ -3,7 +3,7 @@ import type {
   DurationInSeconds,
 } from "@/assets/code/animations/animations-interfaces";
 
-const DEFAULT_DELAY_DURATION: DurationInSeconds = "2s";
+const DEFAULT_DELAY_DURATION: DurationInSeconds = "1s";
 
 class AnimationsService {
   async executeAfterDelay(

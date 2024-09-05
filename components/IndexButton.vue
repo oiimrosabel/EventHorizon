@@ -1,7 +1,7 @@
 <template>
-  <a class="IndexButton" href=" /">
-    <img src="/images/calendar.svg" alt="Index" />
-  </a>
+  <NuxtLink class="IndexButton" to="/">
+    <img alt="Index" src="/images/calendar.svg" />
+  </NuxtLink>
 </template>
 
 <style lang="sass">

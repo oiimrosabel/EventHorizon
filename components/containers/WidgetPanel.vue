@@ -11,8 +11,6 @@
   justify-content: start
   align-items: stretch
   gap: 24px
-  overflow-y: auto
-  overflow-x: hidden
   padding: 16px
   backdrop-filter: var(--blur)
   background: var(--background)
@@ -23,8 +21,11 @@
 
   @media (min-width: 801px)
     flex: 0 0 312px
+    overflow-y: auto
+    overflow-x: hidden
+    animation: FromLeft ease-in-out 0.5s
 
   @media (max-width: 800px)
     width: 100%
-    border-radius: 0 0 var(--radius-med) var(--radius-med)
+    animation: FromAbove ease-in-out 0.5s
 </style>
