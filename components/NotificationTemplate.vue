@@ -32,13 +32,11 @@ defineProps({
   flex-direction: row
   justify-content: start
   align-items: end
-  gap: 32px
 
 .NotificationTemplate
   padding: 24px
-  background: var(--background)
+  background: var(--widget)
   border-radius: var(--radius-small)
-  backdrop-filter: var(--blur)
   display: flex
   flex-direction: column
   justify-content: stretch

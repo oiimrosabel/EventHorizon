@@ -17,13 +17,14 @@ import IndexButton from "@/components/IndexButton.vue";
   justify-content: stretch
   align-items: center
   background: var(--widget)
-  padding: 16px
 
   @media (min-width: 801px)
     flex-direction: column
     width: 80px
+    padding: 16px
 
   @media (max-width: 800px)
+    padding: 10px 12px
     flex-direction: row
 
   > div

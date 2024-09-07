@@ -47,8 +47,11 @@ const SEPARATOR = ", ";
   flex-direction: column
   align-items: stretch
   justify-content: start
-  padding-left: 16px
   gap: 16px
+
+  @media (min-width: 801px)
+    padding-left: 16px
+    padding-right: 16px
 
   > div
     display: flex
@@ -58,8 +61,11 @@ const SEPARATOR = ", ";
     gap: 12px
     border-radius: var(--radius-button)
 
-
     > img
       height: 20px
       filter: var(--filter)
+
+    @media (max-width: 800px)
+      > p
+        font-size: 0.95em
 </style>

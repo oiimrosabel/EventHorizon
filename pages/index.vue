@@ -42,9 +42,8 @@ import SearchBar from "@/components/textbars/SearchBar.vue";
     align-items: stretch
 
   > .IndexCard
-    background: var(--background)
+    background: var(--widget)
     border-radius: var(--radius-med)
-    backdrop-filter: var(--blur)
     display: flex
     flex-direction: column
     align-items: stretch
@@ -60,6 +59,9 @@ import SearchBar from "@/components/textbars/SearchBar.vue";
 
     > .BreathingPicture
       align-self: center
+
+    /*> .SearchBar > *
+      background: var(--widget) !important*/
 
     > *
       text-align: center

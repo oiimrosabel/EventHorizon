@@ -12,6 +12,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  placeholder: {
+    type: String,
+    default: "",
+  },
 });
 
 const $cards = useCardsState();
@@ -30,6 +34,7 @@ const teachersText =
     : props.event?.teachers.join(SEPARATOR);
 
 const showEventInfo = () => {
+  if (!props.event) return;
   $event.isHappening = props.isHappening;
   $event.data = props.event;
   $event.type = calendarService.getCourseType(props.event?.title[1]) ?? "";
@@ -40,30 +45,36 @@ const showEventInfo = () => {
 
 <template>
   <div
-    :class="{ happening: isHappening }"
+    :class="{ happening: isHappening, clickable: event }"
     class="EventWidget"
     @click="showEventInfo"
   >
-    <h4
-      :title="event.title[0]"
-      v-html="calendarService.formatTitle(event.title)"
-    />
-    <div>
-      <img alt="Time" src="/icons/time.svg" />
-      <p>
-        {{ event.start.join(":") }} - {{ event.end.join(":") }} ({{
-          event.duration.join("h")
-        }})
-      </p>
-    </div>
-    <div>
-      <img alt="Location" src="/icons/location.svg" />
-      <p>{{ locationsText }}</p>
-    </div>
-    <div>
-      <img alt="Teacher" src="/icons/teacher.svg" />
-      <p>{{ teachersText }}</p>
-    </div>
+    <template v-if="event">
+      <h4
+        :title="event.title[0]"
+        v-html="calendarService.formatTitle(event.title)"
+      />
+      <div>
+        <img alt="Time" src="/icons/time.svg" />
+        <p>
+          {{ event.start.join(":") }} - {{ event.end.join(":") }} ({{
+            event.duration.join("h")
+          }})
+        </p>
+      </div>
+      <div>
+        <img alt="Location" src="/icons/location.svg" />
+        <p>{{ locationsText }}</p>
+      </div>
+      <div>
+        <img alt="Teacher" src="/icons/teacher.svg" />
+        <p>{{ teachersText }}</p>
+      </div>
+    </template>
+    <template v-else>
+      <img alt="Calendar" src="/images/done.svg" />
+      <p>{{ placeholder }}</p>
+    </template>
   </div>
 </template>
 
@@ -80,13 +91,23 @@ const showEventInfo = () => {
   border-radius: var(--radius-small)
 
   &.happening
-    background: var(--button)
+    padding-left: 32px
+    box-shadow: inset var(--active) 4px 0 0
 
-  &:hover
+  &.clickable:hover
     background: var(--hover)
 
-  &:active
+  &.clickable:active
     background: var(--active)
+
+  > img
+    height: 32px
+    align-self: center
+
+  > p
+    font-weight: 600
+    text-align: center
+    margin-bottom: -4px
 
   > h4
     text-align: center

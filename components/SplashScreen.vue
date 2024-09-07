@@ -11,7 +11,7 @@ defineProps({
 
 <template>
   <div :class="{ hidden: state }" class="SplashScreen">
-    <BreathingPicture size="200px">
+    <BreathingPicture size="160px">
       <img alt="Logo" src="/images/logo.svg" />
     </BreathingPicture>
   </div>

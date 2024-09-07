@@ -4,7 +4,6 @@ import { ref } from "vue";
 import WidgetPanel from "@/components/containers/WidgetPanel.vue";
 import DayContainer from "@/components/containers/DayContainer.vue";
 import EventWidget from "@/components/widgets/EventWidget.vue";
-import TextWidget from "@/components/widgets/TextWidget.vue";
 import { useRoute } from "vue-router";
 import StatsWidget from "@/components/widgets/StatsWidget.vue";
 import WidgetContainer from "@/components/containers/WidgetContainer.vue";
@@ -33,32 +32,29 @@ if (!calendarData) isError.value = true;
     <DateWidget />
     <WidgetContainer title="Cours actuel">
       <EventWidget
-        v-if="calendarData?.current"
-        :event="calendarData?.current"
+        :event="calendarData!.current"
+        placeholder="Pas de cours actuellement"
       />
-      <TextWidget v-else>
-        <p>Pas de cours actuellement</p>
-      </TextWidget>
     </WidgetContainer>
     <WidgetContainer title="Prochain cours">
-      <EventWidget v-if="calendarData?.next" :event="calendarData?.next" />
-      <TextWidget v-else>
-        <p>Pas de cours à venir</p>
-      </TextWidget>
+      <EventWidget
+        :event="calendarData!.next"
+        placeholder="Pas de cours à venir"
+      />
     </WidgetContainer>
     <WidgetContainer title="Statistiques">
       <StatsWidget :data="calendarData!" />
     </WidgetContainer>
   </WidgetPanel>
   <DayContainer
-    v-for="(tag, id) in Object.keys(calendarData?.calendar).sort()"
+    v-for="(tag, id) in Object.keys(calendarData!.calendar).sort()"
     v-if="!isError"
     :key="id"
     :order="id + 1"
-    :title="calendarData?.calendar[tag][0]!.date.join(' ')"
+    :title="calendarData!.calendar[tag][0]!.date.join(' ')"
   >
     <EventWidget
-      v-for="(e, ie) in calendarData?.calendar[tag]"
+      v-for="(e, ie) in calendarData!.calendar[tag]"
       :key="ie"
       :event="e"
       :is-happening="calendarService.isHappening(e)"

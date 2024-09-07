@@ -1,58 +1,68 @@
 html:root
   --radius-small: 12px
-  --radius-med: 24px
-  --radius-button: 12px
-  --blur: blur(15px)
-  --trans: all ease-in-out 0.33s
+  --radius-med: 20px
+  --radius-button: 16px
+  --trans: all ease-in-out 0.2s
   --destructive: invert(39%) sepia(90%) saturate(3578%) hue-rotate(338deg) brightness(117%) contrast(124%)
 
-html:root[data-theme="sage"]
-  --bgimg: url('/bg/sage.jpg')
-  --background: #F2D7FFA0
-  --widget: #FCF0FF
-  --button: #fed5ff
-  --hover: #ffdd94
-  --active: #ffd83a
+html:root[data-theme="light"]
+  --bgimg: url('/bg/day.webp')
+  --background: #F0F0F0
+  --widget: #ffffff
+  --button: #F0F0F0
   --text: #202020
-  --filter: invert(31%) sepia(95%) saturate(1728%) hue-rotate(253deg) brightness(99%) contrast(105%)
 
-html:root[data-theme="solstice"]
-  --bgimg: url('/bg/solstice.jpg')
-  --background: #251239A0
-  --widget: #30144a
-  --button: #4d2572
-  --hover: #b82e97
-  --active: #ff185d
-  --text: #FFF
-  --filter: invert(60%) sepia(99%) saturate(2157%) hue-rotate(223deg) contrast(102%)
-
-
-html:root[data-theme="stars"]
-  --bgimg: url('/bg/stars.jpg')
-  --background: #00081EA0
-  --widget: #121736
-  --button: #1d2556
-  --hover: #004487
-  --active: #009bff
-  --filter: invert(76%) sepia(10%) saturate(3234%) hue-rotate(187deg) contrast(103%)
-  --text: white
-
-html:root[data-theme="comet"]
-  --bgimg: url('/bg/comet.jpg')
-  --background: #002023A0
-  --widget: #00393c
-  --button: #006165
-  --hover: #00805a
-  --active: #09BC8A
-  --filter: invert(80%) sepia(36%) saturate(5924%) hue-rotate(124deg) brightness(105%) contrast(102%)
+html:root[data-theme="dark"]
+  --bgimg: url('/bg/night.webp')
+  --background: #101010
+  --widget: #202020
+  --button: #404040
   --text: white
 
 html:root[data-theme="oled"]
-  --bgimg: url('/bg/oled.jpg')
+  --bgimg: url('/bg/oled.webp')
   --background: #000000
   --widget: #101010
   --button: #202020
-  --hover: #6262aa
-  --active: #a7a7ff
-  --filter: invert(1)
   --text: white
+
+@mixin defineHoverColors($color)
+  --hover: color-mix(in srgb, #{$color} 25%, var(--button) 75%)
+  --active: color-mix(in srgb, #{$color}   75% , var(--button) 25%)
+
+
+html:root[data-color="fang"]
+  @include defineHoverColors(#5BA2FF)
+  --filter: invert(66%) sepia(38%) saturate(4546%) hue-rotate(190deg) brightness(101%) contrast(101%)
+
+html:root[data-color="trish"]
+  @include defineHoverColors(#C368FF)
+  --filter: invert(48%) sepia(12%) saturate(4405%) hue-rotate(234deg) brightness(105%) contrast(101%)
+
+html:root[data-color="sage"]
+  @include defineHoverColors(#FF7CCB)
+  --filter: invert(73%) sepia(30%) saturate(3437%) hue-rotate(289deg) brightness(104%) contrast(102%)
+
+html:root[data-color="reed"]
+  @include defineHoverColors(#FF374B)
+  --filter: invert(39%) sepia(66%) saturate(5359%) hue-rotate(336deg) brightness(108%) contrast(105%)
+
+html:root[data-color="rosa"]
+  @include defineHoverColors(#FF6B2C)
+  --filter: invert(51%) sepia(21%) saturate(2214%) hue-rotate(335deg) contrast(104%)
+
+html:root[data-color="naomi"]
+  @include defineHoverColors(#DEA193)
+  --filter: invert(70%) sepia(54%) saturate(267%) hue-rotate(338deg) brightness(93%) contrast(86%)
+
+html:root[data-color="energix"]
+  @include defineHoverColors(#EFE81D)
+  --filter: invert(92%) sepia(40%) saturate(905%) hue-rotate(353deg) brightness(90%) contrast(110%)
+
+html:root[data-color="stella"]
+  @include defineHoverColors(#36D26A)
+  --filter: invert(77%) sepia(14%) saturate(1959%) hue-rotate(82deg) brightness(86%) contrast(96%)
+
+html:root[data-color="naser"]
+  @include defineHoverColors(#808080)
+  --filter: invert(54%) sepia(1%) saturate(0%) hue-rotate(219deg) brightness(92%) contrast(99%)

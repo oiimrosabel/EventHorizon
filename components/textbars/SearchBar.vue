@@ -42,7 +42,7 @@ const goToCal = () => {
     <input
       ref="inputRef"
       v-model="calId"
-      placeholder="ID ou URL de l'emploi du temps"
+      placeholder="ID/URL de l'emploi du temps"
       type="text"
       @keydown.enter="goToCal()"
     />

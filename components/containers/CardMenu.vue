@@ -67,9 +67,10 @@ watch(
   display: flex
   flex-direction: column
   animation: BackgroundIn ease-in-out v-bind(ANIM_DURATION)
-  backdrop-filter: var(--blur)
   padding: 24px
   gap: 24px
+  background: color-mix(in srgb, var(--background), transparent 10%)
+  backdrop-filter: saturate(0%)
 
   @media (min-width: 801px)
     justify-content: center
@@ -80,8 +81,15 @@ watch(
     justify-content: end
     align-items: stretch
 
-    > .TextButton
-      align-self: center
+  > .TextButton
+    background: var(--widget)
+    align-self: center
+
+    &:hover
+      background: var(--hover)
+
+    &:active
+      background: var(--active)
 
   &.away
     animation: BackgroundOut ease-in-out v-bind(ANIM_DURATION)

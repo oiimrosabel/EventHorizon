@@ -13,7 +13,6 @@ defineProps({
 const splashRef = ref(false);
 
 useNuxtApp().hook("app:mounted", () => {
-  themeService.switchTheme(themeService.getThemeFromCookie());
   setTimeout(() => (splashRef.value = true), 750);
 });
 </script>

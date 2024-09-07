@@ -26,9 +26,9 @@ class AnimationsService {
   }
 
   async animateStep(elements: Array<Element | null>, step: AnimationStep) {
-    this.toggleClasses(elements, step.classTag);
+    if (step.classTag !== "") this.toggleClasses(elements, step.classTag);
     await this.wait(this.getMsFromDuration(step.duration));
-    this.toggleClasses(elements, step.classTag);
+    if (step.classTag !== "") this.toggleClasses(elements, step.classTag);
     step.callback();
   }
 

@@ -24,6 +24,10 @@
       "success": "Partagé avec succès",
       "failure": "Votre navigateur ne supporte pas le partage."
     },
-    "themeChange": "Thème changé avec succès."
+    "theme": {
+      "themeChange": "Thème changé avec succès.",
+      "colorChange": "Teinte changée avec succès.",
+      "contrastIssues": "Attention : les couleurs choisies peuvent créer des problèmes de lisibilité."
+    }
   }
 }

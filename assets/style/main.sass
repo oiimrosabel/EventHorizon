@@ -2,6 +2,9 @@
 @import 'animations'
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')
 
+html
+  height: 100%
+
 body
   margin: 0
   color: var(--text)
@@ -10,13 +13,14 @@ body
   font-family: 'Montserrat', sans-serif
   font-weight: 500
   font-size: 0.9em
+  height: 100%
 
 #__nuxt
   display: flex
   align-items: stretch
   justify-content: stretch
   width: 100vw
-  height: 100vh
+  height: 100%
 
   @media (min-width: 801px)
     flex-direction: row

@@ -6,9 +6,19 @@
 
 <style lang="sass">
 .IndexButton
+  display: flex
+  flex-direction: column
+  justify-content: center
+  align-items: center
+
   > img
-    width: 42px
     transition: var(--trans)
+
+    @media (min-width: 801px)
+      width: 42px
+
+    @media (max-width: 800px)
+      width: 42px
 
     &:hover
       rotate: 3deg

@@ -5,6 +5,7 @@
   "scripts": {
     "clean": "rm -rf .output && rm -rf dist",
     "dev": "nuxt dev",
+    "dev:host": "NITRO_PORT=4625 nuxt dev --host",
     "build": "nuxt build",
     "build:static": "nuxt generate",
     "serve": "node .output/server/index.mjs",
@@ -26,6 +27,7 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
-    "prettier": "^3.3.2"
+    "prettier": "^3.3.2",
+    "sass-embedded": "^1.78.0"
   }
 }

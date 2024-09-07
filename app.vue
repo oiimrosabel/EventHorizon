@@ -16,6 +16,7 @@ const $cards = useCardsState();
 useNuxtApp().hook("app:mounted", () => {
   bookmarkService.fetchBookmarksFromCookies();
   themeService.switchTheme(themeService.getThemeFromCookie());
+  themeService.switchColor(themeService.getColorFromCookie());
   setTimeout(() => (splashRef.value = true), 750);
 });
 </script>

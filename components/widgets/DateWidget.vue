@@ -25,7 +25,7 @@ const days = ["L", "M", "M", "J", "V", "S", "D"];
         :class="{ today: timeData.dayIndex === i }"
       >
         <p>{{ e }}</p>
-        <img src="/icons/dot.png" />
+        <img src="/icons/dot.png" alt="Dot" />
       </div>
     </div>
   </div>

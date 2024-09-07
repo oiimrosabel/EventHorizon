@@ -12,7 +12,7 @@
   align-items: stretch
   gap: 24px
   padding: 16px
-  backdrop-filter: var(--blur)
+
   background: var(--background)
   border-radius: var(--radius-med)
 

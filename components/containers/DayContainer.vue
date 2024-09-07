@@ -28,7 +28,6 @@ defineProps({
   gap: 12px
   padding: 16px
   background: var(--background)
-  backdrop-filter: var(--blur)
   border-radius: var(--radius-med)
 
   @media (min-width: 801px)
