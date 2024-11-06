@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-import { calendarService } from "@/assets/code/calendar/calendar.service";
-import { type PropType } from "vue";
-import type { Event } from "@/assets/code/calendar/calendar-interfaces";
+import { calendarService } from "~/services/calendar/calendar.service";
+import type { PropType } from "vue";
+import type { EDetails } from "~/services/calendar/calendar.common";
+import { formatService } from "~/services/format/format.service";
 
 const props = defineProps({
   event: {
-    type: Object as PropType<Event>,
-    required: true,
+    type: Object as PropType<EDetails>,
+    default: undefined,
   },
   isHappening: {
     type: Boolean,
@@ -18,62 +19,62 @@ const props = defineProps({
   },
 });
 
-const $cards = useCardsState();
-const $event = useEventCard();
-
-const SEPARATOR = ", ";
-const PLACEHOLDER = "-";
-
-const locationsText =
-  props.event?.locations.length === 0
-    ? PLACEHOLDER
-    : props.event?.locations.join(SEPARATOR);
-const teachersText =
-  props.event?.teachers.length === 0
-    ? PLACEHOLDER
-    : props.event?.teachers.join(SEPARATOR);
-
-const showEventInfo = () => {
-  if (!props.event) return;
-  $event.isHappening = props.isHappening;
-  $event.data = props.event;
-  $event.type = calendarService.getCourseType(props.event?.title[1]) ?? "";
-  $event.title = props.event?.title[0];
-  $cards.event = true;
-};
+const progressionValue = props.isHappening
+  ? `${calendarService.getProgression(props.event, props.event)}`
+  : "0";
 </script>
 
 <template>
-  <div
-    :class="{ happening: isHappening, clickable: event }"
-    class="EventWidget"
-    @click="showEventInfo"
-  >
-    <template v-if="event">
-      <h4
-        :title="event.title[0]"
-        v-html="calendarService.formatTitle(event.title)"
-      />
-      <div>
-        <img alt="Time" src="/icons/time.svg" />
-        <p>
-          {{ event.start.join(":") }} - {{ event.end.join(":") }} ({{
-            event.duration.join("h")
-          }})
-        </p>
-      </div>
-      <div>
-        <img alt="Location" src="/icons/location.svg" />
-        <p>{{ locationsText }}</p>
-      </div>
-      <div>
-        <img alt="Teacher" src="/icons/teacher.svg" />
-        <p>{{ teachersText }}</p>
+  <div :class="{ happening: isHappening }" class="EventWidget">
+    <template v-if="!event">
+      <div class="_eventPlaceholder">
+        <img src="/images/done.svg" alt="Done" >
+        <p>{{ placeholder }}</p>
       </div>
     </template>
     <template v-else>
-      <img alt="Calendar" src="/images/done.svg" />
-      <p>{{ placeholder }}</p>
+      <div v-if="!isHappening" class="_eventTimeline">
+        <p>{{ formatService.formatHour(event.start, ":") }}</p>
+        <div />
+        <p>{{ formatService.formatHour(event.end, ":") }}</p>
+      </div>
+      <div class="_eventInfo">
+        <div>
+          <p class="subtitle">
+            {{ event.title.type ? `${event.title.type} &bull;` : "" }}
+            {{ formatService.formatHour(event.duration, "h", true) }}
+          </p>
+          <h3 class="title">
+            {{ event.title.type ? event.title.domain : event.title.raw }}
+          </h3>
+        </div>
+        <div>
+          <div>
+            <img src="/icons/location.svg" alt="Location" >
+            <div>
+              <p v-for="(e, i) in event.locations" :key="i">
+                {{ e }}
+              </p>
+            </div>
+          </div>
+          <div>
+            <img src="/icons/teacher.svg" alt="Teacher" >
+            <div>
+              <p v-for="(e, i) in event.teachers" :key="i">
+                {{ e }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div v-if="isHappening" class="_eventProgression">
+        <p>
+          {{ formatService.formatHour(event.start, ":") }} -
+          {{ formatService.formatHour(event.end, ":") }}
+        </p>
+        <progress max="100" :value="progressionValue" />
+        <p>{{ progressionValue }}&percnt;</p>
+      </div>
     </template>
   </div>
 </template>
@@ -81,61 +82,112 @@ const showEventInfo = () => {
 <style lang="sass">
 .EventWidget
   display: flex
-  flex-direction: column
+  flex-direction: row
+  justify-content: stretch
   align-items: stretch
-  justify-content: start
+  gap: 16px
+  padding: 16px
   background: var(--widget)
-  padding: 20px 24px 24px
-  gap: 12px
-  transition: var(--trans)
   border-radius: var(--radius-small)
 
   &.happening
-    padding-left: 32px
-    box-shadow: inset var(--active) 4px 0 0
+    flex-direction: column
+    background: var(--main)
+    color: var(--background)
+    --filter: var(--happening-filter)
 
-  &.clickable:hover
-    background: var(--hover)
+  > ._eventInfo
+    display: flex
+    flex-direction: column
+    justify-content: stretch
+    align-items: stretch
+    gap: 16px
 
-  &.clickable:active
-    background: var(--active)
+    > div:first-of-type
+      display: flex
+      flex-direction: column
+      justify-content: start
+      align-items: start
 
-  > img
-    height: 32px
-    align-self: center
+    > div:nth-of-type(2)
+      display: flex
+      flex-direction: column
+      justify-content: stretch
+      align-items: stretch
+      gap: 6px
 
-  > p
-    font-weight: 600
-    text-align: center
-    margin-bottom: -4px
+      > div
+        display: flex
+        flex-direction: row
+        justify-content: start
+        align-items: start
+        gap: 8px
 
-  > h4
-    text-align: center
-    overflow: hidden
-    white-space: nowrap
-    text-overflow: ellipsis
-    border-radius: var(--radius-small)
-    margin-bottom: 4px
+        > div
+          display: flex
+          flex-direction: column
+          justify-content: start
+          align-items: start
+          gap: 2px
 
-    > span
-      opacity: 0.66
-      font-size: 0.8em
+          > p
+            font-size: 0.9em
 
-  > div
+        > img
+          height: 16px
+          filter: var(--filter)
+
+  > ._eventTimeline
+    display: flex
+    flex-direction: column
+    justify-content: stretch
+    align-items: center
+    gap: 8px
+
+    > p
+      font-weight: 600
+      font-size: 0.9em
+
+    > div
+      flex-grow: 1
+      width: 2px
+      border-radius: var(--radius-button)
+      background: var(--main)
+
+  > ._eventProgression
     display: flex
     flex-direction: row
-    justify-content: start
     align-items: center
-    gap: 12px
-    border-radius: var(--radius-button)
+    justify-content: stretch
+    gap: 8px
 
     > p
       font-size: 0.9em
-      overflow: hidden
-      white-space: nowrap
-      text-overflow: ellipsis
+      font-weight: 600
+
+    > progress
+      flex-grow: 1
+      background: var(--widget)
+      border: none
+      height: 4px
+      border-radius: var(--radius-button)
+
+      &::-moz-progress-bar, &::-webkit-progress-bar
+        border-radius: var(--radius-button)
+        background: color-mix(in srgb, var(--main), var(--widget))
+
+  > ._eventPlaceholder
+    flex-grow: 1
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    padding: 8px 0
+    gap: 8px
+
+    > p
+      font-weight: 600
 
     > img
-      height: 18px
-      filter: var(--filter)
+      height: 36px
 </style>

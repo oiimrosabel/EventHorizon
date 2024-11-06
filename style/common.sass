@@ -1,0 +1,58 @@
+.displayOnDesktop
+  @media (max-width: 800px)
+    display: none !important
+
+.displayOnMobile
+  @media (min-width: 801px)
+    display: none !important
+
+.subtitle
+  font-size: 0.9em
+  font-weight: 700
+  opacity: 0.66
+
+.title
+  font-size: 1.1em
+  font-weight: 800
+
+.bigTitle
+  font-size: 1.5em
+  font-weight: 800
+
+.statTitle
+  font-size: 1.66em
+  font-weight: 800
+
+.inputField
+  display: flex
+  flex-direction: row
+  justify-content: stretch
+  align-items: stretch
+  gap: 8px
+
+  > input
+    flex: 1 1
+    box-shadow: inset 0 0 0 2px var(--main)
+    background: none
+    border: none
+    border-radius: var(--radius-button)
+    outline: none
+    text-align: center
+    color: var(--text)
+    transition: var(--trans)
+    min-width: 0
+    transform-origin: center
+    font-family: 'Montserrat', sans-serif
+    font-weight: 500
+
+    &:hover
+      box-shadow: inset 0 0 0 0 var(--main)
+      background: var(--hover)
+
+    &:focus
+      box-shadow: inset 0 0 0 2px var(--main)
+      background: var(--hover)
+
+    &::placeholder
+      color: var(--text)
+      font-size: 0.9em

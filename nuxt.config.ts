@@ -3,6 +3,15 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
   },
+  vite: {
+    css: {
+      preprocessorOptions: {
+        sass: {
+          api: "modern-compiler",
+        },
+      },
+    },
+  },
   app: {
     head: {
       htmlAttrs: {
@@ -11,11 +20,14 @@ export default defineNuxtConfig({
       title: "EventHorizon",
       meta: [
         { charset: "utf-8" },
-        { name: "description", content: "Parce que AdeCampus est horrible." },
+        {
+          name: "description",
+          content: "Un wrapper AdeCampus fait en TypeScript.",
+        },
         { property: "og:title", content: "EventHorizon" },
         {
           property: "og:description",
-          content: "Parce que AdeCampus est horrible.",
+          content: "Un wrapper AdeCampus fait en TypeScript.",
         },
         { name: "viewport", content: "width=device-width, initial-scale=1.0" },
       ],
@@ -32,7 +44,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  css: ["@/assets/style/main.sass"],
-  modules: ["@nuxt/eslint"],
+  css: ["~/style/main.sass"],
+  modules: ["@nuxt/eslint", "@pinia/nuxt"],
   compatibilityDate: "2024-07-04",
 });

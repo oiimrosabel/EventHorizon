@@ -9,7 +9,7 @@ defineProps({
 
 <template>
   <div class="WidgetContainer">
-    <h4>{{ title }}</h4>
+    <p class="subtitle">{{ title }}</p>
     <slot />
   </div>
 </template>
@@ -20,12 +20,11 @@ defineProps({
   flex-direction: column
   align-items: stretch
   justify-content: start
-  gap: 8px
-  padding: 0 0
+  padding-top: 16px
+  gap: 2px
+  border-radius: var(--radius-small)
+  background: var(--widget)
 
-  > h4
-    padding-left: 4px
-    font-size: 0.9em
-    opacity: 0.66
-    font-weight: 600
+  > p
+    padding-left: 12px
 </style>

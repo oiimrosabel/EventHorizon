@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import { ref } from "vue";
 import type { NuxtError } from "#app";
-import { themeService } from "@/assets/code/theme/theme.service";
 
 defineProps({
   error: {
@@ -9,28 +7,22 @@ defineProps({
     default: undefined,
   },
 });
-
-const splashRef = ref(false);
-
-useNuxtApp().hook("app:mounted", () => {
-  setTimeout(() => (splashRef.value = true), 750);
-});
 </script>
 
 <template>
-  <div class="Error">
-    <div class="ErrorCard">
+  <div class="_errorPage">
+    <div class="_errorCard">
       <BreathingPicture size="156px" @click="$router.push('/')">
-        <img alt="Logo" src="/images/error.svg" />
+        <img alt="Logo" src="/gifs/error.gif" >
       </BreathingPicture>
       <h1>Erreur {{ error!.statusCode }}</h1>
-      <p>{{ error?.statusMessage }}</p>
+      <p>{{ error!.message ?? error!.statusMessage ?? "" }}</p>
     </div>
   </div>
 </template>
 
 <style lang="sass">
-.Error
+._errorPage
   flex-grow: 1
   display: flex
   flex-direction: column
@@ -41,7 +33,7 @@ useNuxtApp().hook("app:mounted", () => {
   *
     color: #FFFFFF
 
-  > .ErrorCard
+  > ._errorCard
     display: flex
     flex-direction: column
     justify-content: center

@@ -1,32 +1,27 @@
 <script lang="ts" setup>
-import type { FormatedCalendar } from "@/assets/code/calendar/calendar-interfaces";
+import type { ESummary } from "~/services/calendar/calendar.common";
 import type { PropType } from "vue";
 
-defineProps({
+const props = defineProps({
   data: {
-    type: Object as PropType<FormatedCalendar>,
-    required: true,
+    type: Object as PropType<ESummary>,
+    default: undefined,
   },
 });
+
+const dataTypes = props.data ? props.data.types?.entries() : [];
 </script>
 
 <template>
-  <div v-if="data" class="StatsWidget">
+  <div class="StatsWidget">
     <div>
-      <div>
-        <h2>{{ data.length }}</h2>
-        <p>cours</p>
-      </div>
-      <div>
-        <h2>{{ data.duration }}</h2>
-        <p>aujourd'hui</p>
-      </div>
+      <p class="subtitle">{{ data.duration }} aujourd'hui</p>
+      <h3 class="bigTitle">{{ data.length }} cours</h3>
     </div>
     <div>
-      <div v-for="(e, i) in data.types" :key="i">
-        <h3>{{ e }}</h3>
-        <p>{{ i }}s</p>
-      </div>
+      <p v-for="(e, i) in dataTypes" :key="i">
+        <b>&bull; {{ e[1] }}</b> {{ e[0] }}{{ e[1] == 1 ? "" : "s" }}
+      </p>
     </div>
   </div>
 </template>
@@ -37,40 +32,22 @@ defineProps({
   flex-direction: column
   justify-content: stretch
   align-items: stretch
-  gap: 8px
+  gap: 16px
+  padding: 16px
+  background: var(--widget)
+  border-radius: var(--radius-small)
 
   > div:first-of-type
+    display: flex
+    flex-direction: column
+    justify-content: stretch
+    align-items: stretch
+
+  > div:nth-of-type(2)
     display: grid
     grid-auto-rows: 1fr
     grid-template-columns: 1fr 1fr
     justify-content: stretch
     align-items: stretch
     gap: 8px
-
-    > div
-      display: flex
-      flex-direction: column
-      justify-content: center
-      align-items: center
-      gap: 2px
-      background: var(--widget)
-      padding: 16px 0
-      border-radius: var(--radius-small)
-
-  > div:nth-of-type(2)
-    display: flex
-    flex-direction: row
-    justify-content: stretch
-    align-items: stretch
-    gap: 8px
-
-    > div
-      flex-grow: 1
-      padding: 8px 0
-      background: var(--widget)
-      border-radius: var(--radius-small)
-      display: flex
-      flex-direction: column
-      justify-content: center
-      align-items: center
 </style>

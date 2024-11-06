@@ -1,18 +1,22 @@
 <script lang="ts" setup>
-import BreathingPicture from "@/components/BreathingPicture.vue";
+import BreathingPicture from "~/components/BreathingPicture.vue";
+import { SplashState } from "~/services/animation/animation.common";
 
 defineProps({
   state: {
-    type: Boolean,
+    type: Number,
     required: true,
   },
 });
 </script>
 
 <template>
-  <div :class="{ hidden: state }" class="SplashScreen">
+  <div
+    :class="{ in: state === SplashState.IN, out: state === SplashState.OUT }"
+    class="SplashScreen"
+  >
     <BreathingPicture size="160px">
-      <img alt="Logo" src="/images/logo.svg" />
+      <img alt="Logo" src="/gifs/splash.gif" >
     </BreathingPicture>
   </div>
 </template>
@@ -31,8 +35,11 @@ defineProps({
   justify-content: center
   align-items: center
 
-  &.hidden
-    animation: Splash 0.5s
+  &.in
+    animation: SplashIn 0.5s
+
+  &.out
+    animation: SplashOut 0.5s
     opacity: 0
     z-index: -99
 </style>

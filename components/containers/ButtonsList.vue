@@ -9,7 +9,7 @@
   display: flex
   flex-direction: row
   flex-wrap: wrap
-  gap: 12px
+  gap: 8px
   justify-content: start
   align-items: start
 </style>
