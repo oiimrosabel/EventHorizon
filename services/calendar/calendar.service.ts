@@ -36,7 +36,7 @@ class CalendarService {
       const errorData = error.value.data as CalFetchErrorData;
       throw new CalFetchError(errorData.statusCode, errorData.message);
     }
-    if (!data.value) throw new CalFetchError(500, "Calendier corrompu.");
+    if (!data.value) throw new CalFetchError(500, "Calendrier corrompu.");
     return data.value;
   }
 

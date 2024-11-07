@@ -4,4 +4,5 @@ export enum SplashState {
   IDLE,
   IN,
   OUT,
+  HIDDEN,
 }

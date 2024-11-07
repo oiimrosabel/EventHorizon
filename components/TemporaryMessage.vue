@@ -2,6 +2,7 @@
 const $messenger = useMessenger();
 
 const messageDuration = $messenger.duration;
+const messageBefore = computed(() => `"${$messenger.before} "`);
 </script>
 
 <template>
@@ -34,5 +35,5 @@ const messageDuration = $messenger.duration;
     font-weight: 600
 
     &::before
-      content: "✅ "
+      content: v-bind(messageBefore)
 </style>

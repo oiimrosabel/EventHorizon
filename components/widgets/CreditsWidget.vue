@@ -4,7 +4,12 @@ import TextButton from "~/components/buttons/TextButton.vue";
 import { linksService } from "~/services/links/links.service";
 import ImageButton from "~/components/buttons/ImageButton.vue";
 
-const $data = useCommonData();
+const LINKS = {
+  dev: "https://github.com/oiimrosabel",
+  github: "https://github.com/oiimrosabel/EventHorizon",
+  pfp: "https://avatars.githubusercontent.com/u/42437280?v=4",
+  credits: "https://github.com/oiimrosabel/EventHorizon/blob/main/README.md",
+};
 </script>
 
 <template>
@@ -13,20 +18,20 @@ const $data = useCommonData();
     <ButtonsList>
       <ImageButton
         title="Créé par Rosabel"
-        @click="linksService.changeLocation($data.links.dev, true)"
+        @click="linksService.changeLocation(LINKS.dev, true)"
       >
-        <img alt="Dev" :src="$data.links.pfp" >
+        <img alt="Dev" :src="LINKS.pfp" >
       </ImageButton>
       <TextButton
         title="Crédits"
-        @click="linksService.changeLocation($data.links.credits, true)"
+        @click="linksService.changeLocation(LINKS.credits, true)"
       >
         <img alt="Crédits" src="/icons/credits.svg" >
         <p>Crédits</p>
       </TextButton>
       <TextButton
         title="Contribuer"
-        @click="linksService.changeLocation($data.links.github, true)"
+        @click="linksService.changeLocation(LINKS.github, true)"
       >
         <img alt="GitHub" src="/icons/github.svg" >
         <p>Contribuer</p>

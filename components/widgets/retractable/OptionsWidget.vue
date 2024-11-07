@@ -3,7 +3,6 @@ import type { ECalendarInfo } from "~/services/calendar/calendar.common";
 import { linksService } from "~/services/links/links.service";
 import TextButton from "~/components/buttons/TextButton.vue";
 import ButtonsList from "~/components/containers/ButtonsList.vue";
-import { useCommonData } from "~/composables/useCommonData";
 import { formatService } from "~/services/format/format.service";
 import RetractableWidget from "~/components/containers/RetractableWidget.vue";
 
@@ -14,19 +13,19 @@ defineProps({
   },
 });
 
+const SHARE_TITLE = "EventHorizon";
+
 const $messenger = useMessenger();
-const $common = useCommonData();
 
 const shareLink = () => {
   const data = linksService.getFullUrl();
-  linksService.shareData(data, $common.bundles.share.title).then((success) => {
+  linksService.shareData(data, SHARE_TITLE).then((success) => {
     if (!success)
       linksService.copyDataToClipboard(data).then((success) => {
-        $messenger.setMessage(
-          success ? $common.bundles.copy.success : $common.bundles.copy.failure,
-        );
+        if (success) $messenger.setMessage("Copié avec succès.");
+        else $messenger.setMessage("Une erreur est survenue.", "❌");
       });
-    else $messenger.setMessage($common.bundles.share.success);
+    else $messenger.setMessage("Partagé avec succès.");
   });
 };
 </script>

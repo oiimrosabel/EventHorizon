@@ -6,8 +6,8 @@ import { useRoute } from "vue-router";
 import { animationService } from "~/services/animation/animation.service";
 import type { Bookmark } from "~/services/bookmark/bookmark.common";
 import ButtonsList from "~/components/containers/ButtonsList.vue";
-import { useCommonData } from "~/composables/useCommonData";
 import RetractableWidget from "~/components/containers/RetractableWidget.vue";
+import { SplashState } from "~/services/animation/animation.common";
 
 defineProps({
   isIndex: {
@@ -18,9 +18,9 @@ defineProps({
 
 const $route = useRoute();
 const $router = useRouter();
+const $splash = useSplash();
 const $messenger = useMessenger();
 const $bookmarker = useBookmarker();
-const $common = useCommonData();
 
 const calId = ($route.params["cal"] as string) ?? "";
 
@@ -65,12 +65,20 @@ const addBookmark = () => {
 const deleteAllBookmarks = () => {
   bookmarkService.resetBookmarks();
   $bookmarker.setBookmark(false);
-  $messenger.setMessage($common.bundles.bookmarksDeletion);
+  $messenger.setMessage("Sauvegardes effacées avec succès.");
   updateBookmarks();
 };
 
 const navigateToBookmark = (elem: string) => {
-  $router.push(`/${elem}`);
+  if (elem === calId) {
+    $messenger.setMessage("Calendrier déjà sélectionné", "❌");
+    return;
+  }
+  $splash.setState(SplashState.IN);
+  animationService.executeAfterDelay(
+    () => $router.push(`/${elem}`),
+    $splash.duration,
+  );
 };
 
 onMounted(() => updateBookmarks());

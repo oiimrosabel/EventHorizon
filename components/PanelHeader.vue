@@ -1,8 +1,24 @@
+<script setup lang="ts">
+import { animationService } from "~/services/animation/animation.service";
+import { SplashState } from "~/services/animation/animation.common";
+
+const $route = useRouter();
+const $splash = useSplash();
+
+const goToIndex = () => {
+  $splash.setState(SplashState.IN);
+  animationService.executeAfterDelay(() => {
+    $route.push("/");
+    $splash.setState(SplashState.OUT);
+  }, $splash.duration);
+};
+</script>
+
 <template>
   <div class="PanelHeader">
-    <NuxtLink to="/">
+    <a @click="goToIndex()">
       <img alt="Index" src="/images/calendar.svg" >
-    </NuxtLink>
+    </a>
   </div>
 </template>
 

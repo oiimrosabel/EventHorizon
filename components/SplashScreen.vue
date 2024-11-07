@@ -2,17 +2,18 @@
 import BreathingPicture from "~/components/BreathingPicture.vue";
 import { SplashState } from "~/services/animation/animation.common";
 
-defineProps({
-  state: {
-    type: Number,
-    required: true,
-  },
-});
+const $splash = useSplash();
+
+const length = $splash.duration;
 </script>
 
 <template>
   <div
-    :class="{ in: state === SplashState.IN, out: state === SplashState.OUT }"
+    v-if="$splash.isVisible"
+    :class="{
+      in: $splash.state === SplashState.IN,
+      out: $splash.state === SplashState.OUT,
+    }"
     class="SplashScreen"
   >
     <BreathingPicture size="160px">
@@ -36,10 +37,8 @@ defineProps({
   align-items: center
 
   &.in
-    animation: SplashIn 0.5s
+    animation: SplashIn v-bind(length)
 
   &.out
-    animation: SplashOut 0.5s
-    opacity: 0
-    z-index: -99
+    animation: SplashOut v-bind(length)
 </style>

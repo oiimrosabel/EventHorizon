@@ -4,6 +4,7 @@ import { ref } from "vue";
 import { animationService } from "~/services/animation/animation.service";
 import RetractableWidget from "~/components/containers/RetractableWidget.vue";
 import { formatService } from "~/services/format/format.service";
+import { SplashState } from "~/services/animation/animation.common";
 
 defineProps({
   isIndex: {
@@ -15,17 +16,31 @@ defineProps({
 const ERROR_CLASS = "error";
 const ERROR_ANIM_DURATION = "0.33s";
 
+const $messenger = useMessenger();
+const $route = useRoute();
 const $router = useRouter();
+const $splash = useSplash();
+
+const calId = ($route.params["cal"] as string) ?? "";
+
 const userInput = ref<string>("");
 const inputRef = ref<HTMLInputElement | null>(null);
 
-const goToCal = () => {
+const goToCalendar = () => {
   const res: string | undefined = formatService.formatSearchInput(
     userInput.value,
   );
-  if (res) {
-    $router.push(`/${res}`);
-  } else
+  if (res && res !== calId) {
+    $splash.setState(SplashState.IN);
+    animationService.executeAfterDelay(
+      () => $router.push(`/${res}`),
+      $splash.duration,
+    );
+  } else {
+    $messenger.setMessage(
+      res === calId ? "Calendrier déjà sélectionné" : "ID incorrect",
+      "❌",
+    );
     animationService.triggerCssAnimation(
       [inputRef.value],
       ERROR_CLASS,
@@ -34,6 +49,7 @@ const goToCal = () => {
         return;
       },
     );
+  }
 };
 </script>
 
@@ -52,9 +68,9 @@ const goToCal = () => {
           :class="{ attention: isIndex }"
           placeholder="ID/URL de l'emploi du temps"
           type="text"
-          @keydown.enter="goToCal()"
+          @keydown.enter="goToCalendar()"
         >
-        <TextButton title="Rechercher" @click="goToCal()">
+        <TextButton title="Rechercher" @click="goToCalendar()">
           <img alt="Search" src="/icons/search.svg" >
         </TextButton>
       </div>

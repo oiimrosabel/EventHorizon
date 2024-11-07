@@ -36,7 +36,7 @@ defineProps({
     align-items: start
 
   > progress
-    background: var(--background)
+    background: var(--sidebar-bg)
     border: none
     height: 4px
     border-radius: var(--radius-button)

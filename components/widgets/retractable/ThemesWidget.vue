@@ -4,20 +4,18 @@ import TextButton from "~/components/buttons/TextButton.vue";
 import ColorButton from "~/components/buttons/ColorButton.vue";
 import ButtonsList from "~/components/containers/ButtonsList.vue";
 import { themeService } from "~/services/theme/theme.service";
-import { useCommonData } from "~/composables/useCommonData";
 import RetractableWidget from "~/components/containers/RetractableWidget.vue";
 
 const $messenger = useMessenger();
-const $common = useCommonData();
 
 const setTheme = (theme: string) => {
   themeService.setTheme(theme as Theme);
-  $messenger.setMessage($common.bundles.theme.themeChange);
+  $messenger.setMessage("Thème changé avec succès.");
 };
 
 const setColor = (color: string) => {
   themeService.setColor(color as Color);
-  $messenger.setMessage($common.bundles.theme.colorChange);
+  $messenger.setMessage("Teinte changée avec succès.");
 };
 </script>
 
