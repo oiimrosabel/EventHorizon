@@ -7,9 +7,7 @@ const scrollLeft = () => {
   if (ttRef.value) ttRef.value.scrollLeft = 0;
 };
 
-const scrollTop = () => {
-  document.documentElement.scrollTop = 0;
-};
+const scrollTop = () => (document.documentElement.scrollTop = 0);
 </script>
 
 <template>

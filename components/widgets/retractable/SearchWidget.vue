@@ -1,10 +1,8 @@
 <script lang="ts" setup>
 import TextButton from "~/components/buttons/TextButton.vue";
-import { ref } from "vue";
 import { animationService } from "~/services/animation/animation.service";
 import RetractableWidget from "~/components/containers/RetractableWidget.vue";
 import { formatService } from "~/services/format/format.service";
-import { SplashState } from "~/services/animation/animation.common";
 
 defineProps({
   isIndex: {
@@ -31,11 +29,7 @@ const goToCalendar = () => {
     userInput.value,
   );
   if (res && res !== calId) {
-    $splash.setState(SplashState.IN);
-    animationService.executeAfterDelay(
-      () => $router.push(`/${res}`),
-      $splash.duration,
-    );
+    $splash.fadeIn(() => $router.push(`/${res}`));
   } else {
     $messenger.setMessage(
       res === calId ? "Calendrier déjà sélectionné" : "ID incorrect",
@@ -66,7 +60,7 @@ const goToCalendar = () => {
           ref="inputRef"
           v-model="userInput"
           :class="{ attention: isIndex }"
-          placeholder="ID/URL de l'emploi du temps"
+          placeholder="ID ou URL de l'emploi du temps"
           type="text"
           @keydown.enter="goToCalendar()"
         >

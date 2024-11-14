@@ -6,12 +6,9 @@ import {
   type ESummary,
 } from "~/services/calendar/calendar.common";
 
-// Vue tools
-import { useRoute } from "vue-router";
-import { ref } from "vue";
-
 // Services
 import { formatService } from "~/services/format/format.service";
+import { bookmarkService } from "~/services/bookmark/bookmark.service";
 
 // Containers
 import WidgetPanel from "~/components/containers/WidgetPanel.vue";
@@ -33,8 +30,6 @@ import CreditsWidget from "~/components/widgets/CreditsWidget.vue";
 import WelcomeWidget from "~/components/widgets/WelcomeWidget.vue";
 import EventFiller from "~/components/widgets/EventFiller.vue";
 import PanelHeader from "~/components/PanelHeader.vue";
-import { SplashState } from "~/services/animation/animation.common";
-import { bookmarkService } from "~/services/bookmark/bookmark.service";
 
 const $route = useRoute();
 const $bookmarker = useBookmarker();
@@ -67,23 +62,30 @@ const summaryRef = ref<ESummary | undefined>(undefined);
 const calId = $route.params["cal"] as string | undefined;
 const hasCalId = !!calId;
 
-if (hasCalId) {
-  $splash.setState(SplashState.IDLE);
-  let data: ECalendar | undefined = undefined;
+const getCalendar = async () => {
+  if (!hasCalId) return;
+  $splash.lock();
+  let data;
   try {
     data = await calendarService.fetchCalendar(calId);
   } catch (error: unknown) {
-    throw createError(formatService.formatErrorAsCalError(error));
+    throw createError(formatService.interpretError(error));
   }
-  calendarRef.value = data;
-  summaryRef.value = calendarService.createSummary(data);
-  if ($splash.state !== SplashState.HIDDEN) $splash.setState(SplashState.OUT);
-}
+  calendarRef.value = data as ECalendar;
+  summaryRef.value = calendarService.createSummary(data as ECalendar);
+  $splash.unlock();
+  $splash.fadeOut();
+};
 
 onMounted(() => {
   bookmarkService.fetchBookmarksFromCookies();
   if (hasCalId) $bookmarker.updateData(calId);
+  useHeadSafe({
+    title: formatService.formatTitle($bookmarker.bookmarkName),
+  });
 });
+
+await getCalendar();
 </script>
 
 <template>

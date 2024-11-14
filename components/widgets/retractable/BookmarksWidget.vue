@@ -1,13 +1,11 @@
 <script lang="ts" setup>
 import { bookmarkService } from "~/services/bookmark/bookmark.service";
 import TextButton from "~/components/buttons/TextButton.vue";
-import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { animationService } from "~/services/animation/animation.service";
 import type { Bookmark } from "~/services/bookmark/bookmark.common";
 import ButtonsList from "~/components/containers/ButtonsList.vue";
 import RetractableWidget from "~/components/containers/RetractableWidget.vue";
-import { SplashState } from "~/services/animation/animation.common";
 
 defineProps({
   isIndex: {
@@ -65,20 +63,14 @@ const addBookmark = () => {
 const deleteAllBookmarks = () => {
   bookmarkService.resetBookmarks();
   $bookmarker.setBookmark(false);
-  $messenger.setMessage("Sauvegardes effacées avec succès.");
+  $messenger.setMessage("Marque-pages effacées avec succès.");
   updateBookmarks();
 };
 
 const navigateToBookmark = (elem: string) => {
-  if (elem === calId) {
+  if (elem === calId)
     $messenger.setMessage("Calendrier déjà sélectionné", "❌");
-    return;
-  }
-  $splash.setState(SplashState.IN);
-  animationService.executeAfterDelay(
-    () => $router.push(`/${elem}`),
-    $splash.duration,
-  );
+  else $splash.fadeIn(() => $router.push(`/${elem}`));
 };
 
 onMounted(() => updateBookmarks());

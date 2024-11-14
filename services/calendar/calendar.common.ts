@@ -63,14 +63,12 @@ export interface ESummary {
   progression: number;
 }
 
-export interface CalFetchErrorData {
-  url: string;
+export interface EFetchLog {
   statusCode: number;
-  statusMessage: string;
   message: string;
 }
 
-export class CalFetchError extends Error {
+export class EFetchError extends Error {
   statusCode: number;
 
   constructor(statusCode: number, message: string) {

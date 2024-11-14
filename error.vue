@@ -1,21 +1,34 @@
 <script lang="ts" setup>
 import type { NuxtError } from "#app";
+import { formatService } from "~/services/format/format.service";
 
-defineProps({
+const props = defineProps({
   error: {
     type: Object as () => NuxtError,
     default: undefined,
   },
 });
+
+const $router = useRouter();
+const $splash = useSplash();
+
+useHeadSafe({
+  title: formatService.formatTitle(`Erreur ${props.error!.statusCode}`),
+});
+
+const goToIndex = () =>
+  $splash.fadeIn(() => {
+    $router.push("/").then(() => $splash.fadeOut());
+  });
 </script>
 
 <template>
   <div class="_errorPage">
     <div class="_errorCard">
-      <BreathingPicture size="156px" @click="$router.push('/')">
+      <BreathingPicture size="156px" @click="goToIndex()">
         <img alt="Logo" src="/gifs/error.gif" >
       </BreathingPicture>
-      <h1>Erreur {{ error!.statusCode }}</h1>
+      <h1>Erreur {{ error!.statusCode ?? "" }}</h1>
       <p>{{ error!.message ?? error!.statusMessage ?? "" }}</p>
     </div>
   </div>

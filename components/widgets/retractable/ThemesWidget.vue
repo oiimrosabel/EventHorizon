@@ -47,21 +47,6 @@ const setColor = (color: string) => {
       <p class="subtitle">Teintes de couleur</p>
       <ButtonsList>
         <ColorButton
-          title="Turquoise"
-          color="#5BA2FF"
-          @click="setColor(Color.BLUE)"
-        />
-        <ColorButton
-          title="Violet"
-          color="#C368FF"
-          @click="setColor(Color.PURPLE)"
-        />
-        <ColorButton
-          title="Rose"
-          color="#FF7CCB"
-          @click="setColor(Color.PINK)"
-        />
-        <ColorButton
           title="Rouge"
           color="#FF374B"
           @click="setColor(Color.RED)"
@@ -87,14 +72,29 @@ const setColor = (color: string) => {
           @click="setColor(Color.GREEN)"
         />
         <ColorButton
-          title="Gris"
-          color="#606060"
-          @click="setColor(Color.BLACK)"
+          title="Turquoise"
+          color="#5BA2FF"
+          @click="setColor(Color.BLUE)"
         />
         <ColorButton
           title="Bleu"
           color="#4C52FF"
           @click="setColor(Color.NAVY)"
+        />
+        <ColorButton
+          title="Violet"
+          color="#C368FF"
+          @click="setColor(Color.PURPLE)"
+        />
+        <ColorButton
+          title="Rose"
+          color="#FF7CCB"
+          @click="setColor(Color.PINK)"
+        />
+        <ColorButton
+          title="Gris"
+          color="#606060"
+          @click="setColor(Color.BLACK)"
         />
       </ButtonsList>
     </div>

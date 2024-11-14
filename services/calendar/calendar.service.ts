@@ -1,6 +1,6 @@
 import {
-  CalFetchError,
-  type CalFetchErrorData,
+  EFetchError,
+  type EFetchLog,
   type ECalendar,
   type EDay,
   type EDetails,
@@ -33,10 +33,10 @@ class CalendarService {
       },
     });
     if (error.value && error.value.data) {
-      const errorData = error.value.data as CalFetchErrorData;
-      throw new CalFetchError(errorData.statusCode, errorData.message);
+      const errorData = error.value.data as EFetchLog;
+      throw new EFetchError(errorData.statusCode, errorData.message);
     }
-    if (!data.value) throw new CalFetchError(500, "Calendrier corrompu.");
+    if (!data.value) throw new EFetchError(500, "Calendrier corrompu.");
     return data.value;
   }
 

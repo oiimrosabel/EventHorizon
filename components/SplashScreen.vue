@@ -3,7 +3,6 @@ import BreathingPicture from "~/components/BreathingPicture.vue";
 import { SplashState } from "~/services/animation/animation.common";
 
 const $splash = useSplash();
-
 const length = $splash.duration;
 </script>
 

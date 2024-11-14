@@ -39,8 +39,8 @@ export default defineEventHandler(async (event) => {
       message: "Impossible de récupérer le calendrier.",
     });
   const calData = new iCalParser(Number(weeks)).parseCal(file);
-  if (!calData) return;
-  createError({
+  if (!calData)
+    return createError({
     statusCode: 500,
     message: "Impossible de parser le calendrier.",
   });

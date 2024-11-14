@@ -85,10 +85,16 @@ const progressionValue = props.isHappening
   flex-direction: row
   justify-content: stretch
   align-items: stretch
-  gap: 16px
-  padding: 16px
   background: var(--widget)
   border-radius: var(--radius-small)
+
+  @media (min-width: 801px)
+    padding: 16px
+    gap: 16px
+
+  @media (max-width: 800px)
+    padding: 20px
+    gap: 20px
 
   &.happening
     flex-direction: column

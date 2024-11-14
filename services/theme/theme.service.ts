@@ -40,7 +40,8 @@ class ThemeService {
   }
 
   private getThemeBasedOnTime() {
-    return new Date().getHours() <= 12 ? Theme.DAY : Theme.NIGHT;
+    const now = new Date().getHours();
+    return now >= 8 && now <= 16 ? Theme.DAY : Theme.NIGHT;
   }
 
   private getColorFromCookie() {

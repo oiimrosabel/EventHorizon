@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import { animationService } from "~/services/animation/animation.service";
-import { SplashState } from "~/services/animation/animation.common";
-
-const $route = useRouter();
+const $router = useRouter();
 const $splash = useSplash();
 
-const goToIndex = () => {
-  $splash.setState(SplashState.IN);
-  animationService.executeAfterDelay(() => {
-    $route.push("/");
-    $splash.setState(SplashState.OUT);
-  }, $splash.duration);
-};
+const goToIndex = () =>
+  $splash.fadeIn(() => {
+    $router.push("/").then(() => $splash.fadeOut());
+  });
 </script>
 
 <template>

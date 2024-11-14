@@ -1,5 +1,6 @@
 import type {
-  CalFetchError,
+  EFetchLog,
+  EFetchError,
   EDate,
   EDuration,
   ETime,
@@ -30,19 +31,31 @@ class FormatService {
     return calendarService.isCalIdValid(text) ? text : undefined;
   }
 
-  formatErrorAsCalError(error: unknown) {
+  private isEFetchError(error: unknown): error is EFetchError {
+    const testObject = error as EFetchError;
+    return (
+      Object.hasOwn(testObject, "statusCode") &&
+      Object.hasOwn(testObject, "message")
+    );
+  }
+
+  interpretError(error: unknown): EFetchLog {
     const errorData = error as Error;
     const errorTemplate = {
       statusCode: 500,
       message: errorData.message,
     };
-    if (Object.hasOwn(errorData, "statusCode")) {
-      const calError = error as CalFetchError;
-      errorTemplate.statusCode = calError.statusCode;
-      errorTemplate.message = calError.message;
+    if (this.isEFetchError(error)) {
+      errorTemplate.statusCode = error.statusCode;
+      errorTemplate.message = error.message;
     }
     return errorTemplate;
   }
+
+  formatTitle = (chunk?: string) => {
+    const title = "EventHorizon";
+    return chunk ? `${chunk} - ${title}` : title;
+  };
 }
 
 export const formatService = new FormatService();
