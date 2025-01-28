@@ -24,8 +24,9 @@ import TimetableContainer from '@/components/containers/TimetableContainer.vue'
 import DayContainer from '@/components/containers/DayContainer.vue'
 import DayHeader from '@/components/DayHeader.vue'
 import EventFiller from '@/components/widgets/EventFiller.vue'
+import BridgeConfig from '@/../bridge.config.json'
 
-const DEFAULT_REFRESH_RATE = 1800
+const DEFAULT_REFRESH_RATE = BridgeConfig.refreshInterval
 
 const $error = useError()
 const $route = useRoute()

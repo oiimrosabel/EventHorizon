@@ -1,6 +1,7 @@
 import type { BridgeResponse, FailureResponse, RequestData } from '@/code/fetch/fetch.common.ts'
+import BridgeConfig from '../../../bridge.config.json'
 
-const BRIDGE_URL = new URL('https://blahaj.land/ade-api')
+const BRIDGE_URL = new URL(BridgeConfig.bridge)
 
 export const fetchCalendar = async (data: RequestData) => {
   let res: Response
