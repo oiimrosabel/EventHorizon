@@ -1,0 +1,96 @@
+/* For BreathingPicture */
+@keyframes BreathingPictureFg
+  0%
+    filter: brightness(1)
+  100%
+    filter: brightness(1.25)
+
+@keyframes BreathingPictureBg
+  0%
+    filter: blur(10px)
+  100%
+    filter: blur(20px)
+
+/* For SearchField */
+@keyframes InputError
+  0%
+    rotate: 0deg
+  25%
+    rotate: 2deg
+  50%
+    rotate: -2deg
+  75%
+    rotate: 2deg
+  95%
+    rotate: 0deg
+
+@keyframes InputAttention
+  0%
+    box-shadow: 0 0 0 0 var(--main)
+    background: color-mix(in srgb, var(--hover), transparent 33%)
+  25%
+    box-shadow: 0 0 0 0 var(--main)
+    background: color-mix(in srgb, var(--hover), transparent 33%)
+  100%
+    box-shadow: 0 0 16px 0 var(--main)
+    background: transparent
+
+/* For SplashScreen */
+@keyframes SplashOut
+  0%
+    z-index: 99
+    opacity: 1
+  99%
+    z-index: 99
+    opacity: 0
+  100%
+    z-index: -99
+    opacity: 0
+
+@keyframes SplashIn
+  0%
+    z-index: -99
+    opacity: 0
+  1%
+    z-index: 99
+    opacity: 0
+  100%
+    z-index: 99
+    opacity: 1
+
+/* For TemporaryMessage */
+@keyframes MessageAnimation
+  0%
+    opacity: 0
+    transform: translateY(32px)
+  10%
+    opacity: 1
+    transform: translateY(0)
+  80%
+    opacity: 1
+    transform: translateY(0)
+  90%
+    opacity: 0
+    transform: translateY(-32px)
+  100%
+    opacity: 0
+
+@keyframes WidgetOut
+  0%
+    rotate: 0
+    transform: translateX(0)
+    opacity: 1
+  100%
+    rotate: 5deg
+    transform: translateX(-256px)
+    opacity: 0
+
+@keyframes WidgetIn
+  0%
+    rotate: 5deg
+    transform: translateX(-256px)
+    opacity: 0
+  100%
+    rotate: 0
+    transform: translateX(0)
+    opacity: 1

@@ -1,9 +1,0 @@
-export const VCALSTART = "vcs";
-export const VCALEND = "vce";
-export const EVENTSTART = "evs";
-export const EVENTEND = "eve";
-export const TIMESTART = "tts";
-export const TIMEEND = "tte";
-export const SUMMARY = "sum";
-export const LOCATION = "loc";
-export const TEACHERS = "dsc";
